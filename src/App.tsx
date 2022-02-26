@@ -13,7 +13,12 @@ function App() {
   const [isLogin, setLogin] = React.useState(false);
   const user = useTypedSelector((s) => s.user);
   const dispatch = useTypedDispatch();
-  
+
+  axios.defaults.baseURL = process.env.REACT_APP_SERVER_URL;
+  axios.defaults.withCredentials = true;
+
+  console.log(axios.defaults.baseURL);
+
   React.useEffect(() => {
     if (user.uid) {
       setLogin(false);
@@ -37,9 +42,6 @@ function App() {
     }
     return () => {};
   }, [dispatch, user.uid]);
-
-  axios.defaults.baseURL = process.env.REACT_APP_SERVER_URL;
-  axios.defaults.withCredentials = true;
 
   return (
     <div

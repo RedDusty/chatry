@@ -3,6 +3,9 @@ import io, { ManagerOptions, SocketOptions } from "socket.io-client";
 export const serverURL: string =
   process.env.REACT_APP_SERVER_URL || "localhost:8000";
 
+console.log(serverURL);
+console.log(process.env.REACT_APP_SERVER_URL);
+
 const socketConfig = {
   reconnection: true,
   reconnectionDelay: 250,
