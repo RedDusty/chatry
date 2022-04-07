@@ -7,6 +7,7 @@ import {
   UserReducerType,
   UserSetType,
   UserSocketIDSetType,
+  UserListUIDSSetType,
 } from "typings/UserTypes";
 
 export const UserSet = (user: UserReducerType) => {
@@ -42,5 +43,14 @@ export const UserVerifySet = (verify: boolean) => {
 export const UserSocketIDSet = (socketID: string) => {
   return (dispatch: Dispatch<UserSocketIDSetType>) => {
     dispatch({ type: "USER_SOCKETID_SET", payload: socketID });
+  };
+};
+
+export const UserListUIDSSet = (listUIDS: {
+  list: "friends" | "waitings" | "ignores";
+  uids: string[] | string;
+}) => {
+  return (dispatch: Dispatch<UserListUIDSSetType>) => {
+    dispatch({ type: "USER_LIST_UIDS_SET", payload: listUIDS });
   };
 };

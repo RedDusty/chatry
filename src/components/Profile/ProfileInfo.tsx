@@ -20,14 +20,13 @@ const ProfileInfo = ({
   return (
     <div className="flex flex-col sm:flex-row sm:items-center w-full">
       <div
-        className={`
-            ${
-              avatar !== undefined
-                ? "fill-sky-600 dark:fill-indigo-800"
-                : "animate-pulse bg-slate-400 dark:bg-slate-500 rounded-full p-4"
-            } w-64 h-64 sm:w-28 sm:h-28 lg:w-36 lg:h-36 mx-auto sm:mx-0 shrink-0`}
+        className={`${
+          avatar !== undefined
+            ? "fill-sky-600 dark:fill-indigo-800"
+            : "rounded-full overflow-hidden"
+        } w-64 h-64 sm:w-28 sm:h-28 lg:w-36 lg:h-36 mx-auto sm:mx-0 shrink-0`}
       >
-        {avatar !== undefined ? <UserIcon avatar={avatar} /> : <></>}
+        <UserIcon avatar={avatar} />
       </div>
       <div className="flex-1 flex flex-col items-center sm:items-start">
         <p
@@ -42,9 +41,11 @@ const ProfileInfo = ({
         <p
           className={`${
             online !== undefined
-              ? "text-lg text"
+              ? online === true
+                ? "text-lg text-green-600 dark:text-green-400"
+                : "text-lg text"
               : "w-24 h-6 rounded-md animate-pulse bg-green-400 dark:bg-green-500"
-          } sm:ml-4 mt-2`}
+          } sm:ml-4 mt-2 font-semibold`}
         >
           {online !== undefined ? lastOnline(online) || "Offline" : ""}
         </p>

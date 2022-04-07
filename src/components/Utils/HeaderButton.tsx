@@ -60,7 +60,7 @@ const HeaderButton = ({
           isShow ? "flex" : "hidden sm:flex"
         } group w-11 h-11 sm:w-14 sm:h-14 rounded-xl sm:mx-auto sm:mt-2 flex-col items-center`}
         onClick={() => {
-          link();
+          setSelected(link());
         }}
       >
         {innerData()}

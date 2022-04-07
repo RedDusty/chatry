@@ -29,7 +29,7 @@ body {
 
 @layer components {
   .btn-style {
-    @apply fill-gray-500 dark:fill-gray-400 hover:fill-sky-600 dark:hover:fill-indigo-300 bg-sky-500 dark:bg-indigo-400 bg-opacity-0 dark:bg-opacity-0 hover:bg-opacity-10 dark:hover:bg-opacity-10;
+    @apply fill-gray-500 dark:fill-gray-400 hover:fill-sky-500 dark:hover:fill-indigo-300 bg-sky-300 dark:bg-indigo-500 bg-opacity-0 dark:bg-opacity-0 hover:bg-opacity-50 dark:hover:bg-opacity-50;
   }
   .link {
     @apply text-sky-600 dark:text-indigo-300 hover:underline focus:text-sky-800 dark:focus:text-indigo-100 focus:underline;
@@ -50,4 +50,36 @@ body {
 .avatarRound:hover {
   border-radius: 12px;
   transition: all 0.25s ease-in-out 0s;
+}
+
+.notif {
+  top: 56px;
+  left: 0;
+  animation: notiMOBILEfAnimation 0.25s ease-in-out 0s 1;
+}
+
+@media screen and (min-width: 640px) {
+  .notif {
+    left: 80px;
+    top: 112px;
+    animation: notifPCAnimation 0.25s ease-in-out 0s 1;
+  }
+}
+
+@keyframes notifPCAnimation {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 80px;
+  }
+}
+
+@keyframes notiMOBILEfAnimation {
+  0% {
+    top: -100%;
+  }
+  100% {
+    top: 56px;
+  }
 }

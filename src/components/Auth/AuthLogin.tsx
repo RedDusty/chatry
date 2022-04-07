@@ -44,6 +44,12 @@ const AuthLogin = () => {
       .then((v) => {
         const data = v.data as UserReducerType;
         dispatch({ type: "USER_SET", payload: data });
+
+        axios.defaults.headers.common["Authorization"] =
+          data.tokens.accessToken;
+        localStorage.setItem("accessToken", data.tokens.accessToken);
+        localStorage.setItem("refreshToken", data.tokens.refreshToken);
+        localStorage.setItem("uid", data.uid!);
       })
       .catch((err) => {
         switch (err) {

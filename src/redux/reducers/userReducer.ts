@@ -1,4 +1,4 @@
-import { UserActionsType, UserReducerType } from "../../typings/UserTypes";
+import { UserActionsType, UserReducerType } from "typings/UserTypes";
 
 const themeStorage = () => {
   const theme =
@@ -18,10 +18,12 @@ const userReducerInitial: UserReducerType = {
   },
   tokens: {
     accessToken: "",
-    refreshtoken: "",
+    refreshToken: "",
   },
   registerDate: 0,
   friendsUID: [],
+  ignoresUID: [],
+  waitingsUID: [],
   subname: "",
   verified: false,
 };
@@ -61,6 +63,51 @@ const userReducer = (
     }
     case "USER_VERIFY_SET": {
       return { ...state, verified: action.payload };
+    }
+    case "USER_LIST_UIDS_SET": {
+      switch (action.payload.list) {
+        case "friends":
+          const friendUIDS =
+            typeof action.payload.uids === "string"
+              ? [...state.friendsUID, action.payload.uids]
+              : action.payload.uids;
+          return { ...state, friendsUID: friendUIDS };
+        case "ignores":
+          const ignoresUID =
+            typeof action.payload.uids === "string"
+              ? [...state.ignoresUID, action.payload.uids]
+              : action.payload.uids;
+          return { ...state, ignoresUID: ignoresUID };
+        case "waitings":
+          const waitingsUID =
+            typeof action.payload.uids === "string"
+              ? [...state.waitingsUID, action.payload.uids]
+              : action.payload.uids;
+          return { ...state, waitingsUID: waitingsUID };
+        default:
+          return { ...state };
+      }
+    }
+    case "USER_LIST_UIDS_REMOVE": {
+      switch (action.payload.list) {
+        case "friends":
+          const newFriendsUID = state.friendsUID.filter(
+            (v) => v !== action.payload.uid
+          );
+          return { ...state, friendsUID: newFriendsUID };
+        case "ignores":
+          const newIgnoresUID = state.ignoresUID.filter(
+            (v) => v !== action.payload.uid
+          );
+          return { ...state, ignoresUID: newIgnoresUID };
+        case "waitings":
+          const newWaitingsUID = state.waitingsUID.filter(
+            (v) => v !== action.payload.uid
+          );
+          return { ...state, waitingsUID: newWaitingsUID };
+        default:
+          return { ...state };
+      }
     }
     default:
       return { ...state };

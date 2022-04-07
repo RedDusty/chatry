@@ -5,6 +5,8 @@ export type USER_UID_SET = "USER_UID_SET";
 export type USER_VERIFY_SET = "USER_VERIFY_SET";
 export type USER_SET = "USER_SET";
 export type USER_SOCKETID_SET = "USER_SOCKETID_SET";
+export type USER_LIST_UIDS_SET = "USER_LIST_UIDS_SET";
+export type USER_LIST_UIDS_REMOVE = "USER_LIST_UIDS_REMOVE";
 
 type UserSettingsType = {
   theme: "white" | "dark";
@@ -12,7 +14,7 @@ type UserSettingsType = {
 
 type tokensType = {
   accessToken: string;
-  refreshtoken: string;
+  refreshToken: string;
 };
 
 export type UserReducerType = {
@@ -25,6 +27,8 @@ export type UserReducerType = {
   tokens: tokensType;
   registerDate: number;
   friendsUID: string[];
+  ignoresUID: string[];
+  waitingsUID: string[];
   subname: string;
   verified: boolean;
   socketID?: string;
@@ -72,6 +76,22 @@ type UserSocketIDSetType = {
   payload: string;
 };
 
+type UserListUIDSSetType = {
+  type: USER_LIST_UIDS_SET;
+  payload: {
+    list: "friends" | "waitings" | "ignores";
+    uids: string[] | string;
+  };
+};
+
+type UserListUIDSRemoveType = {
+  type: USER_LIST_UIDS_REMOVE;
+  payload: {
+    list: "friends" | "waitings" | "ignores";
+    uid: string;
+  };
+};
+
 type UserActionsType =
   | UserDisplayNameSetType
   | UserAvatarSetType
@@ -79,4 +99,6 @@ type UserActionsType =
   | UserUIDSetType
   | UserVerifySetType
   | UserSetType
-  | UserSocketIDSetType;
+  | UserSocketIDSetType
+  | UserListUIDSSetType
+  | UserListUIDSRemoveType;
