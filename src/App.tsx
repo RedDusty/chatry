@@ -1,26 +1,30 @@
 import React from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import Header from "components/Header/Header";
 import Auth from "components/Auth/Auth";
 import { useTypedDispatch, useTypedSelector } from "redux/useTypedRedux";
 import axios from "axios";
-import Main from "components/Main";
 import socket from "socketio";
 import IconLoading from "icons/IconLoading";
-import { UserReducerType } from "typings/UserTypes";
 import NotificationsContainer from "components/Notifications/NotificationsContainer";
 import { friendRequest } from "scripts/friendRequest";
+import Profile from "components/Profile/Profile";
+import FriendsContainer from "components/Friends/FriendsContainer";
+import Settings from "components/Settings/Settings";
+import NotFound from "components/Utils/NotFound";
 
 function App() {
   const [isLogin, setLogin] = React.useState(false);
   const [isNotifShow, setNotifShow] = React.useState(false);
+  const [nextPage, setNextPage] = React.useState<string>("");
   const user = useTypedSelector((s) => s.user);
   const dispatch = useTypedDispatch();
+  const navigate = useNavigate();
 
   axios.defaults.baseURL = process.env.REACT_APP_SERVER_URL;
   axios.defaults.withCredentials = true;
   axios.defaults.headers.common["Authorization"] =
-    localStorage.getItem("accessToken") || "";
+    localStorage.getItem("uid") + " " + localStorage.getItem("token") || "";
 
   React.useEffect(() => {
     if (user.uid) {
@@ -30,20 +34,30 @@ function App() {
       socket.on("FRIEND_REQUEST_CLIENT", friendRequest);
     } else {
       setLogin(true);
+      setNextPage(window.location.pathname);
       axios
-        .post("/api/login")
+        .post("/api/login", {
+          token: localStorage.getItem("token"),
+          uid: localStorage.getItem("uid"),
+        })
         .then((v) => {
           if (v) {
-            const data = v.data as UserReducerType;
+            const data = v.data;
             setLogin(false);
 
-            dispatch({ type: "USER_SET", payload: data });
-
             axios.defaults.headers.common["Authorization"] =
-              data.tokens.accessToken;
-            localStorage.setItem("accessToken", data.tokens.accessToken);
-            localStorage.setItem("refreshToken", data.tokens.refreshToken);
-            localStorage.setItem("uid", data.uid!);
+              data.user.uid + " " + data.token;
+
+            localStorage.setItem("token", data.token);
+            localStorage.setItem("user", JSON.stringify(data.user));
+
+            dispatch({ type: "USER_SET", payload: data.user });
+
+            if (nextPage.length > 0) {
+              navigate(nextPage);
+            } else {
+              navigate("/profile/" + data.subname);
+            }
           }
         })
         .catch(() => {
@@ -53,7 +67,7 @@ function App() {
     return () => {
       socket.off("FRIEND_REQUEST_CLIENT");
     };
-  }, [dispatch, user.uid]);
+  }, [dispatch, user.uid, navigate, nextPage]);
 
   return (
     <div
@@ -68,14 +82,11 @@ function App() {
         </section>
       ) : (
         <Routes>
-          <Route
-            path="/*"
-            element={user.uid ? <Main /> : <Navigate to={"/auth"} />}
-          ></Route>
-          <Route
-            path="/auth/*"
-            element={user.uid ? <Navigate to={"/"} /> : <Auth />}
-          />
+          <Route path="/user/:uid" element={<Profile />} />
+          <Route path="/friends" element={<FriendsContainer />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/auth/*" element={<Auth />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       )}
       <NotificationsContainer isNotifShow={isNotifShow} />

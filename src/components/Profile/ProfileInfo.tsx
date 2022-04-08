@@ -4,7 +4,7 @@ import lastOnline from "scripts/lastOnline";
 
 type ProfileInfoType = {
   avatar: string | null | undefined;
-  displayName: string | undefined;
+  username: string | undefined;
   uid: string | null | undefined;
   online: true | number | undefined;
   friendsUID: string[] | undefined;
@@ -12,7 +12,7 @@ type ProfileInfoType = {
 
 const ProfileInfo = ({
   avatar,
-  displayName,
+  username,
   friendsUID,
   online,
   uid,
@@ -31,12 +31,12 @@ const ProfileInfo = ({
       <div className="flex-1 flex flex-col items-center sm:items-start">
         <p
           className={`${
-            displayName !== undefined
+            username !== undefined
               ? "text-4xl font-medium text-lighter"
               : "bg-slate-400 dark:bg-slate-500 rounded-lg animate-pulse w-64 lg:w-96 px-8 h-12"
           } mt-6 sm:mt-0 sm:ml-4 sm:grow`}
         >
-          {displayName}
+          {username}
         </p>
         <p
           className={`${

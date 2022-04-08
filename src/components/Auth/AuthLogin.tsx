@@ -1,34 +1,17 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AuthInput from "components/Utils/AuthInput";
 import axios from "axios";
-import { UserReducerType } from "typings/UserTypes";
 import { useTypedDispatch } from "redux/useTypedRedux";
 
 const AuthLogin = () => {
-  const [email, setEmail] = React.useState("");
+  const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [msg, setMsg] = React.useState(["Please fill the form", false]);
   const [canPass, setPass] = React.useState(true);
+  const navigate = useNavigate();
 
   const dispatch = useTypedDispatch();
-
-  React.useEffect(() => {
-    if (email.match(/@/g) === null) {
-      setMsg(["Email must contain an '@'", false]);
-      return;
-    }
-    if (email.match(/.+@.+/g) === null) {
-      setMsg(["Email must contain characters before and after '@'", false]);
-      return;
-    }
-    if (password.length < 6) {
-      setMsg(["The password must be at least 6 characters long", false]);
-      return;
-    }
-
-    setMsg(["Waiting for the form to be sent", true]);
-  }, [email, password]);
 
   const loginHandler = () => {
     if (canPass === false) return false;
@@ -38,26 +21,31 @@ const AuthLogin = () => {
 
     axios
       .post("/api/login", {
-        email,
+        username,
         password,
       })
       .then((v) => {
-        const data = v.data as UserReducerType;
-        dispatch({ type: "USER_SET", payload: data });
+        const data = v.data;
 
         axios.defaults.headers.common["Authorization"] =
-          data.tokens.accessToken;
-        localStorage.setItem("accessToken", data.tokens.accessToken);
-        localStorage.setItem("refreshToken", data.tokens.refreshToken);
-        localStorage.setItem("uid", data.uid!);
+          data.uid + " " + data.token;
+
+        localStorage.setItem("uid", data.uid);
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("refreshToken", data.refreshToken);
+        localStorage.setItem("user", JSON.stringify(data.user));
+
+        dispatch({ type: "USER_SET", payload: data.user });
+
+        navigate("/profile/" + data.subname);
       })
-      .catch((err) => {
-        switch (err) {
-          case "INVALID_EMAIL_OR_PASSWORD":
-            setMsg(["Invalid login or password", false]);
+      .catch((e) => {
+        switch (e.response.data) {
+          case "DATA_MISSING":
+            setMsg(["Fill the form", false]);
             break;
           case "USER_NOT_FOUND":
-            setMsg(["User not found", false]);
+            setMsg(["Incorrect username or password.", false]);
             break;
           default:
             setMsg(["Unknown error", false]);
@@ -80,11 +68,11 @@ const AuthLogin = () => {
       </p>
       <form className="mt-4 w-full" onSubmit={(e) => e.preventDefault()}>
         <AuthInput
-          autoComplete="email"
+          autoComplete="login"
           inputType="text"
-          placeholder="Email"
-          setState={setEmail}
-          state={email}
+          placeholder="Username"
+          setState={setUsername}
+          state={username}
         />
         <AuthInput
           autoComplete="new-password"

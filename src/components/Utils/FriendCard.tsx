@@ -6,7 +6,7 @@ import UserIcon from "components/Utils/UserIcon";
 import IconDots from "icons/IconDots";
 import IconMessages from "icons/IconMessages";
 import { useTypedSelector } from "redux/useTypedRedux";
-import socket from "socketio";
+import { socketFriendRequest } from "socketio";
 
 const UserCard = ({ user }: { user: UserShortType }) => {
   const [showButtons, setShowButtons] = React.useState(false);
@@ -36,18 +36,10 @@ const UserCard = ({ user }: { user: UserShortType }) => {
 
   const friendActionHandler = () => {
     if (isFriend === true) {
-      socket.emit("FRIEND_REQUEST", {
-        type: "remove",
-        senderUID: senderUID,
-        receiverUID: user.uid,
-      });
+      socketFriendRequest(senderUID!, user.uid, "remove");
     }
     if (isFriend === false) {
-      socket.emit("FRIEND_REQUEST", {
-        type: "add",
-        senderUID: senderUID,
-        receiverUID: user.uid,
-      });
+      socketFriendRequest(senderUID!, user.uid, "add");
     }
   };
 
@@ -64,7 +56,7 @@ const UserCard = ({ user }: { user: UserShortType }) => {
         <div className="ml-2 overflow-hidden flex flex-col justify-between">
           <div className="flex items-center">
             <p className="truncate font-semibold text-xl text-zinc-900 dark:text-zinc-300">
-              {user.displayName || "Anon"}
+              {user.username || "Anon"}
             </p>
           </div>
           <div className="flex items-center">

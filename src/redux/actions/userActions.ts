@@ -2,7 +2,7 @@ import { Dispatch } from "redux";
 import {
   UserAvatarSetType,
   UserThemeSetType,
-  UserDisplayNameSetType,
+  UserUsernameSetType,
   UserVerifySetType,
   UserReducerType,
   UserSetType,
@@ -17,7 +17,7 @@ export const UserSet = (user: UserReducerType) => {
 };
 
 export const UserUsernameSet = (username: string) => {
-  return (dispatch: Dispatch<UserDisplayNameSetType>) => {
+  return (dispatch: Dispatch<UserUsernameSetType>) => {
     dispatch({ type: "USER_DISPLAYNAME_SET", payload: username });
   };
 };

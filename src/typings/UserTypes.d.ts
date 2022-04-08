@@ -1,4 +1,4 @@
-export type USER_DISPLAYNAME_SET = "USER_DISPLAYNAME_SET";
+export type USER_USERNAME_SET = "USER_USERNAME_SET";
 export type USER_AVATAR_SET = "USER_AVATAR_SET";
 export type USER_THEME_SET = "USER_THEME_SET";
 export type USER_UID_SET = "USER_UID_SET";
@@ -12,19 +12,13 @@ type UserSettingsType = {
   theme: "white" | "dark";
 };
 
-type tokensType = {
-  accessToken: string;
-  refreshToken: string;
-};
-
 export type UserReducerType = {
-  displayName: string;
+  username: string;
   email: string;
-  uid: string | null;
+  uid: string;
   avatar: string | null;
   online: true | number;
   userSettings: UserSettingsType;
-  tokens: tokensType;
   registerDate: number;
   friendsUID: string[];
   ignoresUID: string[];
@@ -32,10 +26,11 @@ export type UserReducerType = {
   subname: string;
   verified: boolean;
   socketID?: string;
+  banned: boolean;
 };
 
 export type UserShortType = {
-  displayName: string;
+  username: string;
   uid: string;
   online: true | number;
   avatar: string | null;
@@ -46,8 +41,8 @@ type UserSetType = {
   payload: UserReducerType;
 };
 
-type UserDisplayNameSetType = {
-  type: USER_DISPLAYNAME_SET;
+type UserUsernameSetType = {
+  type: USER_USERNAME_SET;
   payload: string;
 };
 
@@ -63,7 +58,7 @@ type UserThemeSetType = {
 
 type UserUIDSetType = {
   type: USER_UID_SET;
-  payload: string | null;
+  payload: string;
 };
 
 type UserVerifySetType = {
@@ -93,7 +88,7 @@ type UserListUIDSRemoveType = {
 };
 
 type UserActionsType =
-  | UserDisplayNameSetType
+  | UserUsernameSetType
   | UserAvatarSetType
   | UserThemeSetType
   | UserUIDSetType

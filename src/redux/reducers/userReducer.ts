@@ -8,17 +8,13 @@ const themeStorage = () => {
 };
 
 const userReducerInitial: UserReducerType = {
-  displayName: "",
+  username: "",
   email: "",
-  uid: null,
+  uid: "",
   avatar: null,
   online: 0,
   userSettings: {
     theme: themeStorage(),
-  },
-  tokens: {
-    accessToken: "",
-    refreshToken: "",
   },
   registerDate: 0,
   friendsUID: [],
@@ -26,6 +22,8 @@ const userReducerInitial: UserReducerType = {
   waitingsUID: [],
   subname: "",
   verified: false,
+  socketID: undefined,
+  banned: false,
 };
 
 const userReducer = (
@@ -39,8 +37,8 @@ const userReducer = (
     case "USER_SOCKETID_SET": {
       return { ...state, socketID: action.payload };
     }
-    case "USER_DISPLAYNAME_SET": {
-      return { ...state, displayName: action.payload };
+    case "USER_USERNAME_SET": {
+      return { ...state, username: action.payload };
     }
     case "USER_AVATAR_SET": {
       return { ...state, avatar: action.payload };

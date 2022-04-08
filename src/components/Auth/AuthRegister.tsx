@@ -1,40 +1,17 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AuthInput from "components/Utils/AuthInput";
 import axios from "axios";
+import { useTypedDispatch } from "redux/useTypedRedux";
 
 const AuthRegister = () => {
-  const [email, setEmail] = React.useState("");
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [rpassword, setRPassword] = React.useState("");
   const [msg, setMsg] = React.useState(["Please fill the form", false]);
   const [canPass, setPass] = React.useState(true);
-
-  React.useEffect(() => {
-    if (email.match(/@/g) === null) {
-      setMsg(["Email must contain an '@'", false]);
-      return;
-    }
-    if (email.match(/.+@.+/g) === null) {
-      setMsg(["Email must contain characters before and after '@'", false]);
-      return;
-    }
-    if (username.length < 4) {
-      setMsg(["The username must be at least 4 characters long", false]);
-      return;
-    }
-    if (password.length < 6) {
-      setMsg(["The password must be at least 6 characters long", false]);
-      return;
-    }
-    if (password !== rpassword) {
-      setMsg(["Passwords do not match", false]);
-      return;
-    }
-
-    setMsg(["Waiting for the form to be sent", true]);
-  }, [email, password, rpassword, username]);
+  const navigate = useNavigate();
+  const dispatch = useTypedDispatch();
 
   const registerHandler = () => {
     if (canPass === false) return false;
@@ -44,21 +21,41 @@ const AuthRegister = () => {
 
     axios
       .post("/api/register", {
-        email,
         password,
         username,
       })
       .then((v) => {
-        if (v.data === "EMAIL_SEND") {
-          setMsg(["A confirmation letter was sent in the mail", true]);
+        const data = v.data;
+
+        if (data.status === "ok") {
+          localStorage.setItem("uid", data.uid);
+          localStorage.setItem("token", data.token);
+          localStorage.setItem("refreshToken", data.refreshToken);
+          localStorage.setItem("user", JSON.stringify(data.user));
+
+          dispatch({ type: "USER_SET", payload: data.user });
+
+          navigate("/profile/" + data.subname);
         } else {
           setMsg(["Unknown error", false]);
         }
       })
       .catch((e) => {
-        switch (e) {
+        switch (e.response.data) {
           case "USER_EXISTS":
-            setMsg(["User with that already exists", false]);
+            setMsg(["User with that username already exists", false]);
+            break;
+          case "USERNAME_LENGTH":
+            setMsg([
+              "The username must be in the range of 4-16 characters.",
+              false,
+            ]);
+            break;
+          case "PASSWORD_LENGTH":
+            setMsg([
+              "The password must be in the range of 6-24 characters.",
+              false,
+            ]);
             break;
           default:
             setMsg(["Unknown error", false]);
@@ -79,28 +76,34 @@ const AuthRegister = () => {
           Click here.
         </Link>
       </p>
-      <form className="mt-4 w-full" onSubmit={(e) => e.preventDefault()}>
-        <AuthInput
-          autoComplete="email"
-          inputType="text"
-          placeholder="Email"
-          setState={setEmail}
-          state={email}
-        />
-        <AuthInput
-          autoComplete="username"
-          inputType="text"
-          placeholder="Username"
-          setState={setUsername}
-          state={username}
-        />
-        <AuthInput
-          autoComplete="new-password"
-          inputType="password"
-          placeholder="Password"
-          setState={setPassword}
-          state={password}
-        />
+      <form
+        className="mt-4 w-full flex flex-col gap-y-3"
+        onSubmit={(e) => e.preventDefault()}
+      >
+        <div>
+          <AuthInput
+            autoComplete="username"
+            inputType="text"
+            placeholder="Username"
+            setState={setUsername}
+            state={username}
+          />
+          <p className="text-slate-600 text-xs ml-2 mt-0.5">
+            Must be 4-16 characters
+          </p>
+        </div>
+        <div>
+          <AuthInput
+            autoComplete="new-password"
+            inputType="password"
+            placeholder="Password"
+            setState={setPassword}
+            state={password}
+          />
+          <p className="text-slate-600 text-xs ml-2 mt-0.5">
+            Must be 6-24 characters
+          </p>
+        </div>
         <AuthInput
           autoComplete=""
           inputType="password"

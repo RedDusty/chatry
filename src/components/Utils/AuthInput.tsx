@@ -31,9 +31,7 @@ const AuthInput = ({
 
   return (
     <div
-      className={`text-lg w-full mt-3 sm:mt-0 mb-3 ${
-        inputType === "password" ? "flex" : "block"
-      }`}
+      className={`text-lg w-full ${inputType === "password" ? "flex" : "block"}`}
     >
       <input
         type={inputTypeResult()}
