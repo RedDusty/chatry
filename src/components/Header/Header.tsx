@@ -49,7 +49,7 @@ const Header = ({ isNotifShow, setNotifShow }: HeaderType) => {
       <HeaderButton
         Icon={<IconFriends />}
         link={"/friends"}
-        canUserPass={false}
+        canUserPass={true}
         isShow={true}
       />
       <HeaderButton

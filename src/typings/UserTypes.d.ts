@@ -15,7 +15,7 @@ type UserSettingsType = {
 export type UserReducerType = {
   username: string;
   email: string;
-  uid: string;
+  uid: string | null;
   avatar: string | null;
   online: true | number;
   userSettings: UserSettingsType;
@@ -58,7 +58,7 @@ type UserThemeSetType = {
 
 type UserUIDSetType = {
   type: USER_UID_SET;
-  payload: string;
+  payload: string | null;
 };
 
 type UserVerifySetType = {

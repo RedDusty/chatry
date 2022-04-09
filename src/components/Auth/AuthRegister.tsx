@@ -8,7 +8,7 @@ const AuthRegister = () => {
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [rpassword, setRPassword] = React.useState("");
-  const [msg, setMsg] = React.useState(["Please fill the form", false]);
+  const [msg, setMsg] = React.useState(["", false]);
   const [canPass, setPass] = React.useState(true);
   const navigate = useNavigate();
   const dispatch = useTypedDispatch();
@@ -35,7 +35,7 @@ const AuthRegister = () => {
 
           dispatch({ type: "USER_SET", payload: data.user });
 
-          navigate("/profile/" + data.subname);
+          navigate("/user/" + data.subname);
         } else {
           setMsg(["Unknown error", false]);
         }
@@ -80,30 +80,22 @@ const AuthRegister = () => {
         className="mt-4 w-full flex flex-col gap-y-3"
         onSubmit={(e) => e.preventDefault()}
       >
-        <div>
-          <AuthInput
-            autoComplete="username"
-            inputType="text"
-            placeholder="Username"
-            setState={setUsername}
-            state={username}
-          />
-          <p className="text-slate-600 text-xs ml-2 mt-0.5">
-            Must be 4-16 characters
-          </p>
-        </div>
-        <div>
-          <AuthInput
-            autoComplete="new-password"
-            inputType="password"
-            placeholder="Password"
-            setState={setPassword}
-            state={password}
-          />
-          <p className="text-slate-600 text-xs ml-2 mt-0.5">
-            Must be 6-24 characters
-          </p>
-        </div>
+        <AuthInput
+          autoComplete="username"
+          inputType="text"
+          placeholder="Username"
+          setState={setUsername}
+          state={username}
+          subtext={"Must be 4-16 characters"}
+        />
+        <AuthInput
+          autoComplete="new-password"
+          inputType="password"
+          placeholder="Password"
+          setState={setPassword}
+          state={password}
+          subtext={"Must be 6-24 characters"}
+        />
         <AuthInput
           autoComplete=""
           inputType="password"
@@ -111,15 +103,19 @@ const AuthRegister = () => {
           setState={setRPassword}
           state={rpassword}
         />
-        <p
-          className={`${
-            msg[1]
-              ? "bg-green-100 text-green-700 dark:text-green-200"
-              : "bg-red-100 text-red-700 dark:text-red-200"
-          } rounded-lg p-2 mb-2 bg-opacity-75 dark:bg-opacity-25`}
-        >
-          {msg[0]}
-        </p>
+        {(msg[0] as string).length > 0 ? (
+          <p
+            className={`${
+              msg[1]
+                ? "bg-green-100 text-green-700 dark:text-green-200"
+                : "bg-red-100 text-red-700 dark:text-red-200"
+            } rounded-lg p-2 mb-2 bg-opacity-75 dark:bg-opacity-25`}
+          >
+            {msg[0]}
+          </p>
+        ) : (
+          <></>
+        )}
         <button
           className="text-black dark:text-white border border-black dark:border-white border-solid border-opacity-20 dark:border-opacity-20 bg-sky-300 dark:bg-indigo-700 hover:bg-sky-200 dark:hover:bg-indigo-600 focus:bg-sky-400 dark:focus:bg-indigo-800 w-full h-10 text-lg rounded-lg"
           onClick={registerHandler}

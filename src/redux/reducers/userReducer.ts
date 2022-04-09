@@ -10,7 +10,7 @@ const themeStorage = () => {
 const userReducerInitial: UserReducerType = {
   username: "",
   email: "",
-  uid: "",
+  uid: null,
   avatar: null,
   online: 0,
   userSettings: {
