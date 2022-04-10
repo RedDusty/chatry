@@ -8,7 +8,7 @@ import socket from "socketio";
 import NotificationsContainer from "components/Notifications/NotificationsContainer";
 import { friendRequest } from "scripts/friendRequest";
 import Profile from "components/Profile/Profile";
-import FriendsContainer from "components/Friends/FriendsContainer";
+import PeopleContainer from "components/People/PeopleContainer";
 import Settings from "components/Settings/Settings";
 import NotFound from "components/Utils/NotFound";
 import ProtectedRoute from "components/Utils/ProtectedRoute";
@@ -28,6 +28,7 @@ function App() {
 
   React.useEffect(() => {
     if (user.uid) {
+      setLogin(false);
       socket.emit("USER_CONNECT", user.uid);
       dispatch({ type: "USER_SOCKETID_SET", payload: socket.id });
       socket.on("FRIEND_REQUEST_CLIENT", friendRequest);
@@ -59,6 +60,8 @@ function App() {
         .catch(() => {
           setLogin(false);
         });
+    } else {
+      setLogin(false);
     }
     return () => {
       socket.off("FRIEND_REQUEST_CLIENT");
@@ -79,7 +82,7 @@ function App() {
       ) : (
         <Routes>
           <Route path="/user/:uid" element={<Profile />} />
-          <Route path="/friends" element={<FriendsContainer />} />
+          <Route path="/people" element={<PeopleContainer />} />
           <Route element={<ProtectedRoute />}>
             <Route path="/settings" element={<Settings />} />
           </Route>

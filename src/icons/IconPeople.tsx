@@ -1,6 +1,6 @@
 import React from "react";
 
-const IconFriends = () => {
+const IconPeople = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -14,4 +14,4 @@ const IconFriends = () => {
   );
 };
 
-export default IconFriends;
+export default IconPeople;

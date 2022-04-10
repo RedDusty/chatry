@@ -6,10 +6,10 @@ const lastOnline = (online: true | number | null | undefined) => {
     if (new Date().getTime() > uDate.getTime() + 31536000000) {
       return (
         "Last online " +
-        uDate.toLocaleString("default", { month: "2-digit" }) +
-        "/" +
         uDate.toLocaleString("default", { day: "2-digit" }) +
-        "/" +
+        " " +
+        uDate.toLocaleString("default", { month: "long" }) +
+        " " +
         uDate.toLocaleString("default", { year: "numeric" })
       );
     }
@@ -17,9 +17,9 @@ const lastOnline = (online: true | number | null | undefined) => {
     if (new Date().getTime() > uDate.getTime() + 86400000) {
       return (
         "Last online " +
-        uDate.toLocaleString("default", { month: "2-digit" }) +
-        "/" +
-        uDate.toLocaleString("default", { day: "numeric" })
+        uDate.toLocaleString("default", { day: "2-digit" }) +
+        " " +
+        uDate.toLocaleString("default", { month: "long" })
       );
     }
 

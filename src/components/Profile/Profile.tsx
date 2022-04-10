@@ -32,30 +32,30 @@ const Profile = () => {
   if (isError) {
     return (
       <section className="flex flex-col flex-1 justify-start items-start p-4 sm:p-12 lg:p-16">
-        <div className="bg-red-100 rounded-xl">
+        <div className="bg-red-100 dark:bg-red-900 dark:bg-opacity-50 rounded-xl">
           <div className="flex flex-col sm:flex-row items-center m-2 p-2 gap-2 lg:gap-6">
             <div className="w-16 h-16 lg:w-24 lg:h-24 fill-red-500">
               <IconInfo />
             </div>
-            <h1 className="text-red-800 text-xl sm:text-2xl lg:text-5xl">
+            <h1 className="text-red-800 dark:text-red-200 text-xl sm:text-2xl lg:text-5xl">
               This account does not exist!
             </h1>
           </div>
-          <div className="m-2 p-2 flex flex-col gap-4 mt-4 sm:text-lg lg:text-xl">
+          <div className="m-2 p-2 flex flex-col gap-4 mt-4 sm:text-lg lg:text-xl text-zinc-900 dark:text-zinc-200">
             <p>
               If you're sure the account exists, try searching for it by
-              <Link to={"/friends?search="} className="link">
+              <Link to={"/people?search="} className="link">
                 &nbsp;name&nbsp;
               </Link>
               or entering an
-              <Link to={"/friends?search=id"} className="link">
+              <Link to={"/people?search=id"} className="link">
                 &nbsp;id&nbsp;
               </Link>
               .
             </p>
             <p>
               To
-              <Link to={"/friends?search=id"} className="link">
+              <Link to={"/people?search=id"} className="link">
                 &nbsp;search&nbsp;
               </Link>
               by id, put a "#" at the beginning of the search or click the link

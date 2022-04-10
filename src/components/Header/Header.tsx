@@ -4,7 +4,7 @@ import IconSun from "icons/IconSun";
 import IconMoon from "icons/IconMoon";
 import IconKey from "icons/IconKey";
 import IconUser from "icons/IconUser";
-import IconFriends from "icons/IconFriends";
+import IconPeople from "icons/IconPeople";
 import IconSettings from "icons/IconSettings";
 import HeaderButton from "components/Utils/HeaderButton";
 import IconBellRotated from "icons/IconBellRotated";
@@ -47,8 +47,8 @@ const Header = ({ isNotifShow, setNotifShow }: HeaderType) => {
         isShow={true}
       />
       <HeaderButton
-        Icon={<IconFriends />}
-        link={"/friends"}
+        Icon={<IconPeople />}
+        link={"/people"}
         canUserPass={true}
         isShow={true}
       />

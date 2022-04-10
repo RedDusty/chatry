@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import { UserShortType } from "typings/UserTypes";
 import { useTypedSelector } from "redux/useTypedRedux";
-import Friends from "components/Friends/Friends";
+import People from "components/People/People";
 import { useSearchParams } from "react-router-dom";
 
 const searchFriends = async (friendsUID: string[], userUID: string) => {
@@ -42,7 +42,7 @@ const searchUsers = async (query: string, userUID: string) => {
   }
 };
 
-const FriendsContainer = () => {
+const PeopleContainer = () => {
   const [userList, setUserList] = React.useState<UserShortType[]>([]);
   const [isSearch, setSearch] = React.useState(false);
   const [query, setQuery] = React.useState("");
@@ -71,17 +71,18 @@ const FriendsContainer = () => {
       searchParams.delete("search");
       setSearchParams("", { replace: true });
     }
-    setFetching(true);
-    searcher(searchFriends(u.friendsUID, u.uid!));
+    if (u.uid) {
+      setFetching(true);
+      searcher(searchFriends(u.friendsUID, u.uid!));
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const btnHanlder = (btn: "search" | "friends" | "waiting") => {
     setFetching(true);
-    setQuery("");
     switch (btn) {
       case "friends":
-        searcher(searchFriends(u.friendsUID, u.uid!));
+        u.uid && searcher(searchFriends(u.friendsUID, u.uid));
         setSearch(false);
         break;
       case "search":
@@ -89,24 +90,26 @@ const FriendsContainer = () => {
         searcher(searchUsers(query, u.uid!));
         break;
       case "waiting":
-        searcher(searchFriends(u.waitingsUID, u.uid!));
+        u.uid && searcher(searchFriends(u.waitingsUID, u.uid));
         setSearch(false);
         break;
       default:
-        searcher(searchFriends(u.friendsUID, u.uid!));
+        u.uid && searcher(searchFriends(u.friendsUID, u.uid));
         setSearch(false);
         break;
     }
   };
 
   const disableSearchHandler = () => {
-    setFetching(true);
-    searcher(searchFriends(u.friendsUID, u.uid!));
+    setFetching(u.uid ? true : false);
     setSearch(false);
+    setQuery("");
+    u.uid === null && setUserList([]);
+    u.uid && searcher(searchFriends(u.friendsUID, u.uid));
   };
 
   return (
-    <Friends
+    <People
       btnHanlder={btnHanlder}
       disableSearchHandler={disableSearchHandler}
       isFetching={isFetching}
@@ -118,4 +121,4 @@ const FriendsContainer = () => {
   );
 };
 
-export default FriendsContainer;
+export default PeopleContainer;
