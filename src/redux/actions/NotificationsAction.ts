@@ -5,7 +5,7 @@ import {
   notificationType,
 } from "typings/NotificationsTypes";
 
-export const NotificationsSet = (notifications: notificationType[]) => {
+export const NotificationsSet = (notifications: notificationType[] | null) => {
   return (dispatch: Dispatch<NotificationsSetType>) => {
     dispatch({ type: "NOTIFICATIONS_SET", payload: notifications });
   };

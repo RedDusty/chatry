@@ -10,7 +10,7 @@ import {
   UserListUIDSSetType,
 } from "typings/UserTypes";
 
-export const UserSet = (user: UserReducerType) => {
+export const UserSet = (user: UserReducerType | null) => {
   return (dispatch: Dispatch<UserSetType>) => {
     dispatch({ type: "USER_SET", payload: user });
   };

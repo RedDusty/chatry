@@ -11,6 +11,9 @@ const notificationsReducer = (
 ): NotificationsReducerType => {
   switch (action.type) {
     case "NOTIFICATIONS_SET": {
+      if (action.payload === null) {
+        return [];
+      }
       return action.payload;
     }
     case "NOTIFICATIONS_ADD": {

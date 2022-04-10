@@ -32,6 +32,9 @@ const userReducer = (
 ): UserReducerType => {
   switch (action.type) {
     case "USER_SET": {
+      if (action.payload === null) {
+        return { ...state, ...userReducerInitial };
+      }
       return { ...state, ...action.payload };
     }
     case "USER_SOCKETID_SET": {

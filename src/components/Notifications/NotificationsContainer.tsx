@@ -16,8 +16,8 @@ const NotificationsContainer = ({ isNotifShow }: NotificationsType) => {
   const dispatch = useTypedDispatch();
 
   const getNotifications = React.useCallback(() => {
-    console.log('notifs');
-    
+    console.log("notifs");
+
     axios
       .get("/api/notifications", {
         params: {
@@ -25,8 +25,8 @@ const NotificationsContainer = ({ isNotifShow }: NotificationsType) => {
         },
       })
       .then((res) => {
-        console.log('then');
-        
+        console.log("then");
+
         setStartAt((prev) => prev + 1);
 
         if (res.data[0].header) {
@@ -40,8 +40,8 @@ const NotificationsContainer = ({ isNotifShow }: NotificationsType) => {
         }
       })
       .catch(() => {
-        console.log('catch');
-        
+        console.log("catch");
+
         setIsEnd(true);
       });
   }, [dispatch, startAt]);
@@ -56,13 +56,18 @@ const NotificationsContainer = ({ isNotifShow }: NotificationsType) => {
       socket.off("FRIEND_REQUEST_CLIENT_NOTIF");
     };
   }, [userUID, getNotifications]);
-  return (
-    <Notifications
-      isNotifShow={isNotifShow}
-      getNotifications={getNotifications}
-      isEnd={isEnd}
-    />
-  );
+
+  if (userUID) {
+    return (
+      <Notifications
+        isNotifShow={isNotifShow}
+        getNotifications={getNotifications}
+        isEnd={isEnd}
+      />
+    );
+  }
+
+  return <></>;
 };
 
 export default NotificationsContainer;

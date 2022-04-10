@@ -38,7 +38,7 @@ export type UserShortType = {
 
 type UserSetType = {
   type: USER_SET;
-  payload: UserReducerType;
+  payload: UserReducerType | null;
 };
 
 type UserUsernameSetType = {

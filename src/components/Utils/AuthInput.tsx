@@ -50,7 +50,7 @@ const AuthInput = ({
           autoComplete={autoComplete}
         />
         {subtext ? (
-          <p className="text-slate-600 text-xs ml-2 mt-0.5">{subtext}</p>
+          <p className="text-slate-600 dark:text-slate-300 text-xs ml-2 mt-0.5">{subtext}</p>
         ) : (
           <></>
         )}

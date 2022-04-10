@@ -35,7 +35,7 @@ const AuthRegister = () => {
 
           dispatch({ type: "USER_SET", payload: data.user });
 
-          navigate("/user/" + data.subname);
+          navigate("/user/" + data.user.subname);
         } else {
           setMsg(["Unknown error", false]);
         }

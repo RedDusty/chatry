@@ -21,7 +21,7 @@ const Notifications = ({
     <section className="flex fixed w-full h-[calc(100%-56px)] sm:w-72 sm:h-96 z-40 notif smLshadow sm:rounded-md bg-gray-200 dark:bg-gray-700 overflow-auto">
       {notifs.length === 0 ? (
         <div className="w-full h-full flex justify-center items-center">
-          <p className="text-center font-semibold text-xl text-slate-700">
+          <p className="text-center font-semibold text-xl text-slate-700 dark:text-slate-300">
             No notifications...
           </p>
         </div>

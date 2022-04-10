@@ -11,7 +11,7 @@ export type NotificationsReducerType = notificationType[];
 
 type NotificationsSetType = {
   type: NOTIFICATIONS_SET;
-  payload: NotificationsReducerType;
+  payload: notificationType[] | null;
 };
 
 type NotificationsAddType = {

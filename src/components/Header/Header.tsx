@@ -1,13 +1,15 @@
 import React from "react";
 import { useTypedDispatch, useTypedSelector } from "redux/useTypedRedux";
+import HeaderButton from "components/Utils/HeaderButton";
 import IconSun from "icons/IconSun";
 import IconMoon from "icons/IconMoon";
 import IconKey from "icons/IconKey";
 import IconUser from "icons/IconUser";
 import IconPeople from "icons/IconPeople";
 import IconSettings from "icons/IconSettings";
-import HeaderButton from "components/Utils/HeaderButton";
 import IconBellRotated from "icons/IconBellRotated";
+import IconLogout from "icons/IconLogout";
+import axios from "axios";
 
 type HeaderType = {
   isNotifShow: boolean;
@@ -30,6 +32,17 @@ const Header = ({ isNotifShow, setNotifShow }: HeaderType) => {
   const toggleNotifications = () => {
     setNotifShow(!isNotifShow);
     return !isNotifShow;
+  };
+
+  const logOut = () => {
+    axios.post("/api/logout", {
+      uid: uid,
+    });
+    const theme = localStorage.getItem("chatry-theme");
+    localStorage.clear();
+    localStorage.setItem("chatry-theme", theme || "white");
+    dispatch({ type: "USER_SET", payload: null });
+    dispatch({ type: "NOTIFICATIONS_SET", payload: null });
   };
 
   return (
@@ -63,6 +76,12 @@ const Header = ({ isNotifShow, setNotifShow }: HeaderType) => {
         link={toggleNotifications}
         canUserPass={false}
         isShow={true}
+      />
+      <HeaderButton
+        Icon={<IconLogout />}
+        link={logOut}
+        canUserPass={false}
+        isShow={false}
       />
     </section>
   );
