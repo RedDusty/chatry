@@ -5,6 +5,7 @@ type notificationType = {
   header: string;
   data: string | UserShortType | any;
   time: number;
+  icon: null | string;
 };
 
 export type NotificationsReducerType = notificationType[];
