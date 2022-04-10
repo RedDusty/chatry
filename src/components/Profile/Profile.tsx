@@ -9,6 +9,8 @@ const Profile = () => {
   const [pUser, setPUser] = React.useState<UserReducerType | null>(null);
   const [isError, setError] = React.useState<boolean>(false);
 
+  const url = window.location.pathname.split("/").pop();
+
   React.useEffect(() => {
     setError(false);
     if (pUser?.uid !== window.location.pathname.split("/")[2]) {
@@ -27,7 +29,7 @@ const Profile = () => {
           setError(true);
         });
     }
-  }, [setPUser, pUser?.uid]);
+  }, [setPUser, pUser?.uid, url]);
 
   if (isError) {
     return (
