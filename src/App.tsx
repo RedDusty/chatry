@@ -21,6 +21,15 @@ function App() {
   const dispatch = useTypedDispatch();
   const navigate = useNavigate();
 
+  const toggleNotifications = (v?: boolean) => {
+    if (v) {
+      setNotifShow(v);
+      return v;
+    }
+    setNotifShow(!isNotifShow);
+    return !isNotifShow;
+  };
+
   axios.defaults.baseURL = process.env.REACT_APP_SERVER_URL;
   axios.defaults.withCredentials = true;
   axios.defaults.headers.common["Authorization"] =
@@ -72,7 +81,10 @@ function App() {
     <div
       className={`w-full h-full bg-slate-50 dark:bg-slate-900 flex flex-col sm:flex-row overflow-x-hidden`}
     >
-      <Header isNotifShow={isNotifShow} setNotifShow={setNotifShow} />
+      <Header
+        isNotifShow={isNotifShow}
+        toggleNotifications={toggleNotifications}
+      />
       {isLogin ? (
         <section className="flex flex-1 justify-center items-center">
           <div className="w-[20vw] h-[20vw]">
@@ -90,7 +102,10 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       )}
-      <NotificationsContainer isNotifShow={isNotifShow} />
+      <NotificationsContainer
+        isNotifShow={isNotifShow}
+        toggleNotifications={toggleNotifications}
+      />
     </div>
   );
 }

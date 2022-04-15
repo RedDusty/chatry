@@ -16,13 +16,17 @@ const userReducerInitial: UserReducerType = {
   userSettings: {
     theme: themeStorage(),
   },
+  privacy: {
+    messages: "all",
+    profile: "public",
+  },
   registerDate: 0,
   friendsUID: [],
   ignoresUID: [],
   waitingsUID: [],
   subname: "",
   verified: false,
-  socketID: undefined,
+  socketID: null,
   banned: false,
 };
 

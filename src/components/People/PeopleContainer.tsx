@@ -5,10 +5,15 @@ import { useTypedSelector } from "redux/useTypedRedux";
 import People from "components/People/People";
 import { useSearchParams } from "react-router-dom";
 
-const searchFriends = async (friendsUID: string[], userUID: string) => {
-  const res = await axios.post("/api/friends", {
+const searchFriends = async (
+  friendsUID: string[],
+  userUID: string,
+  list: "friends" | "waitings"
+) => {
+  const res = await axios.post("/api/search/friends", {
     friendsUID: friendsUID,
     userUID: userUID,
+    list: list,
   });
 
   if (res.status === 200) {
@@ -73,16 +78,22 @@ const PeopleContainer = () => {
     }
     if (u.uid) {
       setFetching(true);
-      searcher(searchFriends(u.friendsUID, u.uid!));
+      if (searchParams.has("waitings")) {
+        searchParams.delete("search");
+        setSearchParams("", { replace: true });
+        searcher(searchFriends(u.waitingsUID, u.uid, "friends"));
+      } else {
+        searcher(searchFriends(u.friendsUID, u.uid, "friends"));
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [u.uid]);
 
   const btnHanlder = (btn: "search" | "friends" | "waiting") => {
     setFetching(true);
     switch (btn) {
       case "friends":
-        u.uid && searcher(searchFriends(u.friendsUID, u.uid));
+        u.uid && searcher(searchFriends(u.friendsUID, u.uid, "friends"));
         setSearch(false);
         break;
       case "search":
@@ -90,11 +101,11 @@ const PeopleContainer = () => {
         searcher(searchUsers(query, u.uid!));
         break;
       case "waiting":
-        u.uid && searcher(searchFriends(u.waitingsUID, u.uid));
+        u.uid && searcher(searchFriends(u.waitingsUID, u.uid, "waitings"));
         setSearch(false);
         break;
       default:
-        u.uid && searcher(searchFriends(u.friendsUID, u.uid));
+        u.uid && searcher(searchFriends(u.friendsUID, u.uid, "friends"));
         setSearch(false);
         break;
     }
@@ -105,7 +116,7 @@ const PeopleContainer = () => {
     setSearch(false);
     setQuery("");
     u.uid === null && setUserList([]);
-    u.uid && searcher(searchFriends(u.friendsUID, u.uid));
+    u.uid && searcher(searchFriends(u.friendsUID, u.uid, "friends"));
   };
 
   return (

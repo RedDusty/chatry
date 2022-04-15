@@ -13,10 +13,10 @@ import axios from "axios";
 
 type HeaderType = {
   isNotifShow: boolean;
-  setNotifShow: (v: boolean) => void;
+  toggleNotifications: (v?: boolean) => void;
 };
 
-const Header = ({ isNotifShow, setNotifShow }: HeaderType) => {
+const Header = ({ isNotifShow, toggleNotifications }: HeaderType) => {
   const theme = useTypedSelector((s) => s.user.userSettings.theme);
   const uid = useTypedSelector((s) => s.user.uid);
   const subname = useTypedSelector((s) => s.user.subname);
@@ -27,11 +27,6 @@ const Header = ({ isNotifShow, setNotifShow }: HeaderType) => {
       type: "USER_THEME_SET",
       payload: theme === "white" ? "dark" : "white",
     });
-  };
-
-  const toggleNotifications = () => {
-    setNotifShow(!isNotifShow);
-    return !isNotifShow;
   };
 
   const logOut = () => {

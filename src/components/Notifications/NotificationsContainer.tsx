@@ -7,9 +7,13 @@ import axios from "axios";
 
 type NotificationsType = {
   isNotifShow: boolean;
+  toggleNotifications: (v?: boolean) => void;
 };
 
-const NotificationsContainer = ({ isNotifShow }: NotificationsType) => {
+const NotificationsContainer = ({
+  isNotifShow,
+  toggleNotifications,
+}: NotificationsType) => {
   const userUID = useTypedSelector((s) => s.user.uid);
   const dispatch = useTypedDispatch();
 
@@ -31,7 +35,9 @@ const NotificationsContainer = ({ isNotifShow }: NotificationsType) => {
   }, [dispatch, userUID]);
 
   if (userUID) {
-    return <Notifications isNotifShow={isNotifShow} />;
+    return (
+      <Notifications isNotifShow={isNotifShow} toggleNotifications={toggleNotifications} />
+    );
   }
 
   return <></>;

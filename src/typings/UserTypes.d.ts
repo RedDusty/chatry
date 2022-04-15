@@ -8,6 +8,11 @@ export type USER_SOCKETID_SET = "USER_SOCKETID_SET";
 export type USER_LIST_UIDS_SET = "USER_LIST_UIDS_SET";
 export type USER_LIST_UIDS_REMOVE = "USER_LIST_UIDS_REMOVE";
 
+type UserPrivacyType = {
+  profile: "public" | "private";
+  messages: "all" | "friends";
+};
+
 type UserSettingsType = {
   theme: "white" | "dark";
 };
@@ -19,21 +24,25 @@ export type UserReducerType = {
   avatar: string | null;
   online: true | number;
   userSettings: UserSettingsType;
+  privacy: UserPrivacyType;
   registerDate: number;
   friendsUID: string[];
   ignoresUID: string[];
   waitingsUID: string[];
   subname: string;
   verified: boolean;
-  socketID?: string;
+  socketID: string | null;
   banned: boolean;
 };
+
+type ValueOf<T> = T[keyof T];
 
 export type UserShortType = {
   username: string;
   uid: string;
   online: true | number;
   avatar: string | null;
+  privacy: UserPrivacyType;
 };
 
 type UserSetType = {

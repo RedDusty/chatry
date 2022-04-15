@@ -31,8 +31,10 @@ const UserCard = ({ user }: { user: UserShortType }) => {
     });
   };
 
+  const privacy = user.privacy;
+
   const friendActionHandler = () => {
-    if (senderUID) return;
+    if (senderUID === null) return;
     if (isFriend === true) {
       socketFriendRequest(senderUID!, user.uid, "remove");
     }
@@ -60,6 +62,7 @@ const UserCard = ({ user }: { user: UserShortType }) => {
             menuHandler={menuHandler}
             showButtons={showButtons}
             writeMessageHandler={writeMessageHandler}
+            privacy={privacy}
           />
         ) : (
           <></>

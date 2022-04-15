@@ -1,5 +1,6 @@
 import React from "react";
 import IconDots from "icons/IconDots";
+import { UserPrivacyType } from "typings/UserTypes";
 
 type UserActionsComponentType = {
   menuHandler: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
@@ -7,6 +8,7 @@ type UserActionsComponentType = {
   isFriend: boolean;
   friendActionHandler: () => void;
   writeMessageHandler: () => void;
+  privacy: UserPrivacyType;
 };
 
 const UserActions = ({
@@ -14,7 +16,8 @@ const UserActions = ({
   showButtons,
   isFriend,
   friendActionHandler,
-  writeMessageHandler
+  writeMessageHandler,
+  privacy,
 }: UserActionsComponentType) => {
   return (
     <div className="flex flex-1 items-center justify-end h-full">
@@ -42,13 +45,11 @@ const UserActions = ({
           >
             {isFriend ? "Remove friend" : "Add friend"}
           </button>
-          <button
-            className="bg-sky-600 hover:bg-sky-500 dark:bg-indigo-600 dark:hover:bg-indigo-500 border border-solid border-black text-white font-semibold py-1 px-2 rounded-md w-48 mt-2"
-            onClick={writeMessageHandler}
-            data-menu={true}
-          >
-            Write message
-          </button>
+          <FriendsButton
+            isFriend={isFriend}
+            privacy={privacy}
+            writeMessageHandler={writeMessageHandler}
+          />
         </div>
       </div>
     </div>
@@ -56,3 +57,32 @@ const UserActions = ({
 };
 
 export default UserActions;
+
+type FriendsButtonComponentType = {
+  writeMessageHandler: () => void;
+  privacy: UserPrivacyType;
+  isFriend: boolean;
+};
+
+const FriendsButton = ({
+  writeMessageHandler,
+  isFriend,
+  privacy,
+}: FriendsButtonComponentType) => {
+  if (
+    privacy.messages === "all" ||
+    (privacy.messages === "friends" && isFriend)
+  ) {
+    return (
+      <button
+        className="bg-sky-600 hover:bg-sky-500 dark:bg-indigo-600 dark:hover:bg-indigo-500 border border-solid border-black text-white font-semibold py-1 px-2 rounded-md w-48 mt-2"
+        onClick={writeMessageHandler}
+        data-menu={true}
+      >
+        Write message
+      </button>
+    );
+  }
+
+  return <></>;
+};
