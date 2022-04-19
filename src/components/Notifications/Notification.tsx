@@ -10,7 +10,9 @@ const Notification = ({
   toggleNotifications,
 }: {
   notif: notificationType;
-  toggleNotifications: (v?: boolean) => void;
+  toggleNotifications: (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => void;
 }) => {
   const n = notificationBuilder(notif);
 
@@ -25,7 +27,11 @@ const Notification = ({
           />
         </div>
       </div>
-      <NotificationFooter timeNumber={n.time} username={n.data.username} />
+      <NotificationFooter
+        timeNumber={n.time}
+        username={n.data.username}
+        toggleNotifications={toggleNotifications}
+      />
     </div>
   );
 };
@@ -37,7 +43,10 @@ const NotificationContent = ({
   toggleNotifications,
 }: {
   data: any;
-  toggleNotifications: (v?: boolean) => void;
+  toggleNotifications: (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    v?: boolean | undefined
+  ) => void;
 }) => {
   if (typeof data === "string") {
     return <p className="text-slate-800 dark:text-gray-300">{data}</p>;
@@ -60,7 +69,7 @@ const NotificationContent = ({
               if (window.location.pathname === link) {
                 e.preventDefault();
               } else {
-                toggleNotifications(false);
+                toggleNotifications(e as any, false);
               }
             }}
           >
@@ -95,11 +104,17 @@ const NotificationIcon = ({ icon }: { icon: string | null }) => {
 type NotificationFooterComponentType = {
   timeNumber: number;
   username?: string;
+
+  toggleNotifications: (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    v?: boolean | undefined
+  ) => void;
 };
 
 const NotificationFooter = ({
   timeNumber,
   username,
+  toggleNotifications,
 }: NotificationFooterComponentType) => {
   const notifTime = () => {
     const uDate = new Date(timeNumber);
@@ -139,7 +154,13 @@ const NotificationFooter = ({
     return (
       <div className="w-full mt-1">
         <div className="flex justify-between text-sm text-slate-600 dark:text-slate-400">
-          <Link to={"/user/" + String(username).toLowerCase()} className="link">
+          <Link
+            to={"/user/" + String(username).toLowerCase()}
+            className="link"
+            onClick={(e) => {
+              toggleNotifications(e as any, false);
+            }}
+          >
             {username}
           </Link>
           <p className="whitespace-nowrap mr-4">{notifTime()}</p>

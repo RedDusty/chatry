@@ -7,13 +7,13 @@ import IconKey from "icons/IconKey";
 import IconUser from "icons/IconUser";
 import IconPeople from "icons/IconPeople";
 import IconSettings from "icons/IconSettings";
-import IconBellRotated from "icons/IconBellRotated";
 import IconLogout from "icons/IconLogout";
+import HeaderNotification from "components/Header/HeaderNotification";
 import axios from "axios";
 
 type HeaderType = {
   isNotifShow: boolean;
-  toggleNotifications: (v?: boolean) => void;
+  toggleNotifications: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 };
 
 const Header = ({ isNotifShow, toggleNotifications }: HeaderType) => {
@@ -66,12 +66,7 @@ const Header = ({ isNotifShow, toggleNotifications }: HeaderType) => {
         canUserPass={false}
         isShow={true}
       />
-      <HeaderButton
-        Icon={<IconBellRotated />}
-        link={toggleNotifications}
-        canUserPass={false}
-        isShow={true}
-      />
+      <HeaderNotification toggleNotifications={toggleNotifications} isNotifShow={isNotifShow} />
       <HeaderButton
         Icon={<IconLogout />}
         link={logOut}

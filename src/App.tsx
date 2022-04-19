@@ -15,18 +15,42 @@ import IconLoading from "icons/IconLoading";
 
 function App() {
   const [isNotifShow, setNotifShow] = React.useState(false);
+  const notificationsRef = React.useRef<HTMLElement>(null);
   const [isLogin, setLogin] = React.useState<boolean>(true);
   const user = useTypedSelector((s) => s.user);
   const dispatch = useTypedDispatch();
   const navigate = useNavigate();
 
-  const toggleNotifications = (v?: boolean) => {
-    if (v) {
-      setNotifShow(v);
-      return v;
+  const toggleMenu = (e: MouseEvent) => {
+    if (
+      notificationsRef.current &&
+      notificationsRef.current.contains(e.target as any)
+    ) {
+      return false;
     }
-    setNotifShow(!isNotifShow);
-    return !isNotifShow;
+
+    setNotifShow(() => {
+      document.removeEventListener("click", toggleMenu, false);
+      return false;
+    });
+  };
+
+  const toggleNotifications = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    v?: boolean
+  ) => {
+    if (v !== undefined) {
+      setNotifShow(() => {
+        document.removeEventListener("click", toggleMenu, false);
+        return v;
+      });
+    } else {
+      e.stopPropagation();
+      setNotifShow(() => {
+        document.addEventListener("click", toggleMenu, false);
+        return true;
+      });
+    }
   };
 
   axios.defaults.baseURL = process.env.REACT_APP_SERVER_URL;
@@ -104,6 +128,7 @@ function App() {
       <NotificationsContainer
         isNotifShow={isNotifShow}
         toggleNotifications={toggleNotifications}
+        notificationsRef={notificationsRef}
       />
     </div>
   );

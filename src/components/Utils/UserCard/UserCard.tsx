@@ -9,11 +9,15 @@ const UserCard = ({ user }: { user: UserShortType }) => {
   const [showButtons, setShowButtons] = React.useState(false);
   const senderUID = useTypedSelector((s) => s.user.uid);
   const friendsList = useTypedSelector((s) => s.user.friendsUID);
+  const actionsMenuRef = React.useRef<HTMLDivElement>(null);
 
   const isFriend = friendsList.indexOf(user.uid) !== -1 ? true : false;
 
   const toggleMenu = (e: MouseEvent) => {
-    if ((e.target as HTMLElement).dataset.menu) {
+    if (
+      actionsMenuRef.current &&
+      actionsMenuRef.current.contains(e.target as any)
+    ) {
       return false;
     }
 
@@ -23,12 +27,22 @@ const UserCard = ({ user }: { user: UserShortType }) => {
     });
   };
 
-  const menuHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.stopPropagation();
-    setShowButtons(() => {
-      document.addEventListener("click", toggleMenu, false);
-      return true;
-    });
+  const menuHandler = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    v?: boolean
+  ) => {
+    if (v !== undefined) {
+      setShowButtons(() => {
+        document.removeEventListener("click", toggleMenu, false);
+        return v;
+      });
+    } else {
+      e.stopPropagation();
+      setShowButtons(() => {
+        document.addEventListener("click", toggleMenu, false);
+        return true;
+      });
+    }
   };
 
   const privacy = user.privacy;
@@ -63,6 +77,7 @@ const UserCard = ({ user }: { user: UserShortType }) => {
             showButtons={showButtons}
             writeMessageHandler={writeMessageHandler}
             privacy={privacy}
+            actionsMenuRef={actionsMenuRef}
           />
         ) : (
           <></>
