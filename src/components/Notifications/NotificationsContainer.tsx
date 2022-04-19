@@ -1,7 +1,5 @@
 import React from "react";
 import Notifications from "components/Notifications/Notifications";
-import socket from "socketio";
-import { friendRequestNotif } from "scripts/friendRequest";
 import { useTypedDispatch, useTypedSelector } from "redux/useTypedRedux";
 import axios from "axios";
 
@@ -21,22 +19,18 @@ const NotificationsContainer = ({
     if (userUID) {
       axios.get("/api/notifications").then((res) => {
         if (res.data[0] && res.data[0].header) {
-          for (let idx = 0; idx < res.data.length; idx++) {
-            dispatch({ type: "NOTIFICATIONS_ADD", payload: res.data[idx] });
-          }
+          dispatch({ type: "NOTIFICATIONS_SET", payload: res.data });
         }
       });
-      socket.on("FRIEND_REQUEST_CLIENT_NOTIF", friendRequestNotif);
     }
-
-    return () => {
-      socket.off("FRIEND_REQUEST_CLIENT_NOTIF");
-    };
   }, [dispatch, userUID]);
 
   if (userUID) {
     return (
-      <Notifications isNotifShow={isNotifShow} toggleNotifications={toggleNotifications} />
+      <Notifications
+        isNotifShow={isNotifShow}
+        toggleNotifications={toggleNotifications}
+      />
     );
   }
 

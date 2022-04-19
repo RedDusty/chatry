@@ -4,9 +4,8 @@ import Header from "components/Header/Header";
 import Auth from "components/Auth/Auth";
 import { useTypedDispatch, useTypedSelector } from "redux/useTypedRedux";
 import axios from "axios";
-import socket from "socketio";
+import socket, { socketOFF, socketON } from "socketio";
 import NotificationsContainer from "components/Notifications/NotificationsContainer";
-import { friendRequest } from "scripts/friendRequest";
 import Profile from "components/Profile/Profile";
 import PeopleContainer from "components/People/PeopleContainer";
 import Settings from "components/Settings/Settings";
@@ -38,9 +37,8 @@ function App() {
   React.useEffect(() => {
     if (user.uid) {
       setLogin(false);
-      socket.emit("USER_CONNECT", user.uid);
       dispatch({ type: "USER_SOCKETID_SET", payload: socket.id });
-      socket.on("FRIEND_REQUEST_CLIENT", friendRequest);
+      socketON();
     } else if (localStorage.getItem("token") && localStorage.getItem("uid")) {
       setLogin(true);
       axios
@@ -73,9 +71,10 @@ function App() {
       setLogin(false);
     }
     return () => {
-      socket.off("FRIEND_REQUEST_CLIENT");
+      socketOFF();
     };
-  }, [dispatch, user.uid, navigate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user.uid]);
 
   return (
     <div

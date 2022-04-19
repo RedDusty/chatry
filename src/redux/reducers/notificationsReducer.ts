@@ -17,7 +17,9 @@ const notificationsReducer = (
       return action.payload;
     }
     case "NOTIFICATIONS_ADD": {
-      return [...state, action.payload];
+      const newState = state;
+      newState.unshift(action.payload);
+      return [...newState];
     }
     default:
       return [...state];

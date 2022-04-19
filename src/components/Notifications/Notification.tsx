@@ -19,17 +19,10 @@ const Notification = ({
       <div className="flex w-full">
         <NotificationIcon icon={n.icon} />
         <div className="w-full ml-3">
-          <div className="flex justify-between">
-            <div className="text-2xl text-slate-900 dark:text-gray-200">
-              {n.header}
-            </div>
-          </div>
-          <div>
-            <NotificationContent
-              data={n.data}
-              toggleNotifications={toggleNotifications}
-            />
-          </div>
+          <NotificationContent
+            data={n.data}
+            toggleNotifications={toggleNotifications}
+          />
         </div>
       </div>
       <NotificationFooter timeNumber={n.time} username={n.data.username} />

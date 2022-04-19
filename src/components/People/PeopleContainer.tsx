@@ -87,7 +87,7 @@ const PeopleContainer = () => {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [u.uid]);
+  }, [u.uid, u.waitingsUID, u.friendsUID]);
 
   const btnHanlder = (btn: "search" | "friends" | "waiting") => {
     setFetching(true);
