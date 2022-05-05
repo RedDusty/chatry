@@ -8,12 +8,15 @@ import IconUser from "icons/IconUser";
 import IconPeople from "icons/IconPeople";
 import IconSettings from "icons/IconSettings";
 import IconLogout from "icons/IconLogout";
+import IconMessages from "icons/IconMessages";
 import HeaderNotification from "components/Header/HeaderNotification";
 import axios from "axios";
 
 type HeaderType = {
   isNotifShow: boolean;
-  toggleNotifications: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  toggleNotifications: (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => void;
 };
 
 const Header = ({ isNotifShow, toggleNotifications }: HeaderType) => {
@@ -55,6 +58,12 @@ const Header = ({ isNotifShow, toggleNotifications }: HeaderType) => {
         isShow={true}
       />
       <HeaderButton
+        Icon={<IconMessages />}
+        link={"/messages"}
+        canUserPass={false}
+        isShow={true}
+      />
+      <HeaderButton
         Icon={<IconPeople />}
         link={"/people"}
         canUserPass={true}
@@ -66,7 +75,10 @@ const Header = ({ isNotifShow, toggleNotifications }: HeaderType) => {
         canUserPass={false}
         isShow={true}
       />
-      <HeaderNotification toggleNotifications={toggleNotifications} isNotifShow={isNotifShow} />
+      <HeaderNotification
+        toggleNotifications={toggleNotifications}
+        isNotifShow={isNotifShow}
+      />
       <HeaderButton
         Icon={<IconLogout />}
         link={logOut}

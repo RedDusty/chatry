@@ -42,7 +42,7 @@ const UserActions = ({
         <div
           className={`${
             showButtons ? "block" : "hidden"
-          } absolute top-0 -left-60 w-56 h-24 bg-gray-200 dark:bg-gray-700 rounded-md shadow transition-opacity p-2 flex flex-col justify-center items-center`}
+          } absolute top-0 -left-60 w-56 h-24 bg-slate-300 dark:bg-slate-700 rounded-md shadow transition-opacity p-2 flex flex-col justify-center items-center`}
           ref={actionsMenuRef}
         >
           <button

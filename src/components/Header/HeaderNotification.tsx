@@ -1,5 +1,6 @@
 import React from "react";
 import IconBellRotated from "icons/IconBellRotated";
+import { useTypedSelector } from "redux/useTypedRedux";
 
 type HeaderNotificationComponentType = {
   isNotifShow: boolean;
@@ -13,6 +14,12 @@ const HeaderNotification = ({
   isNotifShow,
   toggleNotifications,
 }: HeaderNotificationComponentType) => {
+  const uid = useTypedSelector((s) => s.user.uid);
+
+  if (uid === null) {
+    return <></>;
+  }
+
   return (
     <button
       className={`${

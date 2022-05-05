@@ -19,7 +19,11 @@ const Notification = ({
   return (
     <div className="sm:m-1 w-full px-2 py-0.5 sm:rounded-md flex flex-col justify-between items-center">
       <div className="flex w-full">
-        <NotificationIcon icon={n.icon} />
+        <NotificationIcon
+          icon={n.icon}
+          alt={n.data.username || n.header}
+          isOnline={n.data.online}
+        />
         <div className="w-full ml-3">
           <NotificationContent
             data={n.data}
@@ -85,11 +89,19 @@ const NotificationContent = ({
   return <></>;
 };
 
-const NotificationIcon = ({ icon }: { icon: string | null }) => {
+const NotificationIcon = ({
+  icon,
+  alt,
+  isOnline,
+}: {
+  icon: string | null;
+  alt: string;
+  isOnline: number | true;
+}) => {
   if (icon) {
     return (
       <div className="w-12 h-12 mt-1 flex-shrink-0">
-        <UserIcon avatar={icon} />
+        <UserIcon avatar={icon} alt={alt} isOnline={isOnline} />
       </div>
     );
   }

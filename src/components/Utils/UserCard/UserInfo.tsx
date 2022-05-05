@@ -13,8 +13,8 @@ type UserInfoComponentType = {
 const UserInfo = ({ avatar, online, username }: UserInfoComponentType) => {
   return (
     <div className="flex">
-      <div className="w-12 h-12 sm:w-16 sm:h-16 shrink-0 rounded-full overflow-hidden relative">
-        <UserIcon avatar={avatar} />
+      <div className="w-12 h-12 sm:w-16 sm:h-16 shrink-0 rounded-full relative">
+        <UserIcon avatar={avatar} alt={username} isOnline={online} />
       </div>
       <div className="ml-2 overflow-hidden flex flex-col justify-between">
         <div className="flex items-center">

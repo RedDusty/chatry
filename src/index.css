@@ -83,3 +83,8 @@ body {
     top: 56px;
   }
 }
+
+.seamless {
+  background-image: url("https://firebasestorage.googleapis.com/v0/b/chatry-5c48e.appspot.com/o/server%2Fpatterns%2Fpattern-3.svg?alt=media&token=8d4e135b-3d66-4d50-933d-5e11b48357cc");
+  background-repeat: repeat;
+}

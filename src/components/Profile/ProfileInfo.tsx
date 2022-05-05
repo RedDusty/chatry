@@ -23,10 +23,10 @@ const ProfileInfo = ({
         className={`${
           avatar !== undefined
             ? "fill-sky-600 dark:fill-indigo-800"
-            : "rounded-full overflow-hidden"
-        } w-64 h-64 sm:w-28 sm:h-28 lg:w-36 lg:h-36 mx-auto sm:mx-0 shrink-0`}
+            : "rounded-full"
+        } w-64 h-64 sm:w-28 sm:h-28 lg:w-36 lg:h-36 mx-auto sm:mx-0 shrink-0 relative`}
       >
-        <UserIcon avatar={avatar} />
+        <UserIcon avatar={avatar} alt={username} removeDot={true} />
       </div>
       <div className="flex-1 flex flex-col items-center sm:items-start">
         <p

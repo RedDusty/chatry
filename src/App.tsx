@@ -9,6 +9,7 @@ import NotificationsContainer from "components/Notifications/NotificationsContai
 import Profile from "components/Profile/Profile";
 import PeopleContainer from "components/People/PeopleContainer";
 import Settings from "components/Settings/Settings";
+import MessagesContainer from "components/Messages/MessagesContainer";
 import NotFound from "components/Utils/NotFound";
 import ProtectedRoute from "components/Utils/ProtectedRoute";
 import IconLoading from "icons/IconLoading";
@@ -119,6 +120,7 @@ function App() {
           <Route path="/user/:uid" element={<Profile />} />
           <Route path="/people" element={<PeopleContainer />} />
           <Route element={<ProtectedRoute />}>
+            <Route path="/messages" element={<MessagesContainer />} />
             <Route path="/settings" element={<Settings />} />
           </Route>
           <Route path="/auth/*" element={<Auth />} />

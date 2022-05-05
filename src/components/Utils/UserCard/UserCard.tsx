@@ -63,7 +63,7 @@ const UserCard = ({ user }: { user: UserShortType }) => {
 
   return (
     <div className="w-full px-0 sm:px-3 h-16 sm:h-20 first:md:mt-0 border-0 border-t first:border-t-0 hover:border-transparent dark:hover:border-transparent sibhover:border-transparent dark:sibhover:border-transparent border-solid border-gray-300 dark:border-gray-600">
-      <div className="w-full h-full hover:bg-gray-200 dark:hover:bg-gray-800 flex py-2 px-2 sm:px-4 sm:rounded-xl">
+      <div className="w-full h-full group hover:bg-slate-200 dark:hover:bg-slate-700 flex py-2 px-2 sm:px-4 sm:rounded-xl">
         <UserInfo
           avatar={user.avatar}
           online={user.online}

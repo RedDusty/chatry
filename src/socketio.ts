@@ -1,5 +1,6 @@
 import store from "redux/store";
 import io, { ManagerOptions, SocketOptions } from "socket.io-client";
+import { CacheInitPayloadType } from "typings/cacheTypes";
 import { notificationType } from "typings/NotificationsTypes";
 
 export const serverURL: string =
@@ -17,13 +18,18 @@ export default socket;
 
 export function socketON() {
   socket.emit("USER_CONNECT", store.getState().user.uid);
+  socket.emit("MESSAGES_GET", store.getState().user.uid);
   socket.on("CLIENT_FRIENDS", friendActions);
   socket.on("CLIENT_NOTIF", notificationActions);
+  socket.on("CHATS_INITIAL", (initData: CacheInitPayloadType) => {
+    store.dispatch({ type: "CACHE_CHATS_INIT", payload: initData });
+  });
 }
 
 export function socketOFF() {
   socket.off("CLIENT_FRIENDS");
   socket.off("CLIENT_NOTIF");
+  socket.off("CHATS_INITIAL");
 }
 
 function notificationActions(data: notificationType) {
