@@ -9,6 +9,7 @@ const cacheReducerInitial: CacheReducerType = {
   messages: [],
   users: [],
   chats: [],
+  dialogCID: null,
 };
 
 const notificationsReducer = (
@@ -94,6 +95,11 @@ const notificationsReducer = (
         ...state,
         chats: action.payload.chats,
         messages: action.payload.messages,
+      };
+    case "CACHE_DIALOG_CID_SET":
+      return {
+        ...state,
+        dialogCID: action.payload,
       };
     default:
       return { ...state };

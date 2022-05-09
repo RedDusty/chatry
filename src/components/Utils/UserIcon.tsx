@@ -54,7 +54,7 @@ const UserIcon = ({
   } else if (avatar === undefined) {
     return (
       <>
-        <div className="animate-pulse bg-slate-400 dark:bg-slate-500 w-full h-full"></div>
+        <div className="animate-pulse bg-slate-400 dark:bg-slate-500 w-full h-full shrink-0 avatarRound"></div>
         {onlineShow ? (
           <div className="absolute -bottom-1 -right-1 bg-green-600 dark:bg-green-400 rounded-full border-[3px] border-solid border-slate-50 dark:border-slate-900 group-hover:border-slate-200 dark:group-hover:border-slate-700 w-4 h-4"></div>
         ) : (
@@ -65,14 +65,20 @@ const UserIcon = ({
   } else
     return (
       <div
-        className="w-12 h-12 rounded-full flex justify-center items-center relative"
+        className="w-full h-full flex justify-center items-center relative shrink-0 avatarRound"
         style={{
           background: `linear-gradient(${rn()}deg, rgb(${rnt()}, ${rnt()}, ${rnt()}), rgb(${rnt()}, ${rnt()}, ${rnt()}))`,
         }}
       >
-        <p className="text-xl font-semibold text-slate-900 dark:text-slate-50 select-none">
-          {altExist}
-        </p>
+        <svg width="100%" height="100%" viewBox="0 0 25 25">
+          <text
+            x="8"
+            y="18"
+            className="fill-slate-900 dark:fill-slate-50 select-none"
+          >
+            {altExist}
+          </text>
+        </svg>
         {onlineShow ? (
           <div className="absolute -bottom-1 -right-1 bg-green-600 dark:bg-green-400 rounded-full border-[3px] border-solid border-slate-50 dark:border-slate-900 group-hover:border-slate-200 dark:group-hover:border-slate-700 w-4 h-4"></div>
         ) : (

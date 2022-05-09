@@ -4,8 +4,9 @@ import { useTypedSelector } from "redux/useTypedRedux";
 import { ChatType } from "typings/cacheTypes";
 import MessagesChat from "components/Messages/MessagesBar/MessagesChat";
 
-const MessagesChats = ({ chats, setChatCID }: { chats: ChatType[], setChatCID: (v: string) => void }) => {
+const MessagesChats = ({ chats }: { chats: ChatType[] }) => {
   const cu = useTypedSelector((s) => s.user.uid!);
+  const cd = useTypedSelector((s) => s.cache.dialogCID);
 
   if (chats.length === 0) {
     return (
@@ -24,9 +25,16 @@ const MessagesChats = ({ chats, setChatCID }: { chats: ChatType[], setChatCID: (
     );
   } else {
     return (
-      <div className="w-full h-full px-2 flex flex-col justify-start items-center overflow-y-auto">
+      <div className="w-full h-full px-2 flex flex-col justify-start items-center gap-1 overflow-y-auto">
         {chats.map((c, idx) => {
-          return <MessagesChat chat={c} cu={cu} key={c.cid + idx} setChatCID={setChatCID}/>;
+          return (
+            <MessagesChat
+              chat={c}
+              cu={cu}
+              key={c.cid + idx}
+              isActive={c.cid === cd}
+            />
+          );
         })}
       </div>
     );

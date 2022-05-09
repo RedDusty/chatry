@@ -5,6 +5,7 @@ export type CACHE_USER_ADD = "CACHE_USER_ADD";
 export type CACHE_USER_SET = "CACHE_USER_SET";
 export type CACHE_MESSAGES_SET = "CACHE_MESSAGES_SET";
 export type CACHE_CHAT_SET = "CACHE_CHAT_SET";
+export type CACHE_DIALOG_CID_SET = "CACHE_DIALOG_CID_SET";
 
 type MessageType = {
   mid: string;
@@ -43,6 +44,7 @@ export type CacheReducerType = {
   users: UserShortType[];
   messages: MessagesType[];
   chats: ChatType[];
+  dialogCID: string | null;
 };
 
 type CacheUserAddType = {
@@ -75,9 +77,15 @@ type CacheChatsInitType = {
   payload: CacheInitPayloadType;
 };
 
+type CacheDialogCIDSetType = {
+  type: CACHE_DIALOG_CID_SET;
+  payload: string | null;
+};
+
 export type CacheActionsType =
   | CacheUserAddType
   | CacheUserSetType
   | CacheMessageSetType
   | CacheChatSetType
-  | CacheChatsInitType;
+  | CacheChatsInitType
+  | CacheDialogCIDSetType;
