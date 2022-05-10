@@ -39,6 +39,10 @@ const userReducer = (
       if (action.payload === null) {
         return { ...state, ...userReducerInitial };
       }
+      const theme = action.payload.userSettings.theme;
+      localStorage.setItem("chatry-theme", theme);
+      document.body.classList.remove(theme === "dark" ? "white" : "dark");
+      document.body.classList.add(theme === "dark" ? "dark" : "white");
       return { ...state, ...action.payload };
     }
     case "USER_SOCKETID_SET": {

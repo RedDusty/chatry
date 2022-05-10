@@ -1,5 +1,6 @@
 import React from "react";
 import UserIcon from "components/Utils/UserIcon";
+import MessagesHeaderActions from "components/Messages/MessagesChat/MessagesHeaderActions";
 import IconCross from "icons/IconCross";
 import IconDots from "icons/IconDots";
 import { useTypedSelector } from "redux/useTypedRedux";
@@ -7,6 +8,8 @@ import { setCurrentDialog } from "scripts/currentDialog";
 import { ChatType } from "typings/cacheTypes";
 
 const MessagesHeader = ({ c }: { c: ChatType }) => {
+  const [isShowActions, setShowActions] = React.useState(false);
+
   const cu = useTypedSelector((s) => s.user.uid);
   const ct = c.chatType === "two-side";
   const chatAvatar = ct
@@ -21,44 +24,53 @@ const MessagesHeader = ({ c }: { c: ChatType }) => {
     setCurrentDialog(null);
   };
 
-  const toggleDialogHandler = () => {};
+  const toggleDialogHandler = () => {
+    setShowActions(!isShowActions);
+  };
 
   return (
-    <div className="w-full h-16 px-2 sm:px-4 bg-slate-200 dark:bg-slate-800 border-0 border-b border-solid border-slate-400 dark:border-slate-500 flex items-center justify-between gap-2 sm:gap-4">
-      <div className="w-6 lg:w-16 shrink-0">
-        <button
-          className="hidden lg:block font-semibold text-lg cursor-pointer bg-slate-300 hover:bg-sky-300 dark:bg-slate-700 dark:hover:bg-indigo-800 text-slate-600 dark:text-slate-400 hover:text-sky-700 dark:hover:text-indigo-300 px-2 py-1 rounded-lg"
-          onClick={closeDialogHandler}
-        >
-          Close
-        </button>
-        <div
-          className="lg:hidden w-6 h-6 cursor-pointer fill-slate-600 dark:fill-slate-400 hover:fill-sky-500 dark:hover:fill-indigo-500"
-          onClick={closeDialogHandler}
-        >
-          <IconCross />
+    <div
+      className={`w-full ${
+        isShowActions ? "top-0" : "-top-16"
+      } relative h-32 transition-all px-2 sm:px-4 bg-slate-200 dark:bg-slate-800 border-0 border-b border-solid border-slate-400 dark:border-slate-500 flex flex-col justify-between gap-2`}
+    >
+      <MessagesHeaderActions />
+      <div className="w-full h-16 flex items-center justify-between">
+        <div className="w-6 lg:w-16 shrink-0">
+          <button
+            className="hidden lg:block font-semibold text-lg cursor-pointer bg-slate-300 hover:bg-sky-300 dark:bg-slate-700 dark:hover:bg-indigo-800 text-slate-600 dark:text-slate-400 hover:text-sky-700 dark:hover:text-indigo-300 px-2 py-1 rounded-lg"
+            onClick={closeDialogHandler}
+          >
+            Close
+          </button>
+          <div
+            className="lg:hidden w-6 h-6 cursor-pointer fill-slate-600 dark:fill-slate-400 hover:fill-sky-500 dark:hover:fill-indigo-500"
+            onClick={closeDialogHandler}
+          >
+            <IconCross />
+          </div>
         </div>
-      </div>
-      <div className="w-[calc(100%-100px)] sm:w-80 md:w-72 lg:w-96 flex items-center justify-center gap-2 sm:gap-4">
-        <div className="w-12 h-12 shrink-0">
-          <UserIcon avatar={chatAvatar} isOnline={isOnline} alt={chatName} />
+        <div className="w-[calc(100%-100px)] sm:w-80 md:w-72 lg:w-96 flex items-center justify-center gap-2 sm:gap-4">
+          <div className="w-12 h-12 shrink-0">
+            <UserIcon avatar={chatAvatar} isOnline={isOnline} alt={chatName} />
+          </div>
+          <p className=" text-xl sm:text-2xl font-semibold text-slate-700 dark:text-slate-300 truncate">
+            {chatName}
+          </p>
         </div>
-        <p className=" text-xl sm:text-2xl font-semibold text-slate-700 dark:text-slate-300 truncate">
-          {chatName}
-        </p>
-      </div>
-      <div className="w-9 lg:w-20 shrink-0">
-        <button
-          className="hidden lg:block font-semibold text-lg cursor-pointer bg-slate-300 hover:bg-sky-300 dark:bg-slate-700 dark:hover:bg-indigo-800 text-slate-600 dark:text-slate-400 hover:text-sky-700 dark:hover:text-indigo-300 px-2 py-1 rounded-lg"
-          onClick={toggleDialogHandler}
-        >
-          Actions
-        </button>
-        <div
-          className="lg:hidden w-9 h-w-9 cursor-pointer fill-slate-600 dark:fill-slate-400 hover:fill-sky-500 dark:hover:fill-indigo-500"
-          onClick={toggleDialogHandler}
-        >
-          <IconDots />
+        <div className="w-9 lg:w-20 shrink-0">
+          <button
+            className="hidden lg:block font-semibold text-lg cursor-pointer bg-slate-300 hover:bg-sky-300 dark:bg-slate-700 dark:hover:bg-indigo-800 text-slate-600 dark:text-slate-400 hover:text-sky-700 dark:hover:text-indigo-300 px-2 py-1 rounded-lg"
+            onClick={toggleDialogHandler}
+          >
+            Actions
+          </button>
+          <div
+            className="lg:hidden w-9 h-w-9 cursor-pointer fill-slate-600 dark:fill-slate-400 hover:fill-sky-500 dark:hover:fill-indigo-500"
+            onClick={toggleDialogHandler}
+          >
+            <IconDots />
+          </div>
         </div>
       </div>
     </div>
