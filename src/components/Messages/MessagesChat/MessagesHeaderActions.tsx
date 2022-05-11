@@ -1,19 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useTypedSelector } from "redux/useTypedRedux";
-import { getCurrentDialog } from "scripts/currentDialog";
+import { ChatType } from "typings/cacheTypes";
 
-const MessagesHeaderActions = () => {
-  const dialog = getCurrentDialog();
+const MessagesHeaderActions = ({ c }: { c: ChatType }) => {
   const cu = useTypedSelector((s) => s.user.uid);
 
-  if (dialog === null) {
-    return <></>;
-  }
-
-  const chat = dialog.chat;
-  const ct = chat.chatType === "two-side";
-  const username = ct && chat.users.filter((u) => u.uid !== cu)[0].username;
+  const ct = c.chatType === "two-side";
+  const username = ct && c.users.filter((u) => u.uid !== cu)[0].username;
 
   return (
     <div className={`w-full h-16 flex items-center`}>

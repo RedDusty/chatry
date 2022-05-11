@@ -10,6 +10,7 @@ import { ChatType } from "typings/cacheTypes";
 const MessagesHeader = ({ c }: { c: ChatType }) => {
   const [isShowActions, setShowActions] = React.useState(false);
 
+  const theme = useTypedSelector((s) => s.user.userSettings.theme);
   const cu = useTypedSelector((s) => s.user.uid);
   const ct = c.chatType === "two-side";
   const chatAvatar = ct
@@ -28,13 +29,19 @@ const MessagesHeader = ({ c }: { c: ChatType }) => {
     setShowActions(!isShowActions);
   };
 
+  const boxShadow =
+    theme === "white" ? "rgb(241, 247, 255)" : "rgb(10, 21, 39)";
+
   return (
     <div
       className={`w-full ${
-        isShowActions ? "top-0" : "-top-16"
-      } relative h-32 transition-all px-2 sm:px-4 bg-slate-200 dark:bg-slate-800 border-0 border-b border-solid border-slate-400 dark:border-slate-500 flex flex-col justify-between gap-2`}
+        isShowActions ? "h-32" : "h-16"
+      } relative z-20 transition-all duration-100 px-2 sm:px-4 bg-slate-200 dark:bg-slate-800 border-0 border-b border-solid border-slate-400 dark:border-slate-500 flex flex-col justify-between gap-2`}
+      style={{
+        boxShadow: "0 4px 16px 2px " + boxShadow,
+      }}
     >
-      <MessagesHeaderActions />
+      {isShowActions && <MessagesHeaderActions c={c} />}
       <div className="w-full h-16 flex items-center justify-between">
         <div className="w-6 lg:w-16 shrink-0">
           <button

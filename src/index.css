@@ -40,6 +40,12 @@ body {
   .text-lighter {
     @apply text-gray-800 dark:text-gray-100;
   }
+  .btn-msg {
+    @apply bg-slate-300 dark:bg-slate-700 hover:bg-sky-200 dark:hover:bg-indigo-900 fill-slate-700 text-slate-700 dark:fill-slate-300 dark:text-slate-300 hover:fill-sky-500 hover:text-sky-700 dark:hover:fill-indigo-300 dark:hover:text-indigo-300;
+  }
+  .btn-msg-error {
+    @apply bg-red-200 hover:bg-red-300 dark:bg-red-700 dark:hover:bg-red-800 fill-red-700 text-red-700 hover:fill-red-800 hover:text-red-800 dark:fill-red-200 dark:text-red-200 dark:hover:fill-red-300 dark:hover:text-red-300;
+  }
 }
 
 .avatarRound {
@@ -84,7 +90,69 @@ body {
   }
 }
 
-.seamless {
-  background-image: url("https://firebasestorage.googleapis.com/v0/b/chatry-5c48e.appspot.com/o/server%2Fpatterns%2Fpattern-3.svg?alt=media&token=8d4e135b-3d66-4d50-933d-5e11b48357cc");
-  background-repeat: repeat;
+/* EMOJI PICKER REACT CUSTOMIZATION START */
+
+.epicker .emoji-group::before {
+  line-height: 24px !important;
 }
+
+.epicker-white .emoji-group::before {
+  background: #e2e8f0 !important;
+  color: #475569 !important;
+}
+
+.epicker-dark .emoji-group::before {
+  background: #1e293b !important;
+  color: #94a3b8 !important;
+}
+
+.epicker-white input.emoji-search {
+  background: #f1f5f9 !important;
+}
+
+.epicker-dark input.emoji-search {
+  background: #334155 !important;
+}
+
+.epicker input.emoji-search {
+  padding: 5px !important;
+  border: 1px solid #64748b !important;
+}
+
+.epicker .emoji-categories button {
+  opacity: 1 !important;
+}
+
+.epicker-dark .emoji-categories button {
+  filter: invert(1) !important;
+}
+
+.epicker aside.emoji-picker-react {
+  border: none !important;
+  border-top: 1px solid #64748b !important;
+  border-radius: 0 !important;
+}
+
+.epicker-white .active-category-indicator {
+  background: #0ea4e9 !important;
+}
+
+.epicker-dark .active-category-indicator {
+  background: #a5b4fc !important;
+}
+
+@media screen and (min-width: 640px) {
+  .epicker aside.emoji-picker-react {
+    border-radius: 8px !important;
+    border: 1px solid #64748b !important;
+  }
+  .epicker .emoji-group::before {
+    line-height: 45px !important;
+  }
+
+  .epicker input.emoji-search {
+    padding: 10px !important;
+  }
+}
+
+/* EMOJI PICKER REACT CUSTOMIZATION END */
