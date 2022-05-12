@@ -12,7 +12,7 @@ const MessagesChat = () => {
   }
 
   return (
-    <div className="w-full h-full flex flex-col justify-between flex-1">
+    <div className="w-full h-full flex flex-col justify-between items-center flex-1">
       <MessagesHeader c={chat.chat} />
       <MessagesDialog />
       <MessagesInput c={chat.chat} />

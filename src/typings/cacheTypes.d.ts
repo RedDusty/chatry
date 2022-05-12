@@ -8,7 +8,7 @@ export type CACHE_CHAT_SET = "CACHE_CHAT_SET";
 export type CACHE_DIALOG_CID_SET = "CACHE_DIALOG_CID_SET";
 
 type MessageType = {
-  mid: string;
+  mid: number;
   time: number;
   message: string | MessageType;
   files?: MessageFileType[];

@@ -38,7 +38,7 @@ const MessagesHeader = ({ c }: { c: ChatType }) => {
         isShowActions ? "h-32" : "h-16"
       } relative z-20 transition-all duration-100 px-2 sm:px-4 bg-slate-200 dark:bg-slate-800 border-0 border-b border-solid border-slate-400 dark:border-slate-500 flex flex-col justify-between gap-2`}
       style={{
-        boxShadow: "0 4px 16px 2px " + boxShadow,
+        boxShadow: "0 8px 36px 8px " + boxShadow,
       }}
     >
       {isShowActions && <MessagesHeaderActions c={c} />}

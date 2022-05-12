@@ -1,6 +1,7 @@
 export type USER_USERNAME_SET = "USER_USERNAME_SET";
 export type USER_AVATAR_SET = "USER_AVATAR_SET";
 export type USER_THEME_SET = "USER_THEME_SET";
+export type USER_MESSAGE_VIEW_SET = "USER_MESSAGE_VIEW_SET";
 export type USER_UID_SET = "USER_UID_SET";
 export type USER_VERIFY_SET = "USER_VERIFY_SET";
 export type USER_SET = "USER_SET";
@@ -15,6 +16,7 @@ type UserPrivacyType = {
 
 type UserSettingsType = {
   theme: "white" | "dark";
+  messageView: "separately" | "left";
 };
 
 export type UserReducerType = {
@@ -65,6 +67,11 @@ type UserThemeSetType = {
   payload: "white" | "dark";
 };
 
+type UserMessageViewSetType = {
+  type: USER_MESSAGE_VIEW_SET;
+  payload: "separately" | "left";
+};
+
 type UserUIDSetType = {
   type: USER_UID_SET;
   payload: string | null;
@@ -105,4 +112,5 @@ type UserActionsType =
   | UserSetType
   | UserSocketIDSetType
   | UserListUIDSSetType
-  | UserListUIDSRemoveType;
+  | UserListUIDSRemoveType
+  | UserMessageViewSetType;

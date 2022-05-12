@@ -1,6 +1,6 @@
 import React from "react";
 import UserIcon from "components/Utils/UserIcon";
-import lastOnline from "scripts/lastOnline";
+import timeConverter from "scripts/timeConverter";
 
 type ProfileInfoType = {
   avatar: string | null | undefined;
@@ -47,7 +47,9 @@ const ProfileInfo = ({
               : "w-24 h-6 rounded-md animate-pulse bg-green-400 dark:bg-green-500"
           } sm:ml-4 mt-2 font-semibold`}
         >
-          {online !== undefined ? lastOnline(online) || "Offline" : ""}
+          {online !== undefined
+            ? "Last online: " + timeConverter(online) || "Offline"
+            : ""}
         </p>
       </div>
     </div>

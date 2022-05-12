@@ -15,6 +15,9 @@ const userReducerInitial: UserReducerType = {
   online: 0,
   userSettings: {
     theme: themeStorage(),
+    messageView:
+      (localStorage.getItem("chatry-messageView") as "separately" | "left") ||
+      "separately",
   },
   privacy: {
     messages: "all",
@@ -41,6 +44,8 @@ const userReducer = (
       }
       const theme = action.payload.userSettings.theme;
       localStorage.setItem("chatry-theme", theme);
+      const messageView = action.payload.userSettings.messageView;
+      localStorage.setItem("chatry-messageView", messageView);
       document.body.classList.remove(theme === "dark" ? "white" : "dark");
       document.body.classList.add(theme === "dark" ? "dark" : "white");
       return { ...state, ...action.payload };
@@ -65,6 +70,13 @@ const userReducer = (
       return {
         ...state,
         userSettings: { ...state.userSettings, theme: action.payload },
+      };
+    }
+    case "USER_MESSAGE_VIEW_SET": {
+      localStorage.setItem("chatry-messageView", action.payload);
+      return {
+        ...state,
+        userSettings: { ...state.userSettings, messageView: action.payload },
       };
     }
     case "USER_UID_SET": {

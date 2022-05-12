@@ -1,7 +1,7 @@
 import IconLink from "icons/IconLink";
 import React from "react";
 import { Link } from "react-router-dom";
-import lastOnline from "scripts/lastOnline";
+import timeConverter from "scripts/timeConverter";
 import UserIcon from "../UserIcon";
 
 type UserInfoComponentType = {
@@ -33,7 +33,9 @@ const UserInfo = ({ avatar, online, username }: UserInfoComponentType) => {
             {online === true ? (
               <p className="text-green-600 dark:text-green-400">{"Online"}</p>
             ) : (
-              <p className="text truncate">{lastOnline(online) || "Offline"}</p>
+              <p className="text truncate">
+                {"Last online: " + timeConverter(online) || "Offline"}
+              </p>
             )}
           </div>
         </div>
