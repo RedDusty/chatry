@@ -1,5 +1,5 @@
 import React from "react";
-import MessagesMessage from "components/Messages/MessagesChat/MessagesMessage";
+import MessagesMessage from "components/Messages/MessagesChat/MessagesChatSub/MessagesMessage";
 import { useTypedSelector } from "redux/useTypedRedux";
 import IconLoading from "icons/IconLoading";
 

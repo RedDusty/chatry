@@ -1,6 +1,6 @@
 import React from "react";
 import UserIcon from "components/Utils/UserIcon";
-import MessagesHeaderActions from "components/Messages/MessagesChat/MessagesHeaderActions";
+import MessagesHeaderActions from "components/Messages/MessagesChat/MessagesChatSub/MessagesHeaderActions";
 import IconCross from "icons/IconCross";
 import IconDots from "icons/IconDots";
 import { useTypedSelector } from "redux/useTypedRedux";
