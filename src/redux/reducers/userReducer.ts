@@ -31,6 +31,7 @@ const userReducerInitial: UserReducerType = {
   verified: false,
   socketID: null,
   banned: false,
+  lastUsernameUpdate: 0,
 };
 
 const userReducer = (
@@ -55,6 +56,9 @@ const userReducer = (
     }
     case "USER_USERNAME_SET": {
       return { ...state, username: action.payload };
+    }
+    case "USER_SUBNAME_SET": {
+      return { ...state, subname: action.payload };
     }
     case "USER_AVATAR_SET": {
       return { ...state, avatar: action.payload };

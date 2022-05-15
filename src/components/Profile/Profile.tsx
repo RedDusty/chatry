@@ -1,12 +1,12 @@
 import React from "react";
 import ProfileInfo from "components/Profile/ProfileInfo";
-import { UserReducerType } from "typings/UserTypes";
+import { UserProileType } from "typings/UserTypes";
 import axios from "axios";
 import IconInfo from "icons/IconInfo";
 import { Link } from "react-router-dom";
 
 const Profile = () => {
-  const [pUser, setPUser] = React.useState<UserReducerType | null>(null);
+  const [pUser, setPUser] = React.useState<UserProileType | null>(null);
   const [isError, setError] = React.useState<boolean>(false);
 
   const url = window.location.pathname.split("/").pop();
@@ -74,9 +74,9 @@ const Profile = () => {
       <ProfileInfo
         avatar={pUser ? pUser.avatar : undefined}
         username={pUser ? pUser.username : undefined}
-        friendsUID={pUser ? pUser.friendsUID : undefined}
         online={pUser ? pUser.online : undefined}
         uid={pUser ? pUser.uid : undefined}
+        lastUsernames={pUser ? pUser.usernames : []}
       />
       <div className="h-px w-full px-4 bg-sky-600 dark:bg-indigo-800 mt-4"></div>
     </section>

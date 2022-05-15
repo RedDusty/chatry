@@ -1,3 +1,4 @@
+import axios from 'axios';
 import store from "redux/store";
 import io, { ManagerOptions, SocketOptions } from "socket.io-client";
 import {
@@ -36,6 +37,16 @@ export function socketON() {
       store.dispatch({ type: "CACHE_MESSAGES_SET", payload: data.message });
     }
   });
+  socket.on("USERNAME_CHANGE", (data) => {
+    if (data.error === false) {
+      store.dispatch({type: 'USER_SET', payload: data.user});
+      localStorage.setItem("user", JSON.stringify(data.user));
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("refreshToken", data.refreshToken);
+      axios.defaults.headers.common["Authorization"] =
+        data.user.uid + " " + data.token;
+    }
+  });
 }
 
 export function socketOFF() {
@@ -43,6 +54,7 @@ export function socketOFF() {
   socket.off("CLIENT_NOTIF");
   socket.off("CHATS_INITIAL");
   socket.off("MESSAGE_ACCEPT");
+  socket.off("USERNAME_CHANGE");
 }
 
 function notificationActions(data: notificationType) {
@@ -116,5 +128,14 @@ export const socketMessageSend = (text: string, cid: string) => {
     } as MessageType,
     cid,
     uid: user.uid,
+  });
+};
+
+export const socketUsernameChange = (username: string) => {
+  const uid = store.getState().user.uid;
+
+  socket.emit("USER_CHANGE_USERNAME", {
+    username: username,
+    uid: uid,
   });
 };

@@ -1,4 +1,5 @@
 export type USER_USERNAME_SET = "USER_USERNAME_SET";
+export type USER_SUBNAME_SET = "USER_SUBNAME_SET";
 export type USER_AVATAR_SET = "USER_AVATAR_SET";
 export type USER_THEME_SET = "USER_THEME_SET";
 export type USER_MESSAGE_VIEW_SET = "USER_MESSAGE_VIEW_SET";
@@ -19,6 +20,21 @@ type UserSettingsType = {
   messageView: "separately" | "left";
 };
 
+export type lastUsernamesType = {
+  updateTime: number;
+  username: string;
+};
+
+export type UserProileType = {
+  username: string;
+  subname: string;
+  online: number | true;
+  avatar: string | null;
+  privacy: UserPrivacyType;
+  uid: string;
+  usernames: lastUsernamesType[];
+};
+
 export type UserReducerType = {
   username: string;
   email: string;
@@ -35,6 +51,7 @@ export type UserReducerType = {
   verified: boolean;
   socketID: string | null;
   banned: boolean;
+  lastUsernameUpdate: number;
 };
 
 type ValueOf<T> = T[keyof T];
@@ -55,6 +72,11 @@ type UserSetType = {
 
 type UserUsernameSetType = {
   type: USER_USERNAME_SET;
+  payload: string;
+};
+
+type UserSubnameSetType = {
+  type: USER_SUBNAME_SET;
   payload: string;
 };
 
@@ -114,4 +136,5 @@ type UserActionsType =
   | UserSocketIDSetType
   | UserListUIDSSetType
   | UserListUIDSRemoveType
-  | UserMessageViewSetType;
+  | UserMessageViewSetType
+  | UserSubnameSetType;
