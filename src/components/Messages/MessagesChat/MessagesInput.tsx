@@ -8,6 +8,7 @@ import { useTypedSelector } from "redux/useTypedRedux";
 import Picker, { IEmojiData } from "emoji-picker-react";
 import IconSun from "icons/IconSun";
 import IconMoon from "icons/IconMoon";
+import { socketMessageSend } from "socketio";
 
 type ErrorType = "none" | "length" | "spaces";
 
@@ -18,6 +19,7 @@ const MessagesInput = ({ c }: { c: ChatType }) => {
   const [resize, setResize] = React.useState(false);
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
   const theme = useTypedSelector((s) => s.user.userSettings.theme);
+  const cid = useTypedSelector((s) => s.cache.dialogCID);
 
   const resizer = () => {
     if (resize && textareaRef && textareaRef.current) {
@@ -33,13 +35,17 @@ const MessagesInput = ({ c }: { c: ChatType }) => {
 
   const checker = (t: string) => {
     const checker = t.match(/(^[\s\r\n]{4,})|\w+([\s\r\n]){4,}/gm);
+    let isError = false;
     if (checker) {
       setError("spaces");
+      isError = true;
     } else if (text.length > 512) {
       setError("length");
+      isError = true;
     } else {
       setError("none");
     }
+    return isError;
   };
 
   const textHandler = (t: string) => {
@@ -71,6 +77,14 @@ const MessagesInput = ({ c }: { c: ChatType }) => {
       return prevText + emojiObject.emoji;
     });
     resizer();
+  };
+
+  const sendHandler = () => {
+    let senderCID = cid;
+    if (checker(text) === false) {
+      socketMessageSend(text, senderCID!);
+      setText("");
+    }
   };
 
   return (
@@ -123,6 +137,7 @@ const MessagesInput = ({ c }: { c: ChatType }) => {
           <button
             className="w-10 h-10 p-2 cursor-pointer rounded-full btn-msg"
             title="Send"
+            onClick={sendHandler}
           >
             <IconSend />
           </button>
@@ -154,7 +169,7 @@ const MessagesInput = ({ c }: { c: ChatType }) => {
             width: "100%",
             height: "256px",
             background: theme === "white" ? "#e2e8f0" : "#1e293b",
-            "box-shadow": "none",
+            boxShadow: "none",
           }}
         />
       </div>

@@ -45,6 +45,7 @@ export type UserShortType = {
   online: true | number;
   avatar: string | null;
   privacy: UserPrivacyType;
+  subname: string;
 };
 
 type UserSetType = {

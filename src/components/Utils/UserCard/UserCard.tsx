@@ -68,6 +68,7 @@ const UserCard = ({ user }: { user: UserShortType }) => {
           avatar={user.avatar}
           online={user.online}
           username={user.username}
+          subname={user.subname}
         />
         {senderUID ? (
           <UserActions

@@ -1,6 +1,10 @@
 import store from "redux/store";
 import io, { ManagerOptions, SocketOptions } from "socket.io-client";
-import { CacheInitPayloadType } from "typings/cacheTypes";
+import {
+  CacheInitPayloadType,
+  MessageAcceptType,
+  MessageType,
+} from "typings/cacheTypes";
 import { notificationType } from "typings/NotificationsTypes";
 
 export const serverURL: string =
@@ -24,12 +28,20 @@ export function socketON() {
   socket.on("CHATS_INITIAL", (initData: CacheInitPayloadType) => {
     store.dispatch({ type: "CACHE_CHATS_INIT", payload: initData });
   });
+  socket.on("MESSAGE_ACCEPT", (data: MessageAcceptType) => {
+    if (data.error) {
+      console.warn("message warn - socketio.ts 33");
+    } else {
+      store.dispatch({type: "CACHE_MESSAGES_SET", payload: data.message})
+    }
+  });
 }
 
 export function socketOFF() {
   socket.off("CLIENT_FRIENDS");
   socket.off("CLIENT_NOTIF");
   socket.off("CHATS_INITIAL");
+  socket.off("MESSAGE_ACCEPT");
 }
 
 function notificationActions(data: notificationType) {
@@ -86,5 +98,21 @@ export const socketFriendRequest = (
     type: type,
     senderUID: senderUID,
     receiverUID: userUID,
+  });
+};
+
+export const socketMessageSend = (text: string, cid: string) => {
+  const user = store.getState().user;
+  socket.emit("MESSAGE_SEND", {
+    message: {
+      cid,
+      message: text,
+      mid: 0,
+      time: new Date().getTime(),
+      user,
+      files: undefined,
+    } as MessageType,
+    cid,
+    uid: user.uid,
   });
 };

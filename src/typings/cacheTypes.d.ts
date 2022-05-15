@@ -21,6 +21,13 @@ type MessagesType = {
   messages: MessageType[];
 };
 
+type MessageAcceptType = {
+  messagesCount: number;
+  message: MessageType;
+  cid: number;
+  error?: boolean;
+};
+
 export type ChatMultipleType = {
   cid: string;
   usersUID: string[];
@@ -33,6 +40,7 @@ export type ChatMultipleType = {
 
 export type ChatTwoType = {
   cid: string;
+  usersUID: string[];
   users: UserShortType[];
   messagesCount: number;
   chatType: "two-side";

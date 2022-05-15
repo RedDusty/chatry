@@ -16,7 +16,7 @@ const MessagesChat = ({
   const c = chat;
   const lastMessage = useTypedSelector((s) =>
     s.cache.messages.filter((m) => m.cid === chat.cid)
-  )[0].messages[0];
+  )[0].messages.at(-1);
   const chatName =
     chat.chatType === "two-side"
       ? chat.users.filter((v) => v.uid !== cu)[0].username
@@ -24,13 +24,30 @@ const MessagesChat = ({
 
   const messageExist = lastMessage
     ? lastMessage
-    : ({ message: "No messages", time: 0 } as MessageType);
+    : ({ message: "No messages", time: 0, user: "system" } as MessageType);
 
-  const messageVisible = messageExist.files
-    ? "File"
-    : typeof messageExist.message === "string"
-    ? messageExist.message
-    : "Reply";
+  const messageVisible = () => {
+    if (
+      messageExist.message === "No messages" &&
+      messageExist.user === "system"
+    )
+      return "No messages";
+    if (messageExist.files) return "File";
+    if (
+      typeof messageExist.message === "string" &&
+      messageExist.user !== "system"
+    )
+      return messageExist.user.uid === cu
+        ? "You: " + messageExist.message
+        : messageExist.message;
+    if (
+      typeof messageExist.message !== "string" &&
+      messageExist.user !== "system"
+    )
+      return messageExist.user.uid === cu ? "You replied" : "Replied";
+    if (messageExist.user === "system") return "System message";
+    return "Message";
+  };
 
   return (
     <div
@@ -62,7 +79,9 @@ const MessagesChat = ({
           ) : (
             <></>
           )}
-          <p className="text-slate-800 dark:text-slate-300">{messageVisible}</p>
+          <p className="text-slate-800 dark:text-slate-300">
+            {messageVisible()}
+          </p>
         </div>
       </div>
     </div>
