@@ -14,6 +14,7 @@ type MessageType = {
   files?: MessageFileType[];
   cid: string;
   user: UserShortType | "system";
+  error?: boolean;
 };
 
 type MessagesType = {

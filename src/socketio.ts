@@ -30,9 +30,10 @@ export function socketON() {
   });
   socket.on("MESSAGE_ACCEPT", (data: MessageAcceptType) => {
     if (data.error) {
-      console.warn("message warn - socketio.ts 33");
+      Object.assign(data.message, { error: true });
+      store.dispatch({ type: "CACHE_MESSAGES_SET", payload: data.message });
     } else {
-      store.dispatch({type: "CACHE_MESSAGES_SET", payload: data.message})
+      store.dispatch({ type: "CACHE_MESSAGES_SET", payload: data.message });
     }
   });
 }
@@ -103,6 +104,7 @@ export const socketFriendRequest = (
 
 export const socketMessageSend = (text: string, cid: string) => {
   const user = store.getState().user;
+
   socket.emit("MESSAGE_SEND", {
     message: {
       cid,

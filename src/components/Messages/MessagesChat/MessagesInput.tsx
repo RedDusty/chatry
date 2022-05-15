@@ -73,8 +73,17 @@ const MessagesInput = ({ c }: { c: ChatType }) => {
     emojiObject: IEmojiData
   ) => {
     setText((prevText) => {
-      checker(prevText + emojiObject.emoji);
-      return prevText + emojiObject.emoji;
+      const ta = textareaRef.current;
+      let textWithEmoji = prevText;
+      if (ta) {
+        const selpos = ta.selectionStart;
+        textWithEmoji =
+          text.substring(0, selpos) +
+          emojiObject.emoji +
+          text.substring(selpos, text.length);
+      } else textWithEmoji += emojiObject.emoji;
+      checker(textWithEmoji);
+      return textWithEmoji;
     });
     resizer();
   };
@@ -155,24 +164,26 @@ const MessagesInput = ({ c }: { c: ChatType }) => {
         placeholder="Write something..."
         style={{ height: 64 }}
       />
-      <div
-        className={`w-full sm:max-w-sm lg:max-w-lg xl:max-w-xl sm:mt-2 epicker ${
-          theme === "white" ? "epicker-white" : "epicker-dark"
-        } ${isEmojiActive ? "block" : "hidden"} `}
-      >
-        <Picker
-          onEmojiClick={emojiPicker}
-          preload={false}
-          skinTone="neutral"
-          disableAutoFocus={true}
-          pickerStyle={{
-            width: "100%",
-            height: "256px",
-            background: theme === "white" ? "#e2e8f0" : "#1e293b",
-            boxShadow: "none",
-          }}
-        />
-      </div>
+      {isEmojiActive && (
+        <div
+          className={`w-full sm:max-w-sm lg:max-w-lg xl:max-w-xl sm:mt-2 epicker ${
+            theme === "white" ? "epicker-white" : "epicker-dark"
+          }`}
+        >
+          <Picker
+            onEmojiClick={emojiPicker}
+            preload={false}
+            skinTone="neutral"
+            disableAutoFocus={true}
+            pickerStyle={{
+              width: "100%",
+              height: "256px",
+              background: theme === "white" ? "#e2e8f0" : "#1e293b",
+              boxShadow: "none",
+            }}
+          />
+        </div>
+      )}
     </div>
   );
 };

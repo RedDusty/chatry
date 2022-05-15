@@ -31,7 +31,7 @@ const MessagesMessage = ({ m }: { m: MessageType }) => {
             isCUOwner
               ? "text-sky-600 dark:text-indigo-400"
               : "text-slate-700 dark:text-slate-300"
-          } ${
+          } ${m.error && "text-red-600 dark:text-red-400"} ${
             isPlaceSep && isCUOwner ? "self-end" : "self-start"
           } font-semibold`}
         >
@@ -42,7 +42,7 @@ const MessagesMessage = ({ m }: { m: MessageType }) => {
             isCUOwner
               ? "bg-sky-200 dark:bg-indigo-900"
               : "bg-slate-200 dark:bg-slate-700"
-          } ${
+          } ${m.error && "bg-red-200 dark:bg-red-900"} ${
             isPlaceSep && isCUOwner ? "self-end" : "self-start"
           } px-2 py-1 rounded-lg text-slate-900 dark:text-slate-200`}
         >
@@ -51,9 +51,9 @@ const MessagesMessage = ({ m }: { m: MessageType }) => {
         <p
           className={`${
             isPlaceSep ? "self-start" : "self-end"
-          } text-xs text-slate-600 dark:text-slate-400`}
+          } text-xs text-slate-600 dark:text-slate-400 ${m.error && "text-red-600 dark:text-red-400"}`}
         >
-          {timeConverter(m.time)}
+          {m.error ? "not sent" : timeConverter(m.time)}
         </p>
       </div>
       <div className="w-12 h-12 shrink-0 relative">
