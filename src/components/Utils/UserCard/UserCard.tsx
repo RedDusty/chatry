@@ -57,10 +57,6 @@ const UserCard = ({ user }: { user: UserShortType }) => {
     }
   };
 
-  const writeMessageHandler = () => {
-    console.warn("MESSAGE HANDLER IN FRIENDS TAB");
-  };
-
   return (
     <div className="w-full px-0 sm:px-3 h-16 sm:h-20 first:md:mt-0 border-0 border-t first:border-t-0 hover:border-transparent dark:hover:border-transparent sibhover:border-transparent dark:sibhover:border-transparent border-solid border-gray-300 dark:border-gray-600">
       <div className="w-full h-full group hover:bg-slate-200 dark:hover:bg-slate-700 flex py-2 px-2 sm:px-4 sm:rounded-xl">
@@ -76,9 +72,9 @@ const UserCard = ({ user }: { user: UserShortType }) => {
             isFriend={isFriend}
             menuHandler={menuHandler}
             showButtons={showButtons}
-            writeMessageHandler={writeMessageHandler}
             privacy={privacy}
             actionsMenuRef={actionsMenuRef}
+            uid={user.uid}
           />
         ) : (
           <></>

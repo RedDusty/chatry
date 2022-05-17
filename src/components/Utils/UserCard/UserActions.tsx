@@ -1,6 +1,7 @@
 import React from "react";
 import IconDots from "icons/IconDots";
 import { UserPrivacyType } from "typings/UserTypes";
+import { createSearchParams, Link } from "react-router-dom";
 
 type UserActionsComponentType = {
   menuHandler: (
@@ -10,9 +11,9 @@ type UserActionsComponentType = {
   showButtons: boolean;
   isFriend: boolean;
   friendActionHandler: () => void;
-  writeMessageHandler: () => void;
   privacy: UserPrivacyType;
   actionsMenuRef: React.RefObject<HTMLDivElement>;
+  uid: string;
 };
 
 const UserActions = ({
@@ -20,9 +21,9 @@ const UserActions = ({
   showButtons,
   isFriend,
   friendActionHandler,
-  writeMessageHandler,
   privacy,
   actionsMenuRef,
+  uid,
 }: UserActionsComponentType) => {
   return (
     <div className="flex flex-1 items-center justify-end h-full">
@@ -55,11 +56,7 @@ const UserActions = ({
           >
             {isFriend ? "Remove friend" : "Add friend"}
           </button>
-          <FriendsButton
-            isFriend={isFriend}
-            privacy={privacy}
-            writeMessageHandler={writeMessageHandler}
-          />
+          <FriendsButton isFriend={isFriend} privacy={privacy} uid={uid} />
         </div>
       </div>
     </div>
@@ -69,27 +66,30 @@ const UserActions = ({
 export default UserActions;
 
 type FriendsButtonComponentType = {
-  writeMessageHandler: () => void;
   privacy: UserPrivacyType;
   isFriend: boolean;
+  uid: string;
 };
 
 const FriendsButton = ({
-  writeMessageHandler,
   isFriend,
   privacy,
+  uid,
 }: FriendsButtonComponentType) => {
   if (
     privacy.messages === "all" ||
     (privacy.messages === "friends" && isFriend)
   ) {
     return (
-      <button
-        className="bg-sky-600 hover:bg-sky-500 dark:bg-indigo-600 dark:hover:bg-indigo-500 border border-solid border-black text-white font-semibold py-1 px-2 rounded-md w-48 mt-2"
-        onClick={writeMessageHandler}
+      <Link
+        to={{
+          pathname: "/messages",
+          search: createSearchParams({ u: uid }).toString(),
+        }}
+        className="bg-sky-600 hover:bg-sky-500 dark:bg-indigo-600 dark:hover:bg-indigo-500 border border-solid border-black text-white text-center font-semibold py-1 px-2 rounded-md w-48 mt-2"
       >
         Write message
-      </button>
+      </Link>
     );
   }
 

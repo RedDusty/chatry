@@ -4,10 +4,29 @@ import MessagesSearchBar from "components/Messages/MessagesBar/MessagesSearchBar
 import MessagesBackground from "components/Messages/MessagesBackground";
 import MessagesChat from "components/Messages/MessagesChat/MessagesChat";
 import { useTypedSelector } from "redux/useTypedRedux";
+import { useSearchParams } from "react-router-dom";
+import { setCurrentDialog } from "scripts/currentDialog";
 
 const MessagesContainer = () => {
   const chats = useTypedSelector((s) => s.cache.chats);
   const chatCID = useTypedSelector((s) => s.cache.dialogCID);
+  const usp = useSearchParams();
+
+  React.useEffect(() => {
+    const m = usp[0].get("m");
+    const u = usp[0].get("u");
+
+    if (m) {
+      setCurrentDialog(m);
+    } else if (u) {
+      const chat = chats.filter(
+        (c) => c.chatType === "two-side" && c.usersUID.includes(u)
+      );
+      if (chat.length === 1) {
+        setCurrentDialog(chat[0].cid);
+      }
+    }
+  }, []);
 
   return (
     <section className="cont justify-start">

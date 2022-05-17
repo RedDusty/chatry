@@ -1,8 +1,13 @@
-import UserIcon from "components/Utils/UserIcon";
 import React from "react";
+import UserIcon from "components/Utils/UserIcon";
 import { useTypedSelector } from "redux/useTypedRedux";
 import { ChatType, MessageType } from "typings/cacheTypes";
 import { setCurrentDialog } from "scripts/currentDialog";
+import {
+  useNavigate,
+  createSearchParams,
+  useSearchParams,
+} from "react-router-dom";
 
 const MessagesChat = ({
   chat,
@@ -14,6 +19,8 @@ const MessagesChat = ({
   isActive: boolean;
 }) => {
   const c = chat;
+  const navigate = useNavigate();
+  const searchParams = useSearchParams();
   const lastMessage = useTypedSelector((s) =>
     s.cache.messages.filter((m) => m.cid === chat.cid)
   )[0].messages.at(-1);
@@ -57,7 +64,10 @@ const MessagesChat = ({
           : "hover:bg-slate-200 dark:hover:bg-slate-700"
       } group rounded-lg cursor-pointer`}
       onClick={() => {
-        setCurrentDialog(c.cid);
+        if (searchParams[0].get("m") !== c.cid) {
+          setCurrentDialog(c.cid);
+          navigate({ search: createSearchParams({ m: c.cid }).toString() });
+        }
       }}
     >
       <ChatAvatar chat={c} cu={cu} altName={chatName} />
