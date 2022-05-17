@@ -96,6 +96,18 @@ button:focus {
   }
 }
 
+.cont {
+  display: flex;
+  flex: 1 1 0%;
+  height: calc(100% - 56px);
+}
+
+@media screen and (min-width: 640px) {
+  .cont {
+    height: 100%;
+  }
+}
+
 /* EMOJI PICKER REACT CUSTOMIZATION START */
 
 .epicker .emoji-group::before {

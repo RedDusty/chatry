@@ -10,7 +10,7 @@ const MessagesContainer = () => {
   const chatCID = useTypedSelector((s) => s.cache.dialogCID);
 
   return (
-    <section className="flex flex-1 justify-start">
+    <section className="cont justify-start">
       <div
         className={`${
           chatCID === null

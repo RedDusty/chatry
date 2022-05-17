@@ -68,28 +68,28 @@ const SettingsChangeAvatar = () => {
   return (
     <div className="flex flex-col flex-1">
       <div>
-        <div className="max-w-min mx-auto sm:mx-0">
-          <p className="text-slate-700 dark:text-slate-300 max-w-min whitespace-nowrap font-semibold">
+        <ul className="mx-auto sm:mx-0 list-disc pl-1">
+          <li className="text-slate-700 dark:text-slate-300 font-semibold">
             The file must be 8 MB or less!
-          </p>
-          <p className="text-slate-700 dark:text-slate-300 mt-1 max-w-min whitespace-nowrap font-semibold">
+          </li>
+          <li className="text-slate-700 dark:text-slate-300 mt-1 font-semibold">
             Drag 'n' drop or click Upload
-          </p>
+          </li>
           {croppedAvatar ? (
-            <p className="text-slate-700 dark:text-slate-300 mt-1 max-w-min whitespace-nowrap font-semibold">
+            <li className="text-slate-700 dark:text-slate-300 mt-1 font-semibold">
               This is just a preview of the picture in different resolutions.
-            </p>
+            </li>
           ) : (
             <></>
           )}
           {msg ? (
-            <p className="bg-sky-100 dark:bg-indigo-900 text-slate-700 dark:text-slate-300 whitespace-nowrap font-semibold rounded-md p-1">
+            <li className="bg-sky-100 dark:bg-indigo-900 text-slate-700 dark:text-slate-300 font-semibold rounded-md p-1">
               {String(msg)}
-            </p>
+            </li>
           ) : (
             <></>
           )}
-        </div>
+        </ul>
         <div className="flex flex-wrap items-center mt-2 justify-center sm:justify-start">
           {avatar ? (
             <button

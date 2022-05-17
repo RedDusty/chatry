@@ -110,33 +110,37 @@ const SettingsChangeUsername = () => {
           {". Space is not allowed."}
         </li>
       </ul>
-      {lastUpdateCan && (
-        <div className="flex flex-col items-start">
-          <p className="text-sky-700 dark:text-indigo-200 font-semibold">
-            Enter a new username below:
-          </p>
-          <div className="flex flex-wrap justify-center items-center gap-4 mt-2">
-            <input
-              type="text"
-              className="p-2 font-semibold text-black dark:text-white bg-slate-300 dark:bg-slate-600 border border-solid border-slate-500 hover:border-sky-500 dark:border-slate-400 dark:hover:border-indigo-400 rounded-lg"
-              onChange={(e) => {
-                checker(e.target.value);
-              }}
-              value={username}
-            />
-            <button
-              className={`${
-                rangeError || regexError
-                  ? "cursor-not-allowed bg-red-600 dark:bg-red-800 hover:bg-red-500 dark:hover:bg-red-700"
-                  : "bg-green-600 dark:bg-green-800 hover:bg-green-500 dark:hover:bg-green-700"
-              } h-10 border border-solid border-black px-3 py-1 rounded-md text-white font-semibold`}
-              onClick={acceptHandler}
-            >
-              Accept
-            </button>
-          </div>
+
+      <div className="flex flex-col items-start">
+        <p className="text-sky-700 dark:text-indigo-200 font-semibold">
+          {lastUpdateCan ? "Enter a new username below:" : "Next update:"}
+        </p>
+        <div className="flex flex-wrap justify-center items-center gap-4 mt-2">
+          {!lastUpdateCan && <SettingsChangeUsernameNext nu={nu} />}
+          {lastUpdateCan && (
+            <>
+              <input
+                type="text"
+                className="p-2 font-semibold text-black dark:text-white bg-slate-300 dark:bg-slate-600 border border-solid border-slate-500 hover:border-sky-500 dark:border-slate-400 dark:hover:border-indigo-400 rounded-lg"
+                onChange={(e) => {
+                  checker(e.target.value);
+                }}
+                value={username}
+              />
+              <button
+                className={`${
+                  rangeError || regexError
+                    ? "cursor-not-allowed bg-red-600 dark:bg-red-800 hover:bg-red-500 dark:hover:bg-red-700"
+                    : "bg-green-600 dark:bg-green-800 hover:bg-green-500 dark:hover:bg-green-700"
+                } h-10 border border-solid border-black px-3 py-1 rounded-md text-white font-semibold`}
+                onClick={acceptHandler}
+              >
+                Accept
+              </button>
+            </>
+          )}
         </div>
-      )}
+      </div>
       <div className="text-slate-600 dark:text-slate-300">
         <p>{`${cu} ${lastUpdateCan ? "=> " + (username || cu) : ""}`}</p>
         <p>{`${window.location.origin}/user/${cs} ${
@@ -153,3 +157,12 @@ const SettingsChangeUsername = () => {
 };
 
 export default SettingsChangeUsername;
+
+const SettingsChangeUsernameNext = ({ nu }: { nu: number }) => {
+  const date = new Date(nu);
+  return (
+    <div className="p-2 font-semibold text-black dark:text-white bg-slate-300 dark:bg-slate-600 border border-solid border-slate-500 dark:border-slate-400 rounded-lg">
+      {date.toLocaleDateString("default", {month: 'long', weekday: 'long', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'})}
+    </div>
+  );
+};

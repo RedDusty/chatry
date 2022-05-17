@@ -70,7 +70,7 @@ const Profile = () => {
   }
 
   return (
-    <section className="flex flex-col flex-1 justify-start items-start p-4 sm:p-12 lg:p-16">
+    <section className="cont flex-col justify-start items-start p-4 sm:p-12 lg:p-16">
       <ProfileInfo
         avatar={pUser ? pUser.avatar : undefined}
         username={pUser ? pUser.username : undefined}

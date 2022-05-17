@@ -22,7 +22,7 @@ const MessagesDialog = () => {
   }
 
   return (
-    <div className="flex-1 w-full lg:max-w-xl xl:max-w-2xl 2xl:max-w-3xl flex flex-col items-center px-2 sm:px-4 gap-2 overflow-y-auto">
+    <div className="flex-1 w-full h-full lg:max-w-xl xl:max-w-2xl 2xl:max-w-3xl flex flex-col items-center px-2 sm:px-4 gap-2 overflow-y-auto">
       <div className="w-full h-16 shrink-0"></div>
       {messages.length === 0 && (
         <div className="text-slate-700 dark:text-slate-300 text-xl font-semibold text-center m-auto">

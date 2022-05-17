@@ -3,7 +3,7 @@ import SettingsProfile from "components/Settings/SettingsProfile";
 
 const Settings = () => {
   return (
-    <section className="flex flex-1 justify-start flex-col p-4">
+    <section className="cont justify-start flex-col p-4">
       <div className="max-w-min mx-auto sm:mx-0">
         <p className="text-3xl font-medium whitespace-nowrap text-sky-800 dark:text-indigo-300">
           User settings

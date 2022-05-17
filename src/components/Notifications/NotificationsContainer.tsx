@@ -35,7 +35,7 @@ const NotificationsContainer = ({
   if (notifs.length === 0) {
     return (
       <section
-        className="flex fixed w-full h-[calc(100%-56px)] sm:w-72 sm:h-96 z-40 notif smLshadow sm:rounded-md bg-slate-200 dark:bg-slate-800 overflow-auto"
+        className="cont fixed w-full sm:w-72 sm:h-96 z-40 notif smLshadow sm:rounded-md bg-slate-200 dark:bg-slate-800 overflow-auto"
         ref={notificationsRef}
       >
         <div className="w-full h-full flex justify-center items-center">

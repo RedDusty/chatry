@@ -25,7 +25,7 @@ const People = ({
   userList,
 }: PeopleComponentType) => {
   return (
-    <section className="flex flex-1 justify-start flex-col">
+    <section className="cont justify-start flex-col">
       <PeopleSearchBar
         btnHanlder={btnHanlder}
         disableSearchHandler={disableSearchHandler}
