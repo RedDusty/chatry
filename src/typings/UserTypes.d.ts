@@ -11,7 +11,7 @@ export type USER_LIST_UIDS_SET = "USER_LIST_UIDS_SET";
 export type USER_LIST_UIDS_REMOVE = "USER_LIST_UIDS_REMOVE";
 
 type UserPrivacyType = {
-  profile: "public" | "private";
+  profile: "public" | "private" | "friends";
   messages: "all" | "friends";
 };
 

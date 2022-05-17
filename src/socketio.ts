@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 import store from "redux/store";
 import io, { ManagerOptions, SocketOptions } from "socket.io-client";
 import {
@@ -7,6 +7,7 @@ import {
   MessageType,
 } from "typings/cacheTypes";
 import { notificationType } from "typings/NotificationsTypes";
+import { UserPrivacyType, UserSettingsType } from "typings/UserTypes";
 
 export const serverURL: string =
   process.env.REACT_APP_SERVER_URL || "localhost:8000";
@@ -39,7 +40,7 @@ export function socketON() {
   });
   socket.on("USERNAME_CHANGE", (data) => {
     if (data.error === false) {
-      store.dispatch({type: 'USER_SET', payload: data.user});
+      store.dispatch({ type: "USER_SET", payload: data.user });
       localStorage.setItem("user", JSON.stringify(data.user));
       localStorage.setItem("token", data.token);
       localStorage.setItem("refreshToken", data.refreshToken);
@@ -137,5 +138,14 @@ export const socketUsernameChange = (username: string) => {
   socket.emit("USER_CHANGE_USERNAME", {
     username: username,
     uid: uid,
+  });
+};
+
+export const socketPrivacy = (privacy: UserPrivacyType) => {
+  const uid = store.getState().user.uid;
+
+  socket.emit("USER_PRIVACY", {
+    privacy,
+    uid,
   });
 };

@@ -9,7 +9,7 @@ const SettingsProfile = () => {
   const [userTab, setUserTab] = React.useState<userTabType>(null);
 
   return (
-    <section className="mt-4 sm:ml-2 gap-2 flex flex-col">
+    <section className="sm:ml-2 gap-2 flex flex-col">
       {userTab === null && (
         <div className="flex flex-row flex-wrap gap-4">
           <button

@@ -108,6 +108,15 @@ button:focus {
   }
 }
 
+.input-checker-span {
+  margin-left: -2px;
+  transition: cubic-bezier(0.4, 0, 0.2, 1) 150ms;
+}
+
+.input-checker-input:checked ~ label .input-checker-span {
+  margin-left: 24px;
+}
+
 /* EMOJI PICKER REACT CUSTOMIZATION START */
 
 .epicker .emoji-group::before {
