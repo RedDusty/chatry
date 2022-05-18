@@ -1,17 +1,24 @@
 import React from "react";
-import { UserShortType } from "typings/UserTypes";
 import { useTypedSelector } from "redux/useTypedRedux";
 import { socketFriendRequest } from "socketio";
 import UserInfo from "components/Utils/UserCard/UserInfo";
 import UserActions from "components/Utils/UserCard/UserActions";
+import { userEmpty } from "scripts/fillers";
+import { UserShortType } from "typings/UserTypes";
+import { getUser } from "scripts/usersCache";
 
-const UserCard = ({ user }: { user: UserShortType }) => {
+const UserCard = ({ uid }: { uid: string }) => {
+  const [user, setUser] = React.useState<UserShortType>(userEmpty);
   const [showButtons, setShowButtons] = React.useState(false);
   const senderUID = useTypedSelector((s) => s.user.uid);
   const friendsList = useTypedSelector((s) => s.user.friendsUID);
   const actionsMenuRef = React.useRef<HTMLDivElement>(null);
 
-  const isFriend = friendsList.indexOf(user.uid) !== -1 ? true : false;
+  const isFriend = friendsList.indexOf(uid) !== -1 ? true : false;
+
+  React.useEffect(() => {
+    getUser(uid, setUser);
+  }, [uid]);
 
   const toggleMenu = (e: MouseEvent) => {
     if (
@@ -64,7 +71,6 @@ const UserCard = ({ user }: { user: UserShortType }) => {
           avatar={user.avatar}
           online={user.online}
           username={user.username}
-          subname={user.subname}
         />
         {senderUID ? (
           <UserActions

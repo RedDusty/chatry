@@ -8,7 +8,6 @@ const SettingsChangeUsername = () => {
   const [regexError, setRegexError] = React.useState(false);
   const [existError, setExistError] = React.useState(false);
   const cu = useTypedSelector((s) => s.user.username);
-  const cs = useTypedSelector((s) => s.user.subname);
   const nu = useTypedSelector((s) => s.user.lastUsernameUpdate);
   const dispatch = useTypedDispatch();
   const lastUpdateCan = nu < new Date().getTime() - 1000 * 60 * 60 * 24 * 7;
@@ -143,12 +142,12 @@ const SettingsChangeUsername = () => {
       </div>
       <div className="text-slate-600 dark:text-slate-300">
         <p>{`${cu} ${lastUpdateCan ? "=> " + (username || cu) : ""}`}</p>
-        <p>{`${window.location.origin}/user/${cs} ${
+        <p>{`${window.location.origin}/user/${cu} ${
           lastUpdateCan
             ? "=>" +
               window.location.origin +
               "/user/" +
-              String(username || cs).toLocaleLowerCase()
+              String(username || cu).toLowerCase()
             : ""
         }`}</p>
       </div>
@@ -162,7 +161,14 @@ const SettingsChangeUsernameNext = ({ nu }: { nu: number }) => {
   const date = new Date(nu);
   return (
     <div className="p-2 font-semibold text-black dark:text-white bg-slate-300 dark:bg-slate-600 border border-solid border-slate-500 dark:border-slate-400 rounded-lg">
-      {date.toLocaleDateString("default", {month: 'long', weekday: 'long', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'})}
+      {date.toLocaleDateString("default", {
+        month: "long",
+        weekday: "long",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+      })}
     </div>
   );
 };

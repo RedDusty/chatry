@@ -7,16 +7,10 @@ import UserIcon from "../UserIcon";
 type UserInfoComponentType = {
   avatar: string | null;
   username: string;
-  online: number | true;
-  subname: string;
+  online: number | boolean;
 };
 
-const UserInfo = ({
-  avatar,
-  online,
-  username,
-  subname,
-}: UserInfoComponentType) => {
+const UserInfo = ({ avatar, online, username }: UserInfoComponentType) => {
   return (
     <div className="flex">
       <div className="w-12 h-12 sm:w-16 sm:h-16 shrink-0 rounded-full relative">
@@ -28,7 +22,7 @@ const UserInfo = ({
             {username || "Anon"}
           </p>
           <Link
-            to={"/user/" + String(subname).toLowerCase()}
+            to={"/user/" + String(username).toLowerCase()}
             className="fill-zinc-900 dark:fill-zinc-300 w-4 h-4 ml-2"
           >
             <IconLink />
@@ -40,7 +34,9 @@ const UserInfo = ({
               <p className="text-green-600 dark:text-green-400">{"Online"}</p>
             ) : (
               <p className="text truncate">
-                {"Last online: " + timeConverter(online) || "Offline"}
+                {typeof online === "number" &&
+                  "Last online: " + timeConverter(online, "short")}
+                {online === false && "Offline"}
               </p>
             )}
           </div>

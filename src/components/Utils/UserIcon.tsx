@@ -8,11 +8,12 @@ const UserIcon = ({
   alt,
 }: {
   avatar?: string | null;
-  isOnline?: true | number | null;
+  isOnline?: boolean | number | null;
   removeDot?: boolean;
   alt?: string;
 }) => {
   const [isLoaded, setLoaded] = React.useState(true);
+  
   const theme = useTypedSelector((s) => s.user.userSettings.theme);
 
   const rnt = () =>
@@ -26,7 +27,11 @@ const UserIcon = ({
 
   const altExist = String(alt).charAt(0).toUpperCase() || "I";
   const onlineExist =
-    removeDot === true ? null : isOnline !== null ? isOnline : 0;
+    removeDot === true
+      ? null
+      : isOnline !== null && isOnline !== false
+      ? isOnline
+      : 0;
 
   const onlineShow =
     onlineExist !== null &&

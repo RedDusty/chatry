@@ -3,12 +3,13 @@ import UserIcon from "components/Utils/UserIcon";
 import timeConverter from "scripts/timeConverter";
 import { lastUsernamesType } from "typings/UserTypes";
 import IconShow from "icons/IconShow";
+import IconHide from "icons/IconHide";
 
 type ProfileInfoType = {
   avatar: string | null | undefined;
   username: string | undefined;
   uid: string | null | undefined;
-  online: true | number | undefined;
+  online: boolean | number | undefined;
   lastUsernames: lastUsernamesType[];
 };
 
@@ -54,10 +55,12 @@ const ProfileInfo = ({
                     ? "fill-green-500 dark:fill-green-400"
                     : "fill-black dark:fill-white"
                 }`}
-                title="Show 3 last usernames"
+                title={`${
+                  isShowLastUsernames ? "Hide" : "Show"
+                } 3 last usernames`}
                 onClick={lastUsernamesHandler}
               >
-                <IconShow />
+                {isShowLastUsernames ? <IconHide /> : <IconShow />}
               </button>
             </div>
           </div>
@@ -81,15 +84,12 @@ const ProfileInfo = ({
           )}
           {lastUsernames.map((u, idx) => {
             return (
-              <div>
-                <div className="flex justify-between">
-                  <p>{u.username}</p>
-                  <p>{timeConverter(u.updateTime)}</p>
-                </div>
-                {idx !== lastUsernames.length - 1 && (
-                  <div className="w-full h-px bg-slate-500 my-2"></div>
-                )}
-              </div>
+              <ProfileLastUsername
+                isLast={idx === lastUsernames.length - 1}
+                updateTime={u.updateTime}
+                username={u.username}
+                key={u.updateTime}
+              />
             );
           })}
         </div>
@@ -99,3 +99,31 @@ const ProfileInfo = ({
 };
 
 export default ProfileInfo;
+
+const ProfileLastUsername = ({
+  isLast,
+  updateTime,
+  username,
+}: {
+  username: string;
+  updateTime: number;
+  isLast: boolean;
+}) => {
+  return (
+    <div>
+      <div className="flex justify-between">
+        <p>{username}</p>
+        <p>
+          {new Date(updateTime).toLocaleDateString("default", {
+            year: "2-digit",
+            month: "2-digit",
+            day: "2-digit",
+          })}
+        </p>
+      </div>
+      {isLast === false && (
+        <div className="w-full h-px bg-slate-500 my-2"></div>
+      )}
+    </div>
+  );
+};

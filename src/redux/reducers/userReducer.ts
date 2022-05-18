@@ -1,4 +1,8 @@
-import { UserActionsType, UserReducerType } from "typings/UserTypes";
+import {
+  hourCycleType,
+  UserActionsType,
+  UserReducerType,
+} from "typings/UserTypes";
 
 const themeStorage = () => {
   const theme =
@@ -18,6 +22,8 @@ const userReducerInitial: UserReducerType = {
     messageView:
       (localStorage.getItem("chatry-messageView") as "separately" | "left") ||
       "separately",
+    hourCycle:
+      (localStorage.getItem("chatry-hourCycle") as hourCycleType) || "h24",
   },
   privacy: {
     messages: "all",
@@ -27,7 +33,6 @@ const userReducerInitial: UserReducerType = {
   friendsUID: [],
   ignoresUID: [],
   waitingsUID: [],
-  subname: "",
   verified: false,
   socketID: null,
   banned: false,
@@ -43,12 +48,6 @@ const userReducer = (
       if (action.payload === null) {
         return { ...state, ...userReducerInitial };
       }
-      const theme = action.payload.userSettings.theme;
-      localStorage.setItem("chatry-theme", theme);
-      const messageView = action.payload.userSettings.messageView;
-      localStorage.setItem("chatry-messageView", messageView);
-      document.body.classList.remove(theme === "dark" ? "white" : "dark");
-      document.body.classList.add(theme === "dark" ? "dark" : "white");
       return { ...state, ...action.payload };
     }
     case "USER_SOCKETID_SET": {
@@ -56,9 +55,6 @@ const userReducer = (
     }
     case "USER_USERNAME_SET": {
       return { ...state, username: action.payload };
-    }
-    case "USER_SUBNAME_SET": {
-      return { ...state, subname: action.payload };
     }
     case "USER_AVATAR_SET": {
       return { ...state, avatar: action.payload };
@@ -81,6 +77,13 @@ const userReducer = (
       return {
         ...state,
         userSettings: { ...state.userSettings, messageView: action.payload },
+      };
+    }
+    case "USER_HOUR_CYCLE_SET": {
+      localStorage.setItem("chatry-hourCycle", action.payload);
+      return {
+        ...state,
+        userSettings: { ...state.userSettings, hourCycle: action.payload },
       };
     }
     case "USER_UID_SET": {

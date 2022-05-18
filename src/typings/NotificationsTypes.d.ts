@@ -2,10 +2,14 @@ export type NOTIFICATIONS_SET = "NOTIFICATIONS_SET";
 export type NOTIFICATIONS_ADD = "NOTIFICATIONS_ADD";
 
 type notificationType = {
-  header: string;
-  data: string | UserShortType | any;
+  header: notificationsHeaderType;
+  data: string | any;
   time: number;
-  icon: null | string;
+  icon?: null | string;
+  user?: {
+    username: string;
+    uid: string;
+  };
 };
 
 export type NotificationsReducerType = notificationType[];

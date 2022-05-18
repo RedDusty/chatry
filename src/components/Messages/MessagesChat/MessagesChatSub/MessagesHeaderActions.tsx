@@ -1,13 +1,25 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useTypedSelector } from "redux/useTypedRedux";
+import { getUser } from "scripts/usersCache";
 import { ChatType } from "typings/cacheTypes";
 
 const MessagesHeaderActions = ({ c }: { c: ChatType }) => {
+  const [username, setUsername] = React.useState("Loading");
   const cu = useTypedSelector((s) => s.user.uid);
 
   const ct = c.chatType === "two-side";
-  const username = ct && c.users.filter((u) => u.uid !== cu)[0].username;
+  const userUID = ct && c.usersUID.filter((u) => u !== cu)[0];
+
+  React.useEffect(() => {
+    if (c.chatType === "two-side") {
+      getUser(userUID ? userUID : null).then((v) => {
+        if (v) {
+          setUsername(v.username);
+        }
+      });
+    }
+  }, [c.chatType, userUID]);
 
   return (
     <div className={`w-full h-16 flex items-center`}>

@@ -4,6 +4,7 @@ import notificationBuilder from "scripts/notificationBuilder";
 import UserIcon from "components/Utils/UserIcon";
 import IconInfo from "icons/IconInfo";
 import { Link } from "react-router-dom";
+import timeConverter from "scripts/timeConverter";
 
 const Notification = ({
   notif,
@@ -28,12 +29,13 @@ const Notification = ({
           <NotificationContent
             data={n.data}
             toggleNotifications={toggleNotifications}
+            user={n.user}
           />
         </div>
       </div>
       <NotificationFooter
         timeNumber={n.time}
-        username={n.data.username}
+        user={n.user}
         toggleNotifications={toggleNotifications}
       />
     </div>
@@ -45,12 +47,17 @@ export default Notification;
 const NotificationContent = ({
   data,
   toggleNotifications,
+  user,
 }: {
   data: any;
   toggleNotifications: (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     v?: boolean | undefined
   ) => void;
+  user?: {
+    uid: string;
+    username: string;
+  };
 }) => {
   if (typeof data === "string") {
     return <p className="text-slate-800 dark:text-gray-300">{data}</p>;
@@ -59,7 +66,10 @@ const NotificationContent = ({
   if (data.text) {
     let text = data.text;
     if ((data.text as string).match(/%username%/gm)) {
-      text = (data.text as string).replace(/%username%/gm, data.username);
+      text = (data.text as string).replace(
+        /%username%/gm,
+        user ? user.username : "User"
+      );
     }
     return (
       <div className="flex flex-col">
@@ -94,7 +104,7 @@ const NotificationIcon = ({
   alt,
   isOnline,
 }: {
-  icon: string | null;
+  icon?: string | null;
   alt: string;
   isOnline: number | true;
 }) => {
@@ -115,8 +125,10 @@ const NotificationIcon = ({
 
 type NotificationFooterComponentType = {
   timeNumber: number;
-  username?: string;
-
+  user?: {
+    uid: string;
+    username: string;
+  };
   toggleNotifications: (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     v?: boolean | undefined
@@ -125,57 +137,25 @@ type NotificationFooterComponentType = {
 
 const NotificationFooter = ({
   timeNumber,
-  username,
+  user,
   toggleNotifications,
 }: NotificationFooterComponentType) => {
-  const notifTime = () => {
-    const uDate = new Date(timeNumber);
-
-    let time: string = "Today at ";
-
-    if (new Date().getTime() > uDate.getTime() + 31536000000) {
-      time =
-        uDate.toLocaleString("default", { day: "2-digit" }) +
-        " " +
-        uDate.toLocaleString("default", { month: "long" }) +
-        " " +
-        uDate.toLocaleString("default", { year: "numeric" }) +
-        " at ";
-    }
-
-    if (new Date().getTime() > uDate.getTime() + 86400000) {
-      time =
-        uDate.toLocaleString("default", { day: "2-digit" }) +
-        " " +
-        uDate.toLocaleString("default", { month: "long" }) +
-        " at ";
-    }
-
-    time =
-      time +
-      ("0" + uDate.getHours()).slice(-2) +
-      ":" +
-      ("0" + uDate.getMinutes()).slice(-2) +
-      ":" +
-      ("0" + uDate.getSeconds()).slice(-2);
-
-    return time;
-  };
-
-  if (username) {
+  if (user) {
     return (
       <div className="w-full mt-1">
         <div className="flex justify-between text-sm text-slate-600 dark:text-slate-400">
           <Link
-            to={"/user/" + String(username).toLowerCase()}
+            to={"/user/" + String(user.username).toLowerCase()}
             className="link"
             onClick={(e) => {
               toggleNotifications(e as any, false);
             }}
           >
-            {username}
+            {user.username}
           </Link>
-          <p className="whitespace-nowrap mr-4">{notifTime()}</p>
+          <p className="whitespace-nowrap mr-4">
+            {timeConverter(timeNumber, "short")}
+          </p>
         </div>
         <div className="w-2/3 border-0 border-b border-solid border-slate-400 mx-auto py-1"></div>
       </div>
@@ -185,7 +165,7 @@ const NotificationFooter = ({
   return (
     <div className="w-full mt-1">
       <p className="text-sm text-slate-600 dark:text-slate-400 whitespace-nowrap max-w-min ml-auto mr-4">
-        {notifTime()}
+        {timeConverter(timeNumber)}
       </p>
       <div className="w-2/3 border-0 border-b border-solid border-slate-400 mx-auto py-1"></div>
     </div>

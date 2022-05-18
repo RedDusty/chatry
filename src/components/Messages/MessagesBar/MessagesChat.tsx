@@ -3,11 +3,9 @@ import UserIcon from "components/Utils/UserIcon";
 import { useTypedSelector } from "redux/useTypedRedux";
 import { ChatType, MessageType } from "typings/cacheTypes";
 import { setCurrentDialog } from "scripts/currentDialog";
-import {
-  useNavigate,
-  createSearchParams,
-  useSearchParams,
-} from "react-router-dom";
+import { useNavigate, createSearchParams } from "react-router-dom";
+import { UserShortType } from "typings/UserTypes";
+import { getUser } from "scripts/usersCache";
 
 const MessagesChat = ({
   chat,
@@ -18,16 +16,27 @@ const MessagesChat = ({
   cu: string;
   isActive: boolean;
 }) => {
+  const [user, setUser] = React.useState<UserShortType | null>(null);
+  const [chatName, setChatName] = React.useState("");
   const c = chat;
   const navigate = useNavigate();
-  const searchParams = useSearchParams();
+  const cd = useTypedSelector((s) => s.cache.dialogCID);
   const lastMessage = useTypedSelector((s) =>
     s.cache.messages.filter((m) => m.cid === chat.cid)
   )[0].messages.at(-1);
-  const chatName =
-    chat.chatType === "two-side"
-      ? chat.users.filter((v) => v.uid !== cu)[0].username
-      : chat.name;
+  const userUID = c.usersUID.filter((u) => u !== cu)[0];
+
+  React.useEffect(() => {
+    if (c.chatType === "two-side") {
+      getUser(userUID ? userUID : null, setUser).then((v) => {
+        if (v) {
+          setChatName(v.username);
+        }
+      });
+    } else {
+      setChatName(c.name);
+    }
+  }, [c, userUID]);
 
   const messageExist = lastMessage
     ? lastMessage
@@ -44,14 +53,14 @@ const MessagesChat = ({
       typeof messageExist.message === "string" &&
       messageExist.user !== "system"
     )
-      return messageExist.user.uid === cu
+      return user?.uid === cu
         ? "You: " + messageExist.message
         : messageExist.message;
     if (
       typeof messageExist.message !== "string" &&
       messageExist.user !== "system"
     )
-      return messageExist.user.uid === cu ? "You replied" : "Replied";
+      return user?.uid === cu ? "You replied" : "Replied";
     if (messageExist.user === "system") return "System message";
     return "Message";
   };
@@ -64,13 +73,13 @@ const MessagesChat = ({
           : "hover:bg-slate-200 dark:hover:bg-slate-700"
       } group rounded-lg cursor-pointer`}
       onClick={() => {
-        if (searchParams[0].get("m") !== c.cid) {
+        if (cd !== c.cid) {
           setCurrentDialog(c.cid);
           navigate({ search: createSearchParams({ m: c.cid }).toString() });
         }
       }}
     >
-      <ChatAvatar chat={c} cu={cu} altName={chatName} />
+      <ChatAvatar chat={c} cu={cu} altName={chatName} user={user} />
       <div className="flex flex-col ml-3 w-[calc(100%-75px)] lg:w-72">
         <p className="truncate w-full font-semibold text-slate-800 dark:text-slate-300">
           {chatName}
@@ -79,11 +88,7 @@ const MessagesChat = ({
           {c.chatType !== "two-side" ? (
             <div className="w-6 h-6">
               <UserIcon
-                avatar={
-                  messageExist.user !== "system"
-                    ? messageExist.user.avatar
-                    : null
-                }
+                avatar={messageExist.user !== "system" ? user?.avatar : null}
               />
             </div>
           ) : (
@@ -104,20 +109,16 @@ const ChatAvatar = ({
   chat,
   cu,
   altName,
+  user,
 }: {
   chat: ChatType;
   cu: string;
   altName: string;
+  user: UserShortType | null;
 }) => {
-  const userAvatar =
-    chat.chatType === "two-side"
-      ? chat.users.filter((u) => u.uid !== cu)[0].avatar
-      : null;
+  const userAvatar = chat.chatType === "two-side" ? user?.avatar : null;
 
-  const inOnline =
-    chat.chatType === "two-side"
-      ? chat.users.filter((u) => u.uid !== cu)[0].online
-      : null;
+  const inOnline = chat.chatType === "two-side" ? user?.online : null;
 
   if (chat.chatType !== "two-side" && chat.avatar) {
     return (

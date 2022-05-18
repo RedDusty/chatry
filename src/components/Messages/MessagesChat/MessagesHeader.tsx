@@ -6,23 +6,39 @@ import IconDots from "icons/IconDots";
 import { useTypedSelector } from "redux/useTypedRedux";
 import { setCurrentDialog } from "scripts/currentDialog";
 import { ChatType } from "typings/cacheTypes";
+import { useNavigate } from "react-router-dom";
+import { UserShortType } from 'typings/UserTypes';
+import { getUser } from 'scripts/usersCache';
 
 const MessagesHeader = ({ c }: { c: ChatType }) => {
+  const [user, setUser] = React.useState<UserShortType | null>(null);
+  const [chatAvatar, setChatAvatar] = React.useState<string | null>("");
+  const [chatName, setChatName] = React.useState("");
   const [isShowActions, setShowActions] = React.useState(false);
+  const navigate = useNavigate();
 
   const theme = useTypedSelector((s) => s.user.userSettings.theme);
   const cu = useTypedSelector((s) => s.user.uid);
-  const ct = c.chatType === "two-side";
-  const chatAvatar = ct
-    ? c.users.filter((u) => u.uid !== cu)[0].avatar
-    : c.avatar;
-  const isOnline = ct ? c.users.filter((u) => u.uid !== cu)[0].online : null;
-  const chatName = ct
-    ? c.users.filter((u) => u.uid !== cu)[0].username
-    : c.name;
+
+  const userUID = c.usersUID.filter((u) => u !== cu)[0];
+
+  React.useEffect(() => {
+    if (c.chatType === "two-side") {
+      getUser(userUID ? userUID : null, setUser).then((v) => {
+        if (v) {
+          setChatName(v.username);
+          setChatAvatar(v.avatar)
+        }
+      });
+    } else {
+      setChatName(c.name);
+      setChatAvatar(c.avatar)
+    }
+  }, [c, userUID]);
 
   const closeDialogHandler = () => {
     setCurrentDialog(null);
+    navigate({ search: "".toString() });
   };
 
   const toggleDialogHandler = () => {
@@ -58,8 +74,12 @@ const MessagesHeader = ({ c }: { c: ChatType }) => {
           </div>
         </div>
         <div className="w-[calc(100%-100px)] sm:w-80 md:w-72 lg:w-96 flex items-center justify-center gap-2 sm:gap-4">
-          <div className="w-12 h-12 shrink-0">
-            <UserIcon avatar={chatAvatar} isOnline={isOnline} alt={chatName} />
+          <div className="w-12 h-12 shrink-0 relative">
+            <UserIcon
+              avatar={chatAvatar}
+              isOnline={user ? user.online : null}
+              alt={chatName}
+            />
           </div>
           <p className=" text-xl sm:text-2xl font-semibold text-slate-700 dark:text-slate-300 truncate">
             {chatName}

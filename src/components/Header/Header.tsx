@@ -20,9 +20,9 @@ type HeaderType = {
 };
 
 const Header = ({ isNotifShow, toggleNotifications }: HeaderType) => {
+  const username = useTypedSelector((s) => s.user.username);
   const theme = useTypedSelector((s) => s.user.userSettings.theme);
   const uid = useTypedSelector((s) => s.user.uid);
-  const subname = useTypedSelector((s) => s.user.subname);
   const dispatch = useTypedDispatch();
 
   const toggleTheme = () => {
@@ -53,7 +53,7 @@ const Header = ({ isNotifShow, toggleNotifications }: HeaderType) => {
       />
       <HeaderButton
         Icon={uid ? <IconUser /> : <IconKey />}
-        link={uid ? `/user/${subname}` : "/auth"}
+        link={uid ? `/user/${String(username).toLowerCase()}` : "/auth"}
         canUserPass={true}
         isShow={true}
       />

@@ -7,7 +7,7 @@ import {
   MessageType,
 } from "typings/cacheTypes";
 import { notificationType } from "typings/NotificationsTypes";
-import { UserPrivacyType, UserSettingsType } from "typings/UserTypes";
+import { UserPrivacyType } from "typings/UserTypes";
 
 export const serverURL: string =
   process.env.REACT_APP_SERVER_URL || "localhost:8000";
@@ -124,7 +124,7 @@ export const socketMessageSend = (text: string, cid: string) => {
       message: text,
       mid: 0,
       time: new Date().getTime(),
-      user,
+      user: user.uid,
       files: undefined,
     } as MessageType,
     cid,

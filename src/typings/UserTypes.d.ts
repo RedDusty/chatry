@@ -1,8 +1,8 @@
 export type USER_USERNAME_SET = "USER_USERNAME_SET";
-export type USER_SUBNAME_SET = "USER_SUBNAME_SET";
 export type USER_AVATAR_SET = "USER_AVATAR_SET";
 export type USER_THEME_SET = "USER_THEME_SET";
 export type USER_MESSAGE_VIEW_SET = "USER_MESSAGE_VIEW_SET";
+export type USER_HOUR_CYCLE_SET = "USER_HOUR_CYCLE_SET";
 export type USER_UID_SET = "USER_UID_SET";
 export type USER_VERIFY_SET = "USER_VERIFY_SET";
 export type USER_SET = "USER_SET";
@@ -15,9 +15,12 @@ type UserPrivacyType = {
   messages: "all" | "friends";
 };
 
+type hourCycleType = "h11" | "h12" | "h23" | "h24";
+
 type UserSettingsType = {
   theme: "white" | "dark";
   messageView: "separately" | "left";
+  hourCycle: hourCycleType;
 };
 
 export type lastUsernamesType = {
@@ -27,8 +30,7 @@ export type lastUsernamesType = {
 
 export type UserProileType = {
   username: string;
-  subname: string;
-  online: number | true;
+  online: number | boolean;
   avatar: string | null;
   privacy: UserPrivacyType;
   uid: string;
@@ -40,14 +42,13 @@ export type UserReducerType = {
   email: string;
   uid: string | null;
   avatar: string | null;
-  online: true | number;
+  online: boolean | number;
   userSettings: UserSettingsType;
   privacy: UserPrivacyType;
   registerDate: number;
   friendsUID: string[];
   ignoresUID: string[];
   waitingsUID: string[];
-  subname: string;
   verified: boolean;
   socketID: string | null;
   banned: boolean;
@@ -59,10 +60,9 @@ type ValueOf<T> = T[keyof T];
 export type UserShortType = {
   username: string;
   uid: string;
-  online: true | number;
+  online: boolean | number;
   avatar: string | null;
   privacy: UserPrivacyType;
-  subname: string;
 };
 
 type UserSetType = {
@@ -72,11 +72,6 @@ type UserSetType = {
 
 type UserUsernameSetType = {
   type: USER_USERNAME_SET;
-  payload: string;
-};
-
-type UserSubnameSetType = {
-  type: USER_SUBNAME_SET;
   payload: string;
 };
 
@@ -93,6 +88,11 @@ type UserThemeSetType = {
 type UserMessageViewSetType = {
   type: USER_MESSAGE_VIEW_SET;
   payload: "separately" | "left";
+};
+
+type UserHourCycleSetType = {
+  type: USER_HOUR_CYCLE_SET;
+  payload: "h11" | "h12" | "h23" | "h24";
 };
 
 type UserUIDSetType = {
@@ -137,4 +137,4 @@ type UserActionsType =
   | UserListUIDSSetType
   | UserListUIDSRemoveType
   | UserMessageViewSetType
-  | UserSubnameSetType;
+  | UserHourCycleSetType;

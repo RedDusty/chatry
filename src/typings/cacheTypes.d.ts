@@ -1,20 +1,16 @@
-import { UserShortType } from "typings/UserTypes";
-
 export type CACHE_CHATS_INIT = "CACHE_CHATS_INIT";
-export type CACHE_USER_ADD = "CACHE_USER_ADD";
 export type CACHE_USER_SET = "CACHE_USER_SET";
 export type CACHE_MESSAGES_SET = "CACHE_MESSAGES_SET";
 export type CACHE_CHAT_SET = "CACHE_CHAT_SET";
 export type CACHE_DIALOG_CID_SET = "CACHE_DIALOG_CID_SET";
 
 type MessageType = {
-  mid: number;
   time: number;
   message: string | MessageType;
   files?: MessageFileType[];
   cid: string;
-  user: UserShortType | "system";
-  error?: boolean;
+  mid: number;
+  user: string | "system";
 };
 
 type MessagesType = {
@@ -39,10 +35,14 @@ export type ChatMultipleType = {
   avatar: string | null;
 };
 
+type CacheInitPayloadType = {
+  chats: ChatType[];
+  messages: MessagesType[];
+};
+
 export type ChatTwoType = {
   cid: string;
   usersUID: string[];
-  users: UserShortType[];
   messagesCount: number;
   chatType: "two-side";
 };
@@ -50,20 +50,9 @@ export type ChatTwoType = {
 export type ChatType = ChatMultipleType | ChatTwoType;
 
 export type CacheReducerType = {
-  users: UserShortType[];
   messages: MessagesType[];
   chats: ChatType[];
   dialogCID: string | null;
-};
-
-type CacheUserAddType = {
-  type: CACHE_USER_ADD;
-  payload: UserShortType;
-};
-
-type CacheUserSetType = {
-  type: CACHE_USER_SET;
-  payload: UserShortType;
 };
 
 type CacheMessageSetType = {
@@ -74,11 +63,6 @@ type CacheMessageSetType = {
 type CacheChatSetType = {
   type: CACHE_CHAT_SET;
   payload: ChatType;
-};
-
-type CacheInitPayloadType = {
-  chats: ChatType[];
-  messages: MessagesType[];
 };
 
 type CacheChatsInitType = {
@@ -92,8 +76,6 @@ type CacheDialogCIDSetType = {
 };
 
 export type CacheActionsType =
-  | CacheUserAddType
-  | CacheUserSetType
   | CacheMessageSetType
   | CacheChatSetType
   | CacheChatsInitType

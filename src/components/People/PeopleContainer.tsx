@@ -4,6 +4,7 @@ import { UserShortType } from "typings/UserTypes";
 import { useTypedSelector } from "redux/useTypedRedux";
 import People from "components/People/People";
 import { useSearchParams } from "react-router-dom";
+import { setUser } from "scripts/usersCache";
 
 const searchFriends = async (
   friendsUID: string[],
@@ -48,7 +49,7 @@ const searchUsers = async (query: string, userUID: string) => {
 };
 
 const PeopleContainer = () => {
-  const [userList, setUserList] = React.useState<UserShortType[]>([]);
+  const [userUIDList, setUserUIDList] = React.useState<string[]>([]);
   const [isSearch, setSearch] = React.useState(false);
   const [query, setQuery] = React.useState("");
   const [isFetching, setFetching] = React.useState(false);
@@ -59,10 +60,14 @@ const PeopleContainer = () => {
   const searcher = (func: Promise<UserShortType[] | undefined>) => {
     func
       .then((v) => {
-        if (v) setUserList(v);
+        if (v) {
+          const uids = v.map((u) => u.uid);
+          setUser(v);
+          setUserUIDList(uids);
+        }
       })
       .catch(() => {
-        setUserList([]);
+        setUserUIDList([]);
       })
       .finally(() => setFetching(false));
   };
@@ -115,7 +120,7 @@ const PeopleContainer = () => {
     setFetching(u.uid ? true : false);
     setSearch(false);
     setQuery("");
-    u.uid === null && setUserList([]);
+    u.uid === null && setUserUIDList([]);
     u.uid && searcher(searchFriends(u.friendsUID, u.uid, "friends"));
   };
 
@@ -127,7 +132,7 @@ const PeopleContainer = () => {
       isSearch={isSearch}
       query={query}
       setQuery={setQuery}
-      userList={userList}
+      userUIDList={userUIDList}
     />
   );
 };

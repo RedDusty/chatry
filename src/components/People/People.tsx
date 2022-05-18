@@ -1,7 +1,6 @@
 import React from "react";
 import UserCard from "components/Utils/UserCard/UserCard";
 import IconLoading from "icons/IconLoading";
-import { UserShortType } from "typings/UserTypes";
 import PeopleSearchBar from "components/People/PeopleSearchBar";
 import PeopleTabs from "components/People/PeopleTabs";
 
@@ -12,7 +11,7 @@ type PeopleComponentType = {
   query: string;
   isSearch: boolean;
   isFetching: boolean;
-  userList: UserShortType[];
+  userUIDList: string[];
 };
 
 const People = ({
@@ -22,7 +21,7 @@ const People = ({
   query,
   isFetching,
   isSearch,
-  userList,
+  userUIDList,
 }: PeopleComponentType) => {
   return (
     <section className="cont justify-start flex-col">
@@ -39,9 +38,9 @@ const People = ({
           <div className="w-[24vw] h-[24vw] m-auto">
             <IconLoading />
           </div>
-        ) : userList.length ? (
-          userList.map((user, idx) => {
-            return <UserCard user={user} key={user.uid + idx} />;
+        ) : userUIDList.length ? (
+          userUIDList.map((uid, idx) => {
+            return <UserCard uid={uid} key={uid + idx} />;
           })
         ) : (
           <div className="w-full h-full flex justify-center items-center flex-col">

@@ -4,6 +4,7 @@ import { UserProileType } from "typings/UserTypes";
 import axios from "axios";
 import IconInfo from "icons/IconInfo";
 import { Link } from "react-router-dom";
+import { setUser } from 'scripts/usersCache';
 
 const Profile = () => {
   const [pUser, setPUser] = React.useState<UserProileType | null>(null);
@@ -23,6 +24,7 @@ const Profile = () => {
         .then((v) => {
           if (v.data) {
             setPUser(v.data);
+            setUser(v.data);
           }
         })
         .catch((e) => {
@@ -74,7 +76,7 @@ const Profile = () => {
       <ProfileInfo
         avatar={pUser ? pUser.avatar : undefined}
         username={pUser ? pUser.username : undefined}
-        online={pUser ? pUser.online : undefined}
+        online={pUser ? pUser.online : false}
         uid={pUser ? pUser.uid : undefined}
         lastUsernames={pUser ? pUser.usernames : []}
       />

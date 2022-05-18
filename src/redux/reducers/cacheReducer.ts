@@ -7,7 +7,6 @@ import {
 
 const cacheReducerInitial: CacheReducerType = {
   messages: [],
-  users: [],
   chats: [],
   dialogCID: null,
 };
@@ -17,31 +16,6 @@ const notificationsReducer = (
   action: CacheActionsType
 ): CacheReducerType => {
   switch (action.type) {
-    case "CACHE_USER_ADD":
-      let addedUsersState = state.users;
-      addedUsersState.push(action.payload);
-      addedUsersState = addedUsersState.sort((a, b) =>
-        String(a.username)
-          .toLowerCase()
-          .localeCompare(String(b.username).toLowerCase())
-      );
-      return { ...state, users: addedUsersState };
-    case "CACHE_USER_SET":
-      let settedUsersState = state.users;
-      const suIndex = settedUsersState.findIndex(
-        (v) => v.uid === action.payload.uid
-      );
-      if (suIndex !== -1) {
-        settedUsersState[suIndex] = action.payload;
-      } else {
-        settedUsersState.push(action.payload);
-      }
-      settedUsersState = settedUsersState.sort((a, b) =>
-        String(a.username)
-          .toLowerCase()
-          .localeCompare(String(b.username).toLowerCase())
-      );
-      return { ...state, users: settedUsersState };
     case "CACHE_MESSAGES_SET":
       const cIndex = state.messages.findIndex(
         (c) => c.cid === action.payload.cid
