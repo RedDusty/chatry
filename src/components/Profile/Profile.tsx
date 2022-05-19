@@ -1,10 +1,12 @@
 import React from "react";
 import ProfileInfo from "components/Profile/ProfileInfo";
+import ProfileActions from "components/Profile/ProfileActions";
 import { UserShortType } from "typings/UserTypes";
 import axios from "axios";
 import IconInfo from "icons/IconInfo";
 import { Link } from "react-router-dom";
 import { setUser } from "scripts/usersCache";
+import { useTypedSelector } from "redux/useTypedRedux";
 
 type errorType =
   | "NOT_FOUND"
@@ -18,6 +20,7 @@ const Profile = () => {
   const [error, setError] = React.useState<errorType>(null);
 
   const url = window.location.pathname.split("/").pop();
+  const cu = useTypedSelector((s) => s.user.uid);
 
   React.useEffect(() => {
     setError(null);
@@ -93,6 +96,11 @@ const Profile = () => {
         lastUsernames={pUser ? pUser.usernames : []}
         error={error}
       />
+      {pUser && cu
+        ? pUser.uid !== cu && (
+            <ProfileActions uid={pUser!.uid} privacy={pUser!.privacy} />
+          )
+        : false}
       <div
         className={`h-px w-full px-4 ${
           error ? "bg-red-500 dark:bg-red-400" : "bg-sky-600 dark:bg-indigo-800"
