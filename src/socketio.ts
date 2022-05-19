@@ -1,5 +1,6 @@
 import axios from "axios";
 import store from "redux/store";
+import { setUser } from "scripts/usersCache";
 import io, { ManagerOptions, SocketOptions } from "socket.io-client";
 import {
   CacheInitPayloadType,
@@ -48,6 +49,15 @@ export function socketON() {
         data.user.uid + " " + data.token;
     }
   });
+  socket.on("USERS_CACHE_UPDATE", (data) => {
+    setUser(data);
+  });
+  socket.on("USER_EDIT", (data) => {
+    store.dispatch({
+      type: "USER_SET",
+      payload: { ...data },
+    } as any);
+  });
 }
 
 export function socketOFF() {
@@ -56,6 +66,8 @@ export function socketOFF() {
   socket.off("CHATS_INITIAL");
   socket.off("MESSAGE_ACCEPT");
   socket.off("USERNAME_CHANGE");
+  socket.off("USERS_CACHE_UPDATE");
+  socket.off("USER_EDIT");
 }
 
 function notificationActions(data: notificationType) {

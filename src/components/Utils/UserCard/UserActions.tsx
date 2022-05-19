@@ -77,8 +77,8 @@ const FriendsButton = ({
   uid,
 }: FriendsButtonComponentType) => {
   if (
-    privacy.messages === "all" ||
-    (privacy.messages === "friends" && isFriend)
+    privacy.twoside === "all" ||
+    (privacy.twoside === "friends" && isFriend)
   ) {
     return (
       <Link

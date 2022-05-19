@@ -26,7 +26,7 @@ const userReducerInitial: UserReducerType = {
       (localStorage.getItem("chatry-hourCycle") as hourCycleType) || "h24",
   },
   privacy: {
-    messages: "all",
+    twoside: "all",
     profile: "public",
   },
   registerDate: 0,

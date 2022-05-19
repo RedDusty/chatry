@@ -25,7 +25,7 @@ const SettingsPrivacy = () => {
       privacyProfile: false,
     }
   );
-  const [privacyTwoSide, setPrivacyTwoSide] = React.useState(privacy.messages);
+  const [privacyTwoSide, setPrivacyTwoSide] = React.useState(privacy.twoside);
   const [privacyProfile, setPrivacyProfile] =
     React.useState<privacyProfileType>(privacy.profile);
 
@@ -45,7 +45,7 @@ const SettingsPrivacy = () => {
   };
 
   const messagesPrivacyHandler = (v: boolean) => {
-    settingChanged("messages", v === true ? "friends" : "all");
+    settingChanged("twoside", v === true ? "friends" : "all");
     if (v === true) setPrivacyTwoSide("friends");
     if (v === false) setPrivacyTwoSide("all");
   };
@@ -57,9 +57,16 @@ const SettingsPrivacy = () => {
 
   const saveSettingsHandler = () => {
     if (isChangedSettings) {
-      socketPrivacy({ profile: privacyProfile, messages: privacyTwoSide });
+      socketPrivacy({ profile: privacyProfile, twoside: privacyTwoSide });
     }
   };
+
+  React.useEffect(() => {
+    setPrivacyTwoSide(privacy.twoside);
+    setPrivacyProfile(privacy.profile);
+    setPrivacySettings({ privacyProfile: false, privacyTwoSide: false });
+    setChangedSettings(false);
+  }, [privacy]);
 
   return (
     <div className="sm:ml-2 gap-4 flex flex-col">

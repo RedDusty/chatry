@@ -12,7 +12,7 @@ export type USER_LIST_UIDS_REMOVE = "USER_LIST_UIDS_REMOVE";
 
 type UserPrivacyType = {
   profile: "public" | "private" | "friends";
-  messages: "all" | "friends";
+  twoside: "all" | "friends";
 };
 
 type hourCycleType = "h11" | "h12" | "h23" | "h24";
@@ -26,15 +26,6 @@ type UserSettingsType = {
 export type lastUsernamesType = {
   updateTime: number;
   username: string;
-};
-
-export type UserProileType = {
-  username: string;
-  online: number | boolean;
-  avatar: string | null;
-  privacy: UserPrivacyType;
-  uid: string;
-  usernames: lastUsernamesType[];
 };
 
 export type UserReducerType = {
@@ -63,6 +54,7 @@ export type UserShortType = {
   online: boolean | number;
   avatar: string | null;
   privacy: UserPrivacyType;
+  usernames?: lastUsernamesType[];
 };
 
 type UserSetType = {
@@ -137,4 +129,4 @@ type UserActionsType =
   | UserListUIDSSetType
   | UserListUIDSRemoveType
   | UserMessageViewSetType
-  | UserHourCycleSetType;
+  | UserHourCycleSetType

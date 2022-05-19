@@ -1,19 +1,26 @@
 import React from "react";
 import ProfileInfo from "components/Profile/ProfileInfo";
-import { UserProileType } from "typings/UserTypes";
+import { UserShortType } from "typings/UserTypes";
 import axios from "axios";
 import IconInfo from "icons/IconInfo";
 import { Link } from "react-router-dom";
-import { setUser } from 'scripts/usersCache';
+import { setUser } from "scripts/usersCache";
+
+type errorType =
+  | "NOT_FOUND"
+  | "FORBIDDEN_PRIVATE"
+  | "FORBIDDEN_FRIEND"
+  | null
+  | true;
 
 const Profile = () => {
-  const [pUser, setPUser] = React.useState<UserProileType | null>(null);
-  const [isError, setError] = React.useState<boolean>(false);
+  const [pUser, setPUser] = React.useState<UserShortType | null>(null);
+  const [error, setError] = React.useState<errorType>(null);
 
   const url = window.location.pathname.split("/").pop();
 
   React.useEffect(() => {
-    setError(false);
+    setError(null);
     if (pUser?.uid !== window.location.pathname.split("/")[2]) {
       axios
         .get("/api/user", {
@@ -23,17 +30,20 @@ const Profile = () => {
         })
         .then((v) => {
           if (v.data) {
-            setPUser(v.data);
-            setUser(v.data);
+            if (v.data.error) setError(v.data.error);
+            if (v.data.user) {
+              setPUser(v.data.user);
+              setUser(v.data.user);
+            }
           }
         })
         .catch((e) => {
-          setError(true);
+          setError(e.error || true);
         });
     }
-  }, [setPUser, pUser?.uid, url]);
+  }, [pUser?.uid, url]);
 
-  if (isError) {
+  if (error === "NOT_FOUND" || error === "FORBIDDEN_PRIVATE") {
     return (
       <section className="flex flex-col flex-1 justify-start items-start p-4 sm:p-12 lg:p-16">
         <div className="bg-red-100 dark:bg-red-900 dark:bg-opacity-50 rounded-xl">
@@ -42,7 +52,9 @@ const Profile = () => {
               <IconInfo />
             </div>
             <h1 className="text-red-800 dark:text-red-200 text-xl sm:text-2xl lg:text-5xl">
-              This account does not exist!
+              {error === "NOT_FOUND" && "This account does not exist!"}
+              {error === "FORBIDDEN_PRIVATE" &&
+                "You must be registered to view this profile!"}
             </h1>
           </div>
           <div className="m-2 p-2 flex flex-col gap-4 mt-4 sm:text-lg lg:text-xl text-zinc-900 dark:text-zinc-200">
@@ -79,8 +91,25 @@ const Profile = () => {
         online={pUser ? pUser.online : false}
         uid={pUser ? pUser.uid : undefined}
         lastUsernames={pUser ? pUser.usernames : []}
+        error={error}
       />
-      <div className="h-px w-full px-4 bg-sky-600 dark:bg-indigo-800 mt-4"></div>
+      <div
+        className={`h-px w-full px-4 ${
+          error ? "bg-red-500 dark:bg-red-400" : "bg-sky-600 dark:bg-indigo-800"
+        } mt-4`}
+      ></div>
+      {error === "FORBIDDEN_FRIEND" && (
+        <div className="bg-red-100 dark:bg-red-900 dark:bg-opacity-50 rounded-xl mx-auto sm:ml-0 mt-4">
+          <div className="flex flex-col sm:flex-row items-center m-2 p-2 gap-2 lg:gap-6">
+            <div className="w-16 h-16 lg:w-20 lg:h-20 fill-red-500">
+              <IconInfo />
+            </div>
+            <h1 className="text-red-800 dark:text-red-200 text-xl sm:text-2xl lg:text-3xl">
+              You need to be a friend to view this profile.
+            </h1>
+          </div>
+        </div>
+      )}
     </section>
   );
 };

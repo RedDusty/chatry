@@ -10,7 +10,8 @@ type ProfileInfoType = {
   username: string | undefined;
   uid: string | null | undefined;
   online: boolean | number | undefined;
-  lastUsernames: lastUsernamesType[];
+  lastUsernames?: lastUsernamesType[];
+  error: "NOT_FOUND" | "FORBIDDEN_PRIVATE" | "FORBIDDEN_FRIEND" | null | true;
 };
 
 const ProfileInfo = ({
@@ -18,11 +19,16 @@ const ProfileInfo = ({
   username,
   online,
   lastUsernames,
+  error,
 }: ProfileInfoType) => {
   const [isShowLastUsernames, setShowLastUsernames] = React.useState(false);
 
+  const canView = error !== "FORBIDDEN_FRIEND";
+
   const lastUsernamesHandler = () => {
-    setShowLastUsernames(!isShowLastUsernames);
+    if (canView) {
+      setShowLastUsernames(!isShowLastUsernames);
+    }
   };
 
   return (
@@ -49,19 +55,21 @@ const ProfileInfo = ({
               >
                 {username}
               </p>
-              <button
-                className={`hover:fill-sky-600 dark:hover:fill-indigo-400 ${
-                  isShowLastUsernames
-                    ? "fill-green-500 dark:fill-green-400"
-                    : "fill-black dark:fill-white"
-                }`}
-                title={`${
-                  isShowLastUsernames ? "Hide" : "Show"
-                } 3 last usernames`}
-                onClick={lastUsernamesHandler}
-              >
-                {isShowLastUsernames ? <IconHide /> : <IconShow />}
-              </button>
+              {canView && (
+                <button
+                  className={`hover:fill-sky-600 dark:hover:fill-indigo-400 ${
+                    isShowLastUsernames
+                      ? "fill-green-500 dark:fill-green-400"
+                      : "fill-black dark:fill-white"
+                  }`}
+                  title={`${
+                    isShowLastUsernames ? "Hide" : "Show"
+                  } 3 last usernames`}
+                  onClick={lastUsernamesHandler}
+                >
+                  {isShowLastUsernames ? <IconHide /> : <IconShow />}
+                </button>
+              )}
             </div>
           </div>
           <p
@@ -77,21 +85,24 @@ const ProfileInfo = ({
           </p>
         </div>
       </div>
-      {isShowLastUsernames && (
+      {isShowLastUsernames && canView && (
         <div className="w-64 mx-auto sm:ml-3 text-slate-700 dark:text-slate-200 p-4 rounded-md font-semibold">
-          {lastUsernames.length === 0 && (
+          {(!lastUsernames ||
+            (lastUsernames && lastUsernames.length === 0)) && (
             <p className="text-center">No history</p>
           )}
-          {lastUsernames.map((u, idx) => {
-            return (
-              <ProfileLastUsername
-                isLast={idx === lastUsernames.length - 1}
-                updateTime={u.updateTime}
-                username={u.username}
-                key={u.updateTime}
-              />
-            );
-          })}
+          {canView &&
+            lastUsernames &&
+            lastUsernames.map((u, idx) => {
+              return (
+                <ProfileLastUsername
+                  isLast={idx === lastUsernames.length - 1}
+                  updateTime={u.updateTime}
+                  username={u.username}
+                  key={u.updateTime}
+                />
+              );
+            })}
         </div>
       )}
     </div>

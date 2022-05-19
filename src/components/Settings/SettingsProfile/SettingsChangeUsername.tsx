@@ -158,7 +158,7 @@ const SettingsChangeUsername = () => {
 export default SettingsChangeUsername;
 
 const SettingsChangeUsernameNext = ({ nu }: { nu: number }) => {
-  const date = new Date(nu);
+  const date = new Date(nu + 1000 * 60 * 60 * 24 * 7);
   return (
     <div className="p-2 font-semibold text-black dark:text-white bg-slate-300 dark:bg-slate-600 border border-solid border-slate-500 dark:border-slate-400 rounded-lg">
       {date.toLocaleDateString("default", {
