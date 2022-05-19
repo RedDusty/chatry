@@ -6,41 +6,32 @@ import People from "components/People/People";
 import { useSearchParams } from "react-router-dom";
 import { setUser } from "scripts/usersCache";
 
-const searchFriends = async (
-  friendsUID: string[],
-  userUID: string,
-  list: "friends" | "waitings"
+type listType = undefined | "friends" | "waitings" | "search";
+
+const searchUsers = async (
+  value: string,
+  userUID: string | null,
+  list: listType
 ) => {
-  const res = await axios.post("/api/search/friends", {
-    friendsUID: friendsUID,
-    userUID: userUID,
-    list: list,
-  });
-
-  if (res.status === 200) {
-    return res.data as UserShortType[];
-  }
-};
-
-const searchUsers = async (query: string, userUID: string) => {
   const searchBy = () => {
-    if (query.startsWith("#uid:")) return "uid";
-    if (query.startsWith("#name:")) return "displayName";
+    if (value.startsWith("#uid:")) return "uid";
+    if (value.startsWith("#name:")) return "username";
 
     return "subname";
   };
 
   const querySlice = () => {
-    if (searchBy() === "uid") return query.substring(5);
-    if (searchBy() === "displayName") return query.substring(6);
+    if (searchBy() === "uid") return value.substring(5);
+    if (searchBy() === "username") return value.substring(6);
 
-    return query;
+    return value;
   };
 
   const res = await axios.post("/api/search/users", {
     key: searchBy(),
     value: querySlice(),
     userUID,
+    list,
   });
 
   if (res.status === 200) {
@@ -61,8 +52,11 @@ const PeopleContainer = () => {
     func
       .then((v) => {
         if (v) {
-          const uids = v.map((u) => u.uid);
-          setUser(v);
+          const uids = v.map((u) => {
+            setUser(u);
+            return u.uid;
+          });
+
           setUserUIDList(uids);
         }
       })
@@ -86,9 +80,9 @@ const PeopleContainer = () => {
       if (searchParams.has("waitings")) {
         searchParams.delete("search");
         setSearchParams("", { replace: true });
-        searcher(searchFriends(u.waitingsUID, u.uid, "friends"));
+        u.uid && searcher(searchUsers(query, u.uid, "waitings"));
       } else {
-        searcher(searchFriends(u.friendsUID, u.uid, "friends"));
+        u.uid && searcher(searchUsers(query, u.uid, "friends"));
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -98,19 +92,19 @@ const PeopleContainer = () => {
     setFetching(true);
     switch (btn) {
       case "friends":
-        u.uid && searcher(searchFriends(u.friendsUID, u.uid, "friends"));
+        u.uid && searcher(searchUsers(query, u.uid, "friends"));
         setSearch(false);
         break;
       case "search":
         setSearch(true);
-        searcher(searchUsers(query, u.uid!));
+        u.uid && searcher(searchUsers(query, u.uid, "search"));
         break;
       case "waiting":
-        u.uid && searcher(searchFriends(u.waitingsUID, u.uid, "waitings"));
+        u.uid && searcher(searchUsers(query, u.uid, "waitings"));
         setSearch(false);
         break;
       default:
-        u.uid && searcher(searchFriends(u.friendsUID, u.uid, "friends"));
+        u.uid && searcher(searchUsers(query, u.uid, "friends"));
         setSearch(false);
         break;
     }
@@ -121,7 +115,7 @@ const PeopleContainer = () => {
     setSearch(false);
     setQuery("");
     u.uid === null && setUserUIDList([]);
-    u.uid && searcher(searchFriends(u.friendsUID, u.uid, "friends"));
+    u.uid && searcher(searchUsers(query, u.uid, "friends"));
   };
 
   return (
