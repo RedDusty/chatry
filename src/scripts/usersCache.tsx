@@ -34,24 +34,38 @@ export const setUser = (user: UserShortType | UserShortType[]) => {
   if (Array.isArray(user)) {
     user.forEach((u) => {
       const userC = users.get(u.uid);
+      const userToPush: UserShortType = {
+        avatar: u.avatar,
+        online: u.online,
+        privacy: u.privacy,
+        uid: u.uid,
+        username: u.username,
+      };
       if (userC) {
         users.set(u.uid, {
           ...userC,
-          ...u,
+          ...userToPush,
         });
       } else {
-        users.set(u.uid, u);
+        users.set(u.uid, userToPush);
       }
     });
   } else {
     const userC = users.get(user.uid);
+    const userToPush: UserShortType = {
+      avatar: user.avatar,
+      online: user.online,
+      privacy: user.privacy,
+      uid: user.uid,
+      username: user.username,
+    };
     if (userC) {
       users.set(user.uid, {
         ...userC,
-        ...user,
+        ...userToPush,
       });
     } else {
-      users.set(user.uid, user);
+      users.set(user.uid, userToPush);
     }
   }
 };

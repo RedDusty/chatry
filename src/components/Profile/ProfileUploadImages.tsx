@@ -101,7 +101,7 @@ const ProfileUploadImages = ({
     const files = images.map((i) => {
       return { file: i.file, id: i.id };
     });
-    socketUploadImages(files);
+    socketUploadImages(files, uploadedImages);
   };
 
   if (isUploadingImages === false) {
@@ -332,7 +332,7 @@ const ProfileCardImage = ({
         <></>
       )}
       <img
-        className={`${sizeX()} transition-all rounded-lg hover:rounded-none object-cover"`}
+        className={`${sizeX()} transition-all rounded-lg hover:rounded-none object-cover`}
         src={imageURL}
         alt=""
       />

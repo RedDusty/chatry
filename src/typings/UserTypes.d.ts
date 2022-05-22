@@ -28,6 +28,14 @@ export type lastUsernamesType = {
   username: string;
 };
 
+type imageExtType = "png" | "jpg" | "jpeg" | "webp" | "gif";
+
+type imageType = {
+  url: string;
+  hash: string;
+  ext: imageExtType;
+};
+
 export type UserReducerType = {
   username: string;
   email: string;
@@ -44,7 +52,7 @@ export type UserReducerType = {
   socketID: string | null;
   banned: boolean;
   lastUsernameUpdate: number;
-  images: string[];
+  images: imageType[];
 };
 
 type ValueOf<T> = T[keyof T];
@@ -55,7 +63,6 @@ export type UserShortType = {
   online: boolean | number;
   avatar: string | null;
   privacy: UserPrivacyType;
-  usernames?: lastUsernamesType[];
 };
 
 type UserSetType = {

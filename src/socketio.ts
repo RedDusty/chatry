@@ -8,7 +8,7 @@ import {
   MessageType,
 } from "typings/cacheTypes";
 import { notificationType } from "typings/NotificationsTypes";
-import { UserPrivacyType } from "typings/UserTypes";
+import { imageType, UserPrivacyType } from "typings/UserTypes";
 
 export const serverURL: string =
   process.env.REACT_APP_SERVER_URL || "localhost:8000";
@@ -162,16 +162,34 @@ export const socketPrivacy = (privacy: UserPrivacyType) => {
   });
 };
 
-type imageType = {
-  file: File,
+type fileType = {
+  file: File;
   id: number;
-}
+};
 
-export const socketUploadImages = (f: imageType[]) => {
+export const socketUploadImages = (
+  f: fileType[],
+  uploadedID: number[] | null
+) => {
   const uid = store.getState().user.uid;
+
+  const files = f;
+
+  if (uploadedID) {
+    files.filter((i) => uploadedID.includes(i.id) === false);
+  }
 
   socket.emit("IMAGES_UPLOAD", {
     uid,
-    files: f,
+    files,
+  });
+};
+
+export const socketDeleteImage = (i: imageType) => {
+  const uid = store.getState().user.uid;
+
+  socket.emit("IMAGES_DELETE", {
+    uid,
+    image: i,
   });
 };
