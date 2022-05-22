@@ -37,6 +37,7 @@ const userReducerInitial: UserReducerType = {
   socketID: null,
   banned: false,
   lastUsernameUpdate: 0,
+  images: []
 };
 
 const userReducer = (

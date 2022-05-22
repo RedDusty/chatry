@@ -44,6 +44,7 @@ export type UserReducerType = {
   socketID: string | null;
   banned: boolean;
   lastUsernameUpdate: number;
+  images: string[];
 };
 
 type ValueOf<T> = T[keyof T];

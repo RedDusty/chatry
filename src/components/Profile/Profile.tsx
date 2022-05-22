@@ -1,6 +1,7 @@
 import React from "react";
 import ProfileInfo from "components/Profile/ProfileInfo";
 import ProfileActions from "components/Profile/ProfileActions";
+import ProfileUploadImages from "components/Profile/ProfileUploadImages";
 import { UserShortType } from "typings/UserTypes";
 import axios from "axios";
 import IconInfo from "icons/IconInfo";
@@ -18,9 +19,10 @@ type errorType =
 const Profile = () => {
   const [pUser, setPUser] = React.useState<UserShortType | null>(null);
   const [error, setError] = React.useState<errorType>(null);
+  const [isUploadingImages, setUploadingImages] = React.useState(false);
+  const cu = useTypedSelector((s) => s.user.uid);
 
   const url = window.location.pathname.split("/").pop();
-  const cu = useTypedSelector((s) => s.user.uid);
 
   React.useEffect(() => {
     setError(null);
@@ -48,7 +50,7 @@ const Profile = () => {
 
   if (error === "NOT_FOUND" || error === "FORBIDDEN_PRIVATE") {
     return (
-      <section className="flex flex-col flex-1 justify-start items-start p-4 sm:p-12 lg:p-16">
+      <section className="cont flex-col justify-start items-start p-4 sm:p-12 lg:p-16">
         <div className="bg-red-100 dark:bg-red-900 dark:bg-opacity-50 rounded-xl">
           <div className="flex flex-col sm:flex-row items-center m-2 p-2 gap-2 lg:gap-6">
             <div className="w-16 h-16 lg:w-24 lg:h-24 fill-red-500">
@@ -87,25 +89,42 @@ const Profile = () => {
   }
 
   return (
-    <section className="cont flex-col justify-start items-start p-4 sm:p-12 lg:p-16">
-      <ProfileInfo
-        avatar={pUser ? pUser.avatar : undefined}
-        username={pUser ? pUser.username : undefined}
-        online={pUser ? pUser.online : false}
-        uid={pUser ? pUser.uid : undefined}
-        lastUsernames={pUser ? pUser.usernames : []}
-        error={error}
-      />
-      {pUser && cu
-        ? pUser.uid !== cu && (
-            <ProfileActions uid={pUser!.uid} privacy={pUser!.privacy} />
-          )
-        : false}
-      <div
-        className={`h-px w-full px-4 ${
-          error ? "bg-red-500 dark:bg-red-400" : "bg-sky-600 dark:bg-indigo-800"
-        } mt-4`}
-      ></div>
+    <section className="cont flex-col justify-start items-start p-2 sm:p-12 lg:p-16 h-full">
+      {!isUploadingImages && (
+        <ProfileInfo
+          avatar={pUser ? pUser.avatar : undefined}
+          username={pUser ? pUser.username : undefined}
+          online={pUser ? pUser.online : false}
+          uid={pUser ? pUser.uid : undefined}
+          lastUsernames={pUser ? pUser.usernames : []}
+          error={error}
+        />
+      )}
+      {pUser ? (
+        pUser.uid !== cu && (
+          <ProfileActions uid={pUser.uid} privacy={pUser!.privacy} />
+        )
+      ) : (
+        <></>
+      )}
+      {pUser && pUser.uid === cu ? (
+        <ProfileUploadImages
+          isUploadingImages={isUploadingImages}
+          setUploadingImages={setUploadingImages}
+          uid={pUser?.uid}
+        />
+      ) : (
+        <></>
+      )}
+      {!isUploadingImages && (
+        <div
+          className={`h-px w-full px-4 ${
+            error
+              ? "bg-red-500 dark:bg-red-400"
+              : "bg-sky-600 dark:bg-indigo-800"
+          } mt-4`}
+        ></div>
+      )}
       {error === "FORBIDDEN_FRIEND" && (
         <div className="bg-red-100 dark:bg-red-900 dark:bg-opacity-50 rounded-xl mx-auto sm:ml-0 mt-4">
           <div className="flex flex-col sm:flex-row items-center m-2 p-2 gap-2 lg:gap-6">

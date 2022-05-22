@@ -17,7 +17,12 @@ const SettingsChangeAvatar = () => {
   const [msg, setMsg] = React.useState<string | null>(null);
 
   const { getRootProps, getInputProps, open } = useDropzone({
-    accept: ["image/png", "image/jpg", "image/jpeg", "image/gif", "webp"],
+    accept: {
+      "image/png": [".png"],
+      "image/jpeg": [".jpg", ".jpeg"],
+      "image/gif": [".gif"],
+      "image/webp": [".webp"],
+    },
     maxFiles: 1,
     maxSize: 8388608,
     onDrop: (acceptedFiles) => {

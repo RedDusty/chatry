@@ -161,3 +161,17 @@ export const socketPrivacy = (privacy: UserPrivacyType) => {
     uid,
   });
 };
+
+type imageType = {
+  file: File,
+  id: number;
+}
+
+export const socketUploadImages = (f: imageType[]) => {
+  const uid = store.getState().user.uid;
+
+  socket.emit("IMAGES_UPLOAD", {
+    uid,
+    files: f,
+  });
+};
