@@ -43,26 +43,45 @@ const MessagesChat = ({
     : ({ message: "No messages", time: 0, user: "system" } as MessageType);
 
   const messageVisible = () => {
+    let msg = "";
+
     if (
-      messageExist.message === "No messages" &&
-      messageExist.user === "system"
-    )
-      return "No messages";
-    if (messageExist.files) return "File";
+      messageExist.user === "system" &&
+      messageExist.message === "No messages"
+    ) {
+      msg = "No messages";
+      return msg;
+    }
+
     if (
-      typeof messageExist.message === "string" &&
-      messageExist.user !== "system"
-    )
-      return user?.uid === cu
-        ? "You: " + messageExist.message
-        : messageExist.message;
-    if (
-      typeof messageExist.message !== "string" &&
-      messageExist.user !== "system"
-    )
-      return user?.uid === cu ? "You replied" : "Replied";
-    if (messageExist.user === "system") return "System message";
-    return "Message";
+      messageExist.user === "system" &&
+      messageExist.message !== "No messages"
+    ) {
+      msg = "[System message]";
+      return msg;
+    }
+
+    if (messageExist.user === cu) {
+      msg += "You: ";
+    }
+
+    if (messageExist.images && messageExist.images.length !== 0) {
+      if (messageExist.images.length === 1) {
+        msg += "Image";
+      } else {
+        msg += messageExist.images.length + " images";
+      }
+
+      return msg;
+    }
+
+    if (typeof messageExist.message === "string") {
+      msg += messageExist.message;
+      return msg;
+    } else {
+      msg += "Replied message";
+      return msg;
+    }
   };
 
   return (
@@ -94,7 +113,7 @@ const MessagesChat = ({
           ) : (
             <></>
           )}
-          <p className="text-slate-800 dark:text-slate-300">
+          <p className="text-slate-800 dark:text-slate-300 truncate">
             {messageVisible()}
           </p>
         </div>

@@ -33,7 +33,7 @@ const MessagesDialog = () => {
       {messages.map((m, idx) => {
         return <MessagesMessage m={m} key={idx} />;
       })}
-      <div className="w-full h-16 shrink-0" ref={bottomDialogRef}></div>
+      <div className="w-full h-8 shrink-0" ref={bottomDialogRef}></div>
     </div>
   );
 };

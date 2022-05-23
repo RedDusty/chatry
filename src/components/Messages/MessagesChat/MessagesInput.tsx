@@ -1,18 +1,35 @@
 import React from "react";
+import { socketMessageSend } from "socketio";
+import { useTypedSelector } from "redux/useTypedRedux";
+import Picker, { IEmojiData } from "emoji-picker-react";
 import { ChatType } from "typings/cacheTypes";
 import IconSend from "icons/IconSend";
 import IconAttachment from "icons/IconAttachment";
 import IconResize from "icons/IconResize";
 import IconInfo from "icons/IconInfo";
-import { useTypedSelector } from "redux/useTypedRedux";
-import Picker, { IEmojiData } from "emoji-picker-react";
 import IconSun from "icons/IconSun";
 import IconMoon from "icons/IconMoon";
-import { socketMessageSend } from "socketio";
 
 type ErrorType = "none" | "length" | "spaces";
 
-const MessagesInput = ({ c }: { c: ChatType }) => {
+type imageType = {
+  url: string;
+  isExternal: boolean;
+};
+
+const MessagesInput = ({
+  c,
+  isAttachShow,
+  setAttachShow,
+  images,
+  setImages,
+}: {
+  c: ChatType;
+  isAttachShow: boolean;
+  setAttachShow: (v: boolean) => void;
+  images: imageType[];
+  setImages: React.Dispatch<React.SetStateAction<imageType[]>>;
+}) => {
   const [isError, setError] = React.useState<ErrorType>("none");
   const [text, setText] = React.useState("");
   const [isEmojiActive, setEmojiActive] = React.useState(false);
@@ -91,20 +108,40 @@ const MessagesInput = ({ c }: { c: ChatType }) => {
   const sendHandler = () => {
     let senderCID = cid;
     if (checker(text) === false) {
-      socketMessageSend(text, senderCID!);
-      setText("");
+      if (images.length < 6) {
+        socketMessageSend(
+          text,
+          senderCID!,
+          images.map((i) => i.url)
+        );
+        setText("");
+        setImages([]);
+      }
     }
   };
 
   return (
-    <div className="w-full h-max flex flex-col items-center mt-4 sm:mb-4 transition-all">
+    <div className="w-full h-max flex flex-col items-center mt-2 sm:mb-4 transition-all">
       <div className="w-full sm:max-w-sm lg:max-w-lg xl:max-w-xl flex justify-between px-4 gap-2 sm:gap-4">
-        <button
-          className="w-10 h-10 p-2 cursor-pointer rounded-full btn-msg"
-          title="Attachment"
-        >
-          <IconAttachment />
-        </button>
+        <div className="flex gap-2">
+          <button
+            className="w-10 h-10 p-2 cursor-pointer rounded-full btn-msg"
+            title="Attachment"
+            onClick={() => {
+              setAttachShow(!isAttachShow);
+            }}
+          >
+            <IconAttachment />
+          </button>
+          <div
+            className={`w-10 h-10 p-2 cursor-pointer rounded-full text-center ${
+              images.length > 5 ? "btn-msg-error" : "btn-msg"
+            }`}
+            title={images.length > 5 ? "Images exceeded" : "Images left"}
+          >
+            {5 - images.length < -7 ? "-7+" : 5 - images.length}
+          </div>
+        </div>
         <div className="flex gap-2">
           <button
             className="w-10 h-10 p-2 cursor-pointer rounded-full btn-msg"

@@ -40,9 +40,9 @@ const MessagesContainer = () => {
         <MessagesSearchBar />
         <MessagesChats chats={chats} />
       </div>
-      <div className="hidden md:block w-px shrink-0 h-full bg-gray-400 dark:bg-gray-500 relative z-20"></div>
+      <div className="hidden md:block w-px shrink-0 h-full bg-gray-400 dark:bg-gray-500"></div>
       {chatCID !== null ? (
-        <div className="w-full h-full flex-1 relative z-10">
+        <div className="w-full h-full flex-1">
           <MessagesBackground component={<MessagesChat />} />
         </div>
       ) : (

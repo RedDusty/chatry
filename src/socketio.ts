@@ -127,7 +127,11 @@ export const socketFriendRequest = (
   });
 };
 
-export const socketMessageSend = (text: string, cid: string) => {
+export const socketMessageSend = (
+  text: string,
+  cid: string,
+  images?: string[]
+) => {
   const user = store.getState().user;
 
   socket.emit("MESSAGE_SEND", {
@@ -137,7 +141,7 @@ export const socketMessageSend = (text: string, cid: string) => {
       mid: 0,
       time: new Date().getTime(),
       user: user.uid,
-      files: undefined,
+      images,
     } as MessageType,
     cid,
     uid: user.uid,

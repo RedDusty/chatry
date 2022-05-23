@@ -7,7 +7,7 @@ export type CACHE_DIALOG_CID_SET = "CACHE_DIALOG_CID_SET";
 type MessageType = {
   time: number;
   message: string | MessageType;
-  files?: MessageFileType[];
+  images?: string[];
   cid: string;
   mid: number;
   user: string | "system";
