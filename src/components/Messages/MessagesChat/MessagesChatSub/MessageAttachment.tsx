@@ -23,7 +23,7 @@ const MessageAttachment = ({
 
   return (
     <div className="flex justify-center items-center fixed w-screen h-screen bg-black bg-opacity-50 top-0 left-0 z-50">
-      <div className="bg-slate-200 dark:bg-slate-700 md:rounded-md flex flex-col p-4 w-full h-full md:max-w-2xl lg:max-w-4xl xl:max-w-6xl 2xl:max-w-7xl">
+      <div className="bg-slate-200 dark:bg-slate-700 md:rounded-md flex flex-col p-4 w-full h-full sm:h-[75%] sm:max-h-[768px] md:max-w-2xl lg:max-w-4xl xl:max-w-6xl 2xl:max-w-7xl">
         <div className="flex justify-between items-center py-1">
           <p className="text-slate-700 dark:text-slate-200 font-semibold text-center flex-1 mr-1">
             Select an image or paste a link. No more than 5 images.
@@ -44,11 +44,14 @@ const MessageAttachment = ({
             .filter((f) => f.isExternal === true)
             .map((i, idx) => {
               const imageIDX = images.map((e) => e.url).indexOf(i.url);
+              const imagesLength = images.filter(
+                (e) => e.isExternal === true
+              ).length;
 
               return (
                 <MessageExternalImageCard
                   idx={imageIDX + 1}
-                  imagesLength={images.length}
+                  imagesLength={userImages.length + imagesLength}
                   setImages={setImages}
                   url={i.url}
                   key={i.url + idx}
@@ -63,9 +66,13 @@ const MessageAttachment = ({
                 isSelected = true;
               }
               const imageIDX = images.map((e) => e.url).indexOf(i.url);
+              const imagesLength = images.filter(
+                (e) => e.isExternal === true
+              ).length;
+
               return (
                 <MessageUserImageCard
-                  imagesLength={images.length}
+                  imagesLength={userImages.length + imagesLength}
                   setImages={setImages}
                   url={i.url}
                   isSelected={isSelected}

@@ -63,7 +63,11 @@ const MessagesMessage = ({ m }: { m: MessageType }) => {
           ) : (
             <></>
           )}
-          <MessagesMessageImages images={m.images} isOwner={isCUOwner} />
+          <MessagesMessageImages
+            images={m.images}
+            isOwner={isCUOwner}
+            isPlaceSep={isPlaceSep}
+          />
         </div>
         <p
           className={`${
@@ -89,22 +93,30 @@ export default MessagesMessage;
 const MessagesMessageImages = ({
   images,
   isOwner,
+  isPlaceSep,
 }: {
   images?: string[];
   isOwner: boolean;
+  isPlaceSep: boolean;
 }) => {
   if (images) {
     return (
       <Masonry
-        className={`w-full border-0 border-l-4 border-solid ${
+        className={`w-full border-0 ${
+          isPlaceSep && isOwner ? "border-r-4" : "border-l-4"
+        } border-solid ${
           isOwner
-            ? "border-sky-200 dark:border-indigo-900"
-            : "border-slate-200 dark:border-slate-700"
-        }`}
+            ? "border-sky-300 dark:border-indigo-900"
+            : "border-slate-400 dark:border-slate-700"
+        } ${isPlaceSep && isOwner ? "self-end" : "self-start"}`}
       >
-        {images.map((i) => {
+        {images.map((i, idx) => {
           return (
-            <MessagesMessageImageCard image={i} imagesLength={images.length} />
+            <MessagesMessageImageCard
+              image={i}
+              imagesLength={images.length}
+              key={i + idx}
+            />
           );
         })}
       </Masonry>
@@ -121,7 +133,12 @@ const MessagesMessageImageCard = ({
   image: string;
   imagesLength: number;
 }) => {
+  const [isError, setError] = React.useState(false);
   const [isZoom, setZoom] = React.useState(false);
+
+  if (isError) {
+    return <></>;
+  }
 
   const sizeX = () => {
     if (imagesLength >= 5) return "w-36";
@@ -146,9 +163,10 @@ const MessagesMessageImageCard = ({
         <img
           className={`${
             isZoom ? "w-full h-full object-contain" : `object-cover ${sizeX()}`
-          } transition-all rounded-lg hover:rounded-none`}
+          } transition-all rounded-lg`}
           src={image}
           alt=""
+          onError={() => setError(true)}
         />
       </div>
     </div>

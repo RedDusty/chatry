@@ -49,7 +49,8 @@ const userReducer = (
       if (action.payload === null) {
         return { ...state, ...userReducerInitial };
       }
-      return { ...state, ...action.payload };
+      const images = action.payload.images || state.images
+      return { ...state, ...action.payload, images: images };
     }
     case "USER_SOCKETID_SET": {
       return { ...state, socketID: action.payload };
