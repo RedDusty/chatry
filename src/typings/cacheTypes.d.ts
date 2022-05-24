@@ -1,8 +1,9 @@
 export type CACHE_CHATS_INIT = "CACHE_CHATS_INIT";
-export type CACHE_USER_SET = "CACHE_USER_SET";
+export type CACHE_CHAT_CREATE = "CACHE_CHAT_CREATE";
 export type CACHE_MESSAGES_SET = "CACHE_MESSAGES_SET";
 export type CACHE_CHAT_SET = "CACHE_CHAT_SET";
 export type CACHE_DIALOG_CID_SET = "CACHE_DIALOG_CID_SET";
+export type CACHE_CHAT_TWO_ACCEPT = "CACHE_CHAT_TWO_ACCEPT";
 
 type MessageType = {
   time: number;
@@ -62,7 +63,10 @@ type CacheMessageSetType = {
 
 type CacheChatSetType = {
   type: CACHE_CHAT_SET;
-  payload: ChatType;
+  payload: {
+    chat: ChatType;
+    isTemp: boolean;
+  };
 };
 
 type CacheChatsInitType = {
@@ -75,8 +79,27 @@ type CacheDialogCIDSetType = {
   payload: string | null;
 };
 
+type CacheChatTwoAcceptType = {
+  type: CACHE_CHAT_TWO_ACCEPT;
+  payload: {
+    chat: ChatTwoType;
+    reqUID: string;
+    messages: MessageType[];
+  };
+};
+
+type CacheChatCreateType = {
+  type: CACHE_CHAT_CREATE;
+  payload: {
+    chat: ChatTwoType;
+    messages: MessageType[];
+  };
+};
+
 export type CacheActionsType =
   | CacheMessageSetType
   | CacheChatSetType
   | CacheChatsInitType
-  | CacheDialogCIDSetType;
+  | CacheDialogCIDSetType
+  | CacheChatTwoAcceptType
+  | CacheChatCreateType;

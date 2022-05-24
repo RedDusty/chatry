@@ -1,16 +1,19 @@
 import React from "react";
+import { useSearchParams } from "react-router-dom";
 import MessagesChats from "components/Messages/MessagesBar/MessagesChats";
 import MessagesSearchBar from "components/Messages/MessagesBar/MessagesSearchBar";
 import MessagesBackground from "components/Messages/MessagesBackground";
 import MessagesChat from "components/Messages/MessagesChat/MessagesChat";
-import { useTypedSelector } from "redux/useTypedRedux";
-import { useSearchParams } from "react-router-dom";
+import { useTypedDispatch, useTypedSelector } from "redux/useTypedRedux";
 import { setCurrentDialog } from "scripts/currentDialog";
+import { ChatTwoType } from "typings/cacheTypes";
 
 const MessagesContainer = () => {
   const chats = useTypedSelector((s) => s.cache.chats);
   const chatCID = useTypedSelector((s) => s.cache.dialogCID);
   const usp = useSearchParams();
+  const dispatch = useTypedDispatch();
+  const cu = useTypedSelector((s) => s.user.uid);
 
   React.useEffect(() => {
     const m = usp[0].get("m");
@@ -24,6 +27,20 @@ const MessagesContainer = () => {
       );
       if (chat.length === 1) {
         setCurrentDialog(chat[0].cid);
+      } else {
+        dispatch({
+          type: "CACHE_CHAT_SET",
+          payload: {
+            chat: {
+              chatType: "two-side",
+              cid: `TEMP__${u}`,
+              messagesCount: 0,
+              usersUID: [u, cu],
+            } as ChatTwoType,
+            isTemp: true,
+          },
+        });
+        setCurrentDialog(`TEMP__${u}`);
       }
     }
   }, []);

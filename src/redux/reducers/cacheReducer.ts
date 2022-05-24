@@ -40,12 +40,17 @@ const notificationsReducer = (
     case "CACHE_CHAT_SET":
       let settedChatState = state.chats;
       const scIndex = settedChatState.findIndex(
-        (c) => c.cid === action.payload.cid
+        (c) => c.cid === action.payload.chat.cid
       );
-      if (scIndex !== -1) {
-        settedChatState[scIndex] = action.payload;
+      if (action.payload.isTemp) {
+        state.messages.push({ cid: action.payload.chat.cid, messages: [] });
+        settedChatState.push(action.payload.chat);
       } else {
-        settedChatState.push(action.payload);
+        if (scIndex !== -1) {
+          settedChatState[scIndex] = action.payload.chat;
+        } else {
+          settedChatState.push(action.payload.chat);
+        }
       }
       settedChatState = settedChatState.sort((a, b) => {
         const ac: MessagesType | undefined = state.messages.find(
@@ -59,7 +64,10 @@ const notificationsReducer = (
           const am: MessageType = ac.messages[ac.messages.length - 1];
           const bm: MessageType = bc.messages[bc.messages.length - 1];
 
-          return am.time - bm.time;
+          if (am && bm) {
+            return am.time - bm.time;
+          }
+          return a.cid.localeCompare(b.cid);
         }
         return a.cid.localeCompare(b.cid);
       });
@@ -75,6 +83,30 @@ const notificationsReducer = (
         ...state,
         dialogCID: action.payload,
       };
+    case "CACHE_CHAT_TWO_ACCEPT":
+      const reqUID = action.payload.reqUID;
+      const chat = state.chats.filter(
+        (c) => c.chatType === "two-side" && c.usersUID.includes(reqUID)
+      );
+      const messages = state.messages.filter(
+        (m) => m.cid === `TEMP__${reqUID}`
+      );
+      if (chat.length === 1) {
+        chat[0].cid = action.payload.chat.cid;
+        chat[0].messagesCount = action.payload.chat.messagesCount;
+      }
+      if (messages.length === 1) {
+        messages[0].cid = action.payload.chat.cid;
+        messages[0].messages = action.payload.messages;
+      }
+      return { ...state };
+    case "CACHE_CHAT_CREATE":
+      state.chats.push(action.payload.chat);
+      state.messages.push({
+        cid: action.payload.chat.cid,
+        messages: action.payload.messages,
+      });
+      return { ...state };
     default:
       return { ...state };
   }

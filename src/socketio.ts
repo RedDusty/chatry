@@ -58,6 +58,22 @@ export function socketON() {
       payload: { ...data },
     } as any);
   });
+  socket.on("CHAT_TWO_SIDE_ACCEPT", (data: any) => {
+    store.dispatch({
+      type: "CACHE_CHAT_TWO_ACCEPT",
+      payload: {
+        chat: data.chat,
+        messages: data.messages,
+        reqUID: data.reqUID,
+      },
+    });
+  });
+  socket.on("CHAT_CLIENT_CREATE", (data: any) => {
+    store.dispatch({
+      type: "CACHE_CHAT_CREATE",
+      payload: { chat: data.chat, messages: data.messages },
+    });
+  });
 }
 
 export function socketOFF() {
@@ -68,6 +84,8 @@ export function socketOFF() {
   socket.off("USERNAME_CHANGE");
   socket.off("USERS_CACHE_UPDATE");
   socket.off("USER_EDIT");
+  socket.off("CHAT_TWO_SIDE_ACCEPT");
+  socket.off("CHAT_CLIENT_CREATE");
 }
 
 function notificationActions(data: notificationType) {
@@ -130,6 +148,7 @@ export const socketFriendRequest = (
 export const socketMessageSend = (
   text: string,
   cid: string,
+  reqUID?: string,
   images?: string[]
 ) => {
   const user = store.getState().user;
@@ -145,6 +164,7 @@ export const socketMessageSend = (
     } as MessageType,
     cid,
     uid: user.uid,
+    reqUID,
   });
 };
 

@@ -37,6 +37,7 @@ const MessagesInput = ({
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
   const theme = useTypedSelector((s) => s.user.userSettings.theme);
   const cid = useTypedSelector((s) => s.cache.dialogCID);
+  const cu = useTypedSelector((s) => s.user.uid);
 
   const resizer = () => {
     if (resize && textareaRef && textareaRef.current) {
@@ -106,12 +107,19 @@ const MessagesInput = ({
   };
 
   const sendHandler = () => {
-    let senderCID = cid;
+    let accepterUID: any =
+      c.chatType === "two-side"
+        ? c.usersUID.filter((u) => u !== cu)
+        : undefined;
+    if (accepterUID && accepterUID.length === 1) {
+      accepterUID = accepterUID[0];
+    }
     if (checker(text) === false) {
       if (images.length < 6) {
         socketMessageSend(
           text,
-          senderCID!,
+          cid!,
+          accepterUID,
           images.map((i) => i.url)
         );
         setText("");
