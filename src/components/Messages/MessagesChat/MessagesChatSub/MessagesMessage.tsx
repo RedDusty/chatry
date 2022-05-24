@@ -10,7 +10,6 @@ import { getUser } from "scripts/usersCache";
 const MessagesMessage = ({ m }: { m: MessageType }) => {
   const [user, setUser] = React.useState<UserShortType | null>(null);
   const cu = useTypedSelector((s) => s.user.uid);
-  const view = useTypedSelector((s) => s.user.userSettings.messageView);
 
   React.useEffect(() => {
     if (m.user !== "system") getUser(m.user, setUser);
@@ -25,64 +24,45 @@ const MessagesMessage = ({ m }: { m: MessageType }) => {
   }
 
   const isCUOwner = user ? cu === user.uid : false;
-  const isPlaceSep = view === "separately" && isCUOwner;
 
   return (
-    <div
-      className={`${
-        isPlaceSep ? "self-end flex-row" : "self-start flex-row-reverse"
-      } flex items-start gap-2 w-full min-h-fit`}
-    >
-      <div className="flex flex-col gap-1 w-full">
-        <p
-          className={`${
-            isCUOwner
-              ? "text-sky-600 dark:text-indigo-400"
-              : "text-slate-700 dark:text-slate-300"
-          } ${
-            isPlaceSep && isCUOwner ? "self-end" : "self-start"
-          } font-semibold`}
-        >
-          {user ? user.username : "Loading"}
-        </p>
-        <div
-          className={`flex flex-col w-full gap-2 ${
-            isPlaceSep && isCUOwner ? "self-end" : "self-start"
-          }`}
-        >
-          {typeof m.message === "string" && m.message.length !== 0 ? (
-            <p
-              className={`${
-                isCUOwner
-                  ? "bg-sky-200 dark:bg-indigo-900"
-                  : "bg-slate-200 dark:bg-slate-700"
-              } px-2 py-1 w-fit whitespace-normal break-normal rounded-lg text-slate-900 dark:text-slate-200`}
-            >
-              {m.message}
-            </p>
-          ) : (
-            <></>
-          )}
-          <MessagesMessageImages
-            images={m.images}
-            isOwner={isCUOwner}
-            isPlaceSep={isPlaceSep}
-          />
-        </div>
-        <p
-          className={`${
-            isPlaceSep ? "self-start" : "self-end"
-          } text-xs text-slate-600 dark:text-slate-400`}
-        >
-          {timeConverter(m.time)}
-        </p>
-      </div>
+    <div className="flex items-start gap-2 w-full min-h-fit">
       <div className="w-12 h-12 shrink-0 relative">
         <UserIcon
           avatar={user?.avatar}
           isOnline={user ? user.online : false}
           alt={user ? user.username : "Loading"}
         />
+      </div>
+      <div className="flex flex-col gap-1 w-full">
+        <p
+          className={`${
+            isCUOwner
+              ? "text-sky-600 dark:text-indigo-400"
+              : "text-slate-700 dark:text-slate-300"
+          } font-semibold`}
+        >
+          {user ? user.username : "Loading"}
+        </p>
+        <div className="flex flex-col w-full gap-2">
+          {typeof m.message === "string" && m.message.length !== 0 ? (
+            <p
+              className={`${
+                isCUOwner
+                  ? "bg-sky-200 dark:bg-indigo-900"
+                  : "bg-slate-300 dark:bg-slate-700"
+              }  px-2 py-1 w-fit whitespace-normal break-normal rounded-lg text-slate-900 dark:text-slate-200`}
+            >
+              {m.message}
+            </p>
+          ) : (
+            <></>
+          )}
+          <MessagesMessageImages images={m.images} isOwner={isCUOwner} />
+        </div>
+        <p className="text-xs text-slate-600 dark:text-slate-400">
+          {timeConverter(m.time)}
+        </p>
       </div>
     </div>
   );
@@ -93,22 +73,21 @@ export default MessagesMessage;
 const MessagesMessageImages = ({
   images,
   isOwner,
-  isPlaceSep,
 }: {
   images?: string[];
   isOwner: boolean;
-  isPlaceSep: boolean;
 }) => {
-  if (images) {
+  if (images && images.length !== 0) {
     return (
       <Masonry
-        className={`w-full border-0 ${
-          isPlaceSep && isOwner ? "border-r-4" : "border-l-4"
-        } border-solid ${
+        className={`w-full border-0 border-solid border-l-4 ${
           isOwner
-            ? "border-sky-300 dark:border-indigo-900"
-            : "border-slate-400 dark:border-slate-700"
-        } ${isPlaceSep && isOwner ? "self-end" : "self-start"}`}
+            ? "border-sky-300 dark:border-indigo-700"
+            : "border-slate-400 dark:border-slate-500"
+        }`}
+        options={{
+          horizontalOrder: true,
+        }}
       >
         {images.map((i, idx) => {
           return (

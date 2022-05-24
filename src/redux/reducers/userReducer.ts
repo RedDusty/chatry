@@ -19,9 +19,6 @@ const userReducerInitial: UserReducerType = {
   online: 0,
   userSettings: {
     theme: themeStorage(),
-    messageView:
-      (localStorage.getItem("chatry-messageView") as "separately" | "left") ||
-      "separately",
     hourCycle:
       (localStorage.getItem("chatry-hourCycle") as hourCycleType) || "h24",
   },
@@ -72,13 +69,6 @@ const userReducer = (
       return {
         ...state,
         userSettings: { ...state.userSettings, theme: action.payload },
-      };
-    }
-    case "USER_MESSAGE_VIEW_SET": {
-      localStorage.setItem("chatry-messageView", action.payload);
-      return {
-        ...state,
-        userSettings: { ...state.userSettings, messageView: action.payload },
       };
     }
     case "USER_HOUR_CYCLE_SET": {
