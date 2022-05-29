@@ -128,6 +128,9 @@ const MessagesMessageImageCard = ({
 }) => {
   const [isError, setError] = React.useState(false);
   const [isZoom, setZoom] = React.useState(false);
+  const regex = image.match(/images%2F([^.]*)/);
+  let hash = "";
+  if (regex) hash = regex[1];
 
   const copyURLHandler = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -146,9 +149,6 @@ const MessagesMessageImageCard = ({
   const copyHASHHandler = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    const regex = image.match(/images%2F([^.]*)/);
-    let hash = "";
-    if (regex) hash = regex[1];
     navigator.clipboard.writeText(hash);
     const { currentTarget } = e;
     currentTarget.innerText = "Copied";
@@ -175,7 +175,7 @@ const MessagesMessageImageCard = ({
           <button
             className="text-slate-100 dark:text-slate-300 hover:text-sky-300 dark:hover:text-indigo-300 hover:underline"
             onClick={copyHASHHandler}
-            title={image}
+            title={hash}
           >
             Copy Hash
           </button>
