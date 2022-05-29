@@ -124,8 +124,17 @@ const ProfileLastUsername = ({
     <div>
       <div className="flex justify-between">
         <p>{username}</p>
-        <p>
-          {new Date(updateTime).toLocaleDateString("default", {
+        <p
+          className="hover:underline cursor-pointer"
+          title={(() => {
+            return new Date(updateTime).toLocaleDateString("default", {
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+            });
+          })()}
+        >
+          {new Date(updateTime).toLocaleDateString("en-GB", {
             year: "2-digit",
             month: "2-digit",
             day: "2-digit",

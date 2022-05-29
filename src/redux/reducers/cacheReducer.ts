@@ -28,7 +28,7 @@ const notificationsReducer = (
           (m) => m.mid === action.payload.mid
         );
 
-        if (mIndex !== -1) {
+        if (mIndex !== -1 && action.payload.error !== true) {
           chat.messages[mIndex] = action.payload;
         } else {
           chat.messages.push(action.payload);

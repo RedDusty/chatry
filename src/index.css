@@ -70,6 +70,13 @@ button:focus {
   animation: notiMOBILEfAnimation 0.25s ease-in-out 0s 1;
 }
 
+.err-load {
+  background-image: url("../public/cross.png");
+  background-position: center;
+  background-size: 256px 170px;
+  background-repeat: no-repeat;
+}
+
 @media screen and (min-width: 640px) {
   .notif {
     left: 80px;

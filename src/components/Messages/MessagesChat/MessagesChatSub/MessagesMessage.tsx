@@ -25,6 +25,23 @@ const MessagesMessage = ({ m }: { m: MessageType }) => {
 
   const isCUOwner = user ? cu === user.uid : false;
 
+  const usernameColor = () => {
+    if (m.error) {
+      return "text-red-600 dark:text-red-400";
+    } else if (isCUOwner) {
+      return "text-sky-600 dark:text-indigo-400";
+    } else return "text-slate-700 dark:text-slate-300";
+  };
+
+  const messageColor = () => {
+    if (m.error) {
+      return "bg-red-200 text-red-900 dark:bg-red-900 dark:text-red-200";
+    } else if (isCUOwner) {
+      return "bg-sky-200 dark:bg-indigo-900 text-slate-900 dark:text-slate-200";
+    } else
+      return "bg-slate-300 dark:bg-slate-700 text-slate-900 dark:text-slate-200";
+  };
+
   return (
     <div className="flex items-start gap-2 w-full min-h-fit">
       <div className="w-12 h-12 shrink-0 relative">
@@ -35,23 +52,13 @@ const MessagesMessage = ({ m }: { m: MessageType }) => {
         />
       </div>
       <div className="flex flex-col gap-1 w-full">
-        <p
-          className={`${
-            isCUOwner
-              ? "text-sky-600 dark:text-indigo-400"
-              : "text-slate-700 dark:text-slate-300"
-          } font-semibold`}
-        >
+        <p className={`${usernameColor()} font-semibold`}>
           {user ? user.username : "Loading"}
         </p>
         <div className="flex flex-col w-full gap-2">
           {typeof m.message === "string" && m.message.length !== 0 ? (
             <p
-              className={`${
-                isCUOwner
-                  ? "bg-sky-200 dark:bg-indigo-900"
-                  : "bg-slate-300 dark:bg-slate-700"
-              }  px-2 py-1 w-fit whitespace-normal break-normal rounded-lg text-slate-900 dark:text-slate-200`}
+              className={`${messageColor()} px-2 py-1 w-fit whitespace-normal break-normal rounded-lg`}
             >
               {m.message}
             </p>
@@ -60,10 +67,17 @@ const MessagesMessage = ({ m }: { m: MessageType }) => {
           )}
           <MessagesMessageImages images={m.images} isOwner={isCUOwner} />
         </div>
-        <p className="text-xs text-slate-600 dark:text-slate-400">
-          {timeConverter(m.time)}
+        <p
+          className={`text-xs ${
+            m.error
+              ? "text-red-700 dark:text-red-400 font-semibold"
+              : "text-slate-600 dark:text-slate-400"
+          }`}
+        >
+          {m.error ? "Not sent" : timeConverter(m.time)}
         </p>
       </div>
+      {m.error ? <div className="re"></div> : <></>}
     </div>
   );
 };
@@ -115,8 +129,59 @@ const MessagesMessageImageCard = ({
   const [isError, setError] = React.useState(false);
   const [isZoom, setZoom] = React.useState(false);
 
+  const copyURLHandler = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    navigator.clipboard.writeText(image);
+    const { currentTarget } = e;
+    currentTarget.innerText = "Copied";
+    currentTarget.className = "text-green-300 dark:text-green-500";
+    setTimeout(() => {
+      currentTarget.innerText = "Copy URL";
+      currentTarget.className =
+        "text-slate-100 dark:text-slate-300 hover:text-sky-300 dark:hover:text-indigo-300 hover:underline";
+    }, 750);
+  };
+
+  const copyHASHHandler = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    const regex = image.match(/images%2F([^.]*)/);
+    let hash = "";
+    if (regex) hash = regex[1];
+    navigator.clipboard.writeText(hash);
+    const { currentTarget } = e;
+    currentTarget.innerText = "Copied";
+    currentTarget.className = "text-green-300 dark:text-green-500";
+    setTimeout(() => {
+      currentTarget.innerText = "Copy HASH";
+      currentTarget.className =
+        "text-slate-100 dark:text-slate-300 hover:text-sky-300 dark:hover:text-indigo-300 hover:underline";
+    }, 750);
+  };
+
   if (isError) {
-    return <></>;
+    return (
+      <div className="m-2 bg-slate-300 dark:bg-slate-700 w-36 h-24 rounded-md err-load">
+        <div className="bg-black bg-opacity-50 dark:bg-opacity-25 w-full h-full rounded-md flex flex-col justify-center items-center gap-2">
+          <p className="text-slate-100 dark:text-slate-300">Couldn't load</p>
+          <button
+            className="text-slate-100 dark:text-slate-300 hover:text-sky-300 dark:hover:text-indigo-300 hover:underline"
+            onClick={copyURLHandler}
+            title={image}
+          >
+            Copy URL
+          </button>
+          <button
+            className="text-slate-100 dark:text-slate-300 hover:text-sky-300 dark:hover:text-indigo-300 hover:underline"
+            onClick={copyHASHHandler}
+            title={image}
+          >
+            Copy Hash
+          </button>
+        </div>
+      </div>
+    );
   }
 
   const sizeX = () => {

@@ -12,6 +12,7 @@ type MessageType = {
   cid: string;
   mid: number;
   user: string | "system";
+  error?: boolean;
 };
 
 type MessagesType = {
