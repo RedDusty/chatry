@@ -20,7 +20,7 @@ const userReducerInitial: UserReducerType = {
   userSettings: {
     theme: themeStorage(),
     hourCycle:
-      (localStorage.getItem("chatry-hourCycle") as hourCycleType) || "h24",
+      (localStorage.getItem("chatry-hourCycle") as hourCycleType) || "h23",
   },
   privacy: {
     twoside: "all",

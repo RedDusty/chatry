@@ -1,8 +1,9 @@
 import React from "react";
 import { useTypedSelector } from "redux/useTypedRedux";
+import { searchListType } from "typings/cacheTypes";
 
 type PeopleTabsType = {
-  btnHanlder: (btn: "search" | "friends" | "waiting") => void;
+  btnHanlder: (btn: searchListType) => void;
   isSearch: boolean;
 };
 
@@ -24,10 +25,18 @@ const PeopleTabs = ({ btnHanlder, isSearch }: PeopleTabsType) => {
           <button
             className="bg-green-600 hover:bg-green-500 dark:bg-green-800 dark:hover:bg-green-700 p-2 rounded-md font-semibold text-white"
             onClick={() => {
-              btnHanlder("waiting");
+              btnHanlder("waitings");
             }}
           >
             Waiting list
+          </button>
+          <button
+            className="bg-sky-500 hover:bg-sky-400 dark:bg-indigo-600 dark:hover:bg-indigo-500 p-2 rounded-md font-semibold text-white"
+            onClick={() => {
+              btnHanlder("online");
+            }}
+          >
+            10 random online users
           </button>
         </div>
         {isSearch ? (
@@ -42,8 +51,16 @@ const PeopleTabs = ({ btnHanlder, isSearch }: PeopleTabsType) => {
   }
 
   return (
-    <div className="mx-3 mt-2 mb-1">
-      <p className="mb-2 mt-1 p-2 rounded-md bg-sky-200 dark:bg-indigo-900 text-sky-600 dark:text-indigo-200 font-semibold max-w-min whitespace-nowrap">
+    <div className="mx-3 mt-2 mb-1 flex gap-2 items-center">
+      <button
+        className="bg-sky-500 hover:bg-sky-400 dark:bg-indigo-600 dark:hover:bg-indigo-500 p-2 rounded-md font-semibold text-white"
+        onClick={() => {
+          btnHanlder("online");
+        }}
+      >
+        10 random online users
+      </button>
+      <p className="p-2 rounded-md bg-sky-200 dark:bg-indigo-900 text-sky-600 dark:text-indigo-200 font-semibold max-w-min whitespace-nowrap">
         Only search is available!
       </p>
     </div>

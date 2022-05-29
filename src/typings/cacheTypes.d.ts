@@ -5,6 +5,8 @@ export type CACHE_CHAT_SET = "CACHE_CHAT_SET";
 export type CACHE_DIALOG_CID_SET = "CACHE_DIALOG_CID_SET";
 export type CACHE_CHAT_TWO_ACCEPT = "CACHE_CHAT_TWO_ACCEPT";
 
+export type searchListType = undefined | "friends" | "waitings" | "search" | "online";
+
 type MessageType = {
   time: number;
   message: string | MessageType;

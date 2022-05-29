@@ -23,7 +23,7 @@ const ProfileInfo = ({
 }: ProfileInfoType) => {
   const [isShowLastUsernames, setShowLastUsernames] = React.useState(false);
 
-  const canView = error !== "FORBIDDEN_FRIEND";
+  const canView = error !== "FORBIDDEN_FRIEND" && error !== "FORBIDDEN_PRIVATE";
 
   const lastUsernamesHandler = () => {
     if (canView) {

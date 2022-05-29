@@ -1,9 +1,10 @@
 import React from "react";
 import IconCross from "icons/IconCross";
 import IconSearch from "icons/IconSearch";
+import { searchListType } from 'typings/cacheTypes';
 
 type PeopleSearchBarType = {
-  btnHanlder: (btn: "search" | "friends" | "waiting") => void;
+  btnHanlder: (btn: searchListType) => void;
   disableSearchHandler: () => void;
   setQuery: (v: string) => void;
   query: string;

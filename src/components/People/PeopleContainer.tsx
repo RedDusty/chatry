@@ -5,13 +5,12 @@ import { useTypedSelector } from "redux/useTypedRedux";
 import People from "components/People/People";
 import { useSearchParams } from "react-router-dom";
 import { setUser } from "scripts/usersCache";
-
-type listType = undefined | "friends" | "waitings" | "search";
+import { searchListType } from "typings/cacheTypes";
 
 const searchUsers = async (
   value: string,
   userUID: string | null,
-  list: listType
+  list: searchListType
 ) => {
   const searchBy = () => {
     if (value.startsWith("#uid:")) return "uid";
@@ -88,7 +87,7 @@ const PeopleContainer = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [u.uid, u.waitingsUID, u.friendsUID]);
 
-  const btnHanlder = (btn: "search" | "friends" | "waiting") => {
+  const btnHanlder = (btn: searchListType) => {
     setFetching(true);
     switch (btn) {
       case "friends":
@@ -97,11 +96,15 @@ const PeopleContainer = () => {
         break;
       case "search":
         setSearch(true);
-        u.uid && searcher(searchUsers(query, u.uid, "search"));
+        searcher(searchUsers(query, u.uid, "search"));
         break;
-      case "waiting":
+      case "waitings":
         u.uid && searcher(searchUsers(query, u.uid, "waitings"));
         setSearch(false);
+        break;
+      case "online":
+        setSearch(true);
+        searcher(searchUsers(query, u.uid, "online"));
         break;
       default:
         u.uid && searcher(searchUsers(query, u.uid, "friends"));

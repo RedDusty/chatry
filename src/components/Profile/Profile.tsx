@@ -69,7 +69,7 @@ const Profile = () => {
     }
   }, [pUser?.uid, url, cu]);
 
-  if (error === "NOT_FOUND" || error === "FORBIDDEN_PRIVATE") {
+  if (error === "NOT_FOUND") {
     return (
       <section className="cont flex-col justify-start items-start p-4 sm:p-12 lg:p-16">
         <div className="bg-red-100 dark:bg-red-900 dark:bg-opacity-50 rounded-xl">
@@ -79,8 +79,6 @@ const Profile = () => {
             </div>
             <h1 className="text-red-800 dark:text-red-200 text-xl sm:text-2xl lg:text-5xl">
               {error === "NOT_FOUND" && "This account does not exist!"}
-              {error === "FORBIDDEN_PRIVATE" &&
-                "You must be registered to view this profile!"}
             </h1>
           </div>
           <div className="m-2 p-2 flex flex-col gap-4 mt-4 sm:text-lg lg:text-xl text-zinc-900 dark:text-zinc-200">
@@ -197,17 +195,22 @@ const Profile = () => {
       ) : (
         <></>
       )}
-      {error === "FORBIDDEN_FRIEND" && (
+      {error === "FORBIDDEN_FRIEND" || error === "FORBIDDEN_PRIVATE" ? (
         <div className="bg-red-100 dark:bg-red-900 dark:bg-opacity-50 rounded-xl mx-auto sm:ml-0 mt-4">
           <div className="flex flex-col sm:flex-row items-center m-2 p-2 gap-2 lg:gap-6">
             <div className="w-16 h-16 lg:w-20 lg:h-20 fill-red-500">
               <IconInfo />
             </div>
             <h1 className="text-red-800 dark:text-red-200 text-xl sm:text-2xl lg:text-3xl">
-              You need to be a friend to view this profile.
+              {error === "FORBIDDEN_FRIEND" &&
+                "You need to be a friend to view this profile."}
+              {error === "FORBIDDEN_PRIVATE" &&
+                "You need to be an authorized to view this profile."}
             </h1>
           </div>
         </div>
+      ) : (
+        <></>
       )}
     </section>
   );

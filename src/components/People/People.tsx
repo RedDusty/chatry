@@ -3,9 +3,10 @@ import UserCard from "components/Utils/UserCard/UserCard";
 import IconLoading from "icons/IconLoading";
 import PeopleSearchBar from "components/People/PeopleSearchBar";
 import PeopleTabs from "components/People/PeopleTabs";
+import { searchListType } from "typings/cacheTypes";
 
 type PeopleComponentType = {
-  btnHanlder: (btn: "search" | "friends" | "waiting") => void;
+  btnHanlder: (btn: searchListType) => void;
   disableSearchHandler: () => void;
   setQuery: (v: string) => void;
   query: string;

@@ -25,6 +25,19 @@ const ProfileActions = ({ uid, privacy }: ProfileActionsType) => {
     }
   };
 
+  if (cu === null) {
+    return (
+      <div className="mt-2 mx-auto sm:ml-0 flex flex-wrap justify-center items-center gap-2">
+        <Link
+          to={"/auth"}
+          className="bg-sky-600 hover:bg-sky-500 dark:bg-indigo-600 dark:hover:bg-indigo-500 border border-solid border-black text-white text-center font-semibold py-1 px-2 rounded-md w-48"
+        >
+          Auth
+        </Link>
+      </div>
+    );
+  }
+
   return (
     <div className="mt-2 mx-auto sm:ml-0 flex flex-wrap justify-center items-center gap-2">
       <button
