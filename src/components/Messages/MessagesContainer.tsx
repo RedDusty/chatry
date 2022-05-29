@@ -21,7 +21,7 @@ const MessagesContainer = () => {
 
     if (m) {
       setCurrentDialog(m);
-    } else if (u) {
+    } else if (u && u !== cu) {
       const chat = chats.filter(
         (c) => c.chatType === "two-side" && c.usersUID.includes(u)
       );

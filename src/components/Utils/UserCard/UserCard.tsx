@@ -57,10 +57,10 @@ const UserCard = ({ uid }: { uid: string }) => {
   const friendActionHandler = () => {
     if (senderUID === null) return;
     if (isFriend === true) {
-      socketFriendRequest(senderUID!, user.uid, "remove");
+      socketFriendRequest(user.uid, "remove");
     }
     if (isFriend === false) {
-      socketFriendRequest(senderUID!, user.uid, "add");
+      socketFriendRequest(user.uid, "add");
     }
   };
 

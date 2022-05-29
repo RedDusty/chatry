@@ -18,10 +18,10 @@ const ProfileActions = ({ uid, privacy }: ProfileActionsType) => {
   const friendActionHandler = () => {
     if ((cu === null || uid === null) && cu === uid) return;
     if (isFriend === true) {
-      socketFriendRequest(cu!, uid, "remove");
+      socketFriendRequest(uid, "remove");
     }
     if (isFriend === false) {
-      socketFriendRequest(cu!, uid, "add");
+      socketFriendRequest(uid, "add");
     }
   };
 

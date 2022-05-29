@@ -134,10 +134,11 @@ function friendActions(data: { header: string; user: string }) {
 }
 
 export const socketFriendRequest = (
-  senderUID: string,
   userUID: string,
   type: "add" | "remove"
 ) => {
+  const senderUID = store.getState().user.uid;
+
   socket.emit("FRIEND_REQUEST", {
     type: type,
     senderUID: senderUID,
@@ -152,6 +153,7 @@ export const socketMessageSend = (
   images?: string[]
 ) => {
   const user = store.getState().user;
+  if (user.uid === reqUID) return;
 
   socket.emit("MESSAGE_SEND", {
     message: {
