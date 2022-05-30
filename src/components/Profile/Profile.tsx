@@ -71,7 +71,7 @@ const Profile = () => {
 
   if (error === "NOT_FOUND") {
     return (
-      <section className="cont flex-col justify-start items-start p-4 sm:p-12 lg:p-16">
+      <section className="cont flex-col justify-start items-start p-4 sm:p-12 lg:p-16 h-full overflow-y-auto">
         <div className="bg-red-100 dark:bg-red-900 dark:bg-opacity-50 rounded-xl">
           <div className="flex flex-col sm:flex-row items-center m-2 p-2 gap-2 lg:gap-6">
             <div className="w-16 h-16 lg:w-24 lg:h-24 fill-red-500">
@@ -233,7 +233,7 @@ const ProfileZoomedImage = ({
   const [isDelete, setDelete] = React.useState(false);
 
   return (
-    <div className="fixed w-screen h-screen bg-black bg-opacity-50 top-0 left-0 z-50">
+    <div className="fixed w-full h-full bg-black bg-opacity-50 top-0 left-0 z-50">
       <img
         className="w-full h-full object-contain"
         src={image.url}
@@ -276,7 +276,7 @@ const ProfileZoomedImage = ({
         <></>
       )}
       {isDelete ? (
-        <div className="fixed w-screen h-screen bg-black bg-opacity-50 top-0 left-0 z-50 flex justify-center items-center">
+        <div className="fixed w-full h-full bg-black bg-opacity-50 top-0 left-0 z-50 flex justify-center items-center">
           <div className="bg-slate-100 dark:bg-slate-800 rounded-md flex gap-8 flex-col justify-between p-4">
             <p className="text-black dark:text-white font-semibold">
               Are you sure you want to delete this image?
@@ -319,13 +319,13 @@ type ProfileCardImageType = {
 const ProfileCardImage = ({ image, setImageZoom }: ProfileCardImageType) => {
   return (
     <div
-      className="m-2 group cursor-pointer"
+      className="p-2 group cursor-pointer"
       onClick={() => {
         setImageZoom({ ...image });
       }}
     >
       <img
-        className="w-64 transition-all rounded-lg hover:rounded-none object-cover"
+        className="w-44 sm:w-56 md:w-64 transition-all rounded-lg hover:rounded-none object-cover"
         src={image.url}
         alt=""
       />
