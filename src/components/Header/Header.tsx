@@ -11,6 +11,7 @@ import IconLogout from "icons/IconLogout";
 import IconMessages from "icons/IconMessages";
 import HeaderNotification from "components/Header/HeaderNotification";
 import axios from "axios";
+import { setCurrentDialog } from "scripts/currentDialog";
 
 type HeaderType = {
   isNotifShow: boolean;
@@ -62,6 +63,9 @@ const Header = ({ isNotifShow, toggleNotifications }: HeaderType) => {
         link={"/messages"}
         canUserPass={false}
         isShow={true}
+        addFunctional={() => {
+          setCurrentDialog(null);
+        }}
       />
       <HeaderButton
         Icon={<IconPeople />}

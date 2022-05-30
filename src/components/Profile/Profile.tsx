@@ -108,7 +108,7 @@ const Profile = () => {
   }
 
   return (
-    <section className="cont flex-col justify-start items-start p-2 sm:p-12 lg:p-16 h-full">
+    <section className="cont flex-col justify-start items-start p-2 sm:p-12 lg:p-16 h-full overflow-y-auto">
       {!isUploadingImages && (
         <ProfileInfo
           avatar={pUser ? pUser.avatar : undefined}
@@ -150,7 +150,7 @@ const Profile = () => {
       !isUploadingImages ? (
         <Masonry
           options={{ transitionDuration: 0.1 }}
-          className="w-full h-full overflow-y-auto"
+          className="w-full h-full"
         >
           {images.map((i, idx) => {
             return (
@@ -171,7 +171,7 @@ const Profile = () => {
       !isUploadingImages ? (
         <Masonry
           options={{ transitionDuration: 0.1 }}
-          className="w-full h-full overflow-y-auto"
+          className="w-full h-full"
         >
           {pUser.images.map((i, idx) => {
             return (

@@ -8,6 +8,7 @@ type LeftBarButtonType = {
   Icon: JSX.Element;
   canUserPass?: string | null | boolean;
   isShow?: boolean;
+  addFunctional?: Function;
 };
 
 const HeaderButton = ({
@@ -15,6 +16,7 @@ const HeaderButton = ({
   Icon,
   canUserPass,
   isShow,
+  addFunctional,
 }: LeftBarButtonType) => {
   const [isSelected, setSelected] = React.useState(false);
 
@@ -43,6 +45,9 @@ const HeaderButton = ({
         className={`${
           isSelected ? "opacity-75" : "group-hover:opacity-60"
         } w-full h-full p-2 sm:p-3`}
+        onClick={() => {
+          if (addFunctional) addFunctional();
+        }}
       >
         {Icon}
       </span>
@@ -61,6 +66,7 @@ const HeaderButton = ({
         } group w-11 h-11 sm:w-14 sm:h-14 rounded-xl sm:mx-auto sm:mt-2 flex-col items-center`}
         onClick={() => {
           setSelected(link());
+          if (addFunctional) addFunctional();
         }}
       >
         {innerData()}
@@ -78,6 +84,9 @@ const HeaderButton = ({
       } ${
         isShow ? "flex" : "hidden sm:flex"
       } group w-11 h-11 sm:w-14 sm:h-14 rounded-xl sm:mx-auto sm:mt-2 flex-col items-center`}
+      onClick={() => {
+        if (addFunctional) addFunctional();
+      }}
     >
       {innerData()}
     </Link>
