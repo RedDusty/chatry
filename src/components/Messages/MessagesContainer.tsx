@@ -10,6 +10,7 @@ import { ChatTwoType } from "typings/cacheTypes";
 
 const MessagesContainer = () => {
   const chats = useTypedSelector((s) => s.cache.chats);
+  const [chatSearch, setChatSearch] = React.useState<string>("");
   const chatCID = useTypedSelector((s) => s.cache.dialogCID);
   const usp = useSearchParams();
   const dispatch = useTypedDispatch();
@@ -54,8 +55,11 @@ const MessagesContainer = () => {
             : "hidden md:flex md:w-72 lg:w-96"
         } flex-col shrink-0 relative z-20`}
       >
-        <MessagesSearchBar />
-        <MessagesChats chats={chats} />
+        <MessagesSearchBar
+          setChatSearch={setChatSearch}
+          chatSearch={chatSearch}
+        />
+        <MessagesChats chats={chats} chatSearch={chatSearch} />
       </div>
       <div className="hidden md:block w-px shrink-0 h-full bg-gray-400 dark:bg-gray-500"></div>
       {chatCID !== null ? (
