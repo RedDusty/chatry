@@ -124,6 +124,7 @@ function App() {
             <Route path="/settings" element={<Settings />} />
           </Route>
           <Route path="/auth/*" element={<Auth />} />
+          <Route path="/" element={<Auth />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       )}
